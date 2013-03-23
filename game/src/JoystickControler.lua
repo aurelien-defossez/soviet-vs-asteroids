@@ -10,7 +10,6 @@ local Class = JoystickControler
 Class.__index = Class
 local sin = math.sin
 local cos = math.cos
-local debug = false;
 
 -----------------------------------------------------------------------------------------
 -- Imports
@@ -25,15 +24,12 @@ function Class.create(options)
     setmetatable(self, Class)
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes  
+    self.station = options.station
 
-    -- Create debug shape
-    self.x = 0
-    self.y = 0
-
-    self.axis1 = 0;
-    self.axis2 = 0;
-    self.axis4 = 0;
-    self.axis5 = 0;
+    self.axis1 = 0
+    self.axis2 = 0
+    self.axis4 = 0
+    self.axis5 = 0
 
     self.joy1Angle = 0
     self.joy2Angle = 0
@@ -59,6 +55,7 @@ function Class:update(dt)
     if (not love.joystick.isOpen(1)) then
         return
     end
+
     -- Joystick
     -- 1 X et 2 Y, left
     -- 3  L2, R2
@@ -74,10 +71,12 @@ function Class:update(dt)
     norm2 =  math.sqrt( self.axis4 * self.axis4 + self.axis5 * self.axis5 )
     if (norm > 0.5) then
         self.joy1Angle = math.atan2(self.axis2, self.axis1)
+        self.station:setMissileLauncherAngle(self.joy1Angle)
     end
 
     if (norm2 > 0.5) then
         self.joy2Angle = math.atan2(self.axis4, self.axis5)
+        self.station:setLaserSatAngle(self.joy2Angle)
     end
 
 end
@@ -95,7 +94,5 @@ function Class:draw()
     love.graphics.setColor(0, 255, 0)
     love.graphics.print(self.joy2Angle, 0, 30)
     love.graphics.line(0 , 0, 100*math.cos(self.joy2Angle), 100*math.sin(self.joy2Angle))
-
-
 
 end
