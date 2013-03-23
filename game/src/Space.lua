@@ -51,8 +51,8 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
-function Class:addMissile(missile)
-    self.missiles[missile.id] = missile
+function Class:addMissile( options )
+    table.insert( self.missiles, Missile.create( options ) )
 end
 
 function Class:addAsteroid( options )
@@ -86,8 +86,12 @@ function Class:update(dt)
         return
     end
 
-    for _, missile in pairs(self.missiles) do
+    for i, missile in pairs(self.missiles) do
         missile:update(dt)
+
+        if missile.exploded and missile.timeSinceExplosion > 0.2 then
+            table.remove( self.missiles, i )
+        end
     end
 
     for i, asteroid in pairs(self.asteroids) do

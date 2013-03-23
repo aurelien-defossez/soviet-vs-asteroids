@@ -86,7 +86,7 @@ function Class:launchMissile()
     self.lastSentMissileTime = love.timer.getTime()
 
     -- Send the missile
-    self.space:addMissile(Missile.create{
+    self.space:addMissile({
         pos = vec2(self.missileArmLength * cos(-self.missileAngle), self.missileArmLength * sin(-self.missileAngle)),
         angle = self.missileAngle,
         speed = 10

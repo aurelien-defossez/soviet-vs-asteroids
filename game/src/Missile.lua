@@ -77,8 +77,10 @@ function Class:explode()
         angle = self.angle,
         spriteSheet = explosion,
         frameCount = 2,
-        frameRate = 0.1
+        frameRate = 0.07
     }
+
+    self.timeSinceExplosion = 0
 end
 
 -- Update the missile
@@ -89,6 +91,8 @@ function Class:update(dt)
     if not self.exploded then
         self.pos = self.pos + vec2(self.speed * cos(self.angle), self.speed * -sin(self.angle))
         self.boundingCircle = circle(self.pos, self.radius)
+    else
+        self.timeSinceExplosion = self.timeSinceExplosion + dt
     end
 
     self.sprite:update(dt)
