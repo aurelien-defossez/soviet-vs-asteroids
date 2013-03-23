@@ -71,12 +71,10 @@ function Class:launchMissile()
 
     -- Send the missile
     self.space:addMissile(Missile.create{
-        x = self.missileArmLength * math.cos(-self.missileAngle),
-        y = self.missileArmLength * math.sin(-self.missileAngle),
+        pos = vec2(self.missileArmLength * cos(-self.missileAngle), self.missileArmLength * sin(-self.missileAngle)),
         angle = self.missileAngle,
         speed = 10
     })
-    print("Missile Launched !")
     self.buttonPressed = "Missile !"
 end
 
