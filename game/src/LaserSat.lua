@@ -10,6 +10,13 @@ module("LaserSat", package.seeall)
 local Class = LaserSat
 Class.__index = Class
 
+local Sprite = require("lib.Sprite")
+
+-----------------------------------------------------------------------------------------
+-- Class attributes
+-----------------------------------------------------------------------------------------
+local spriteSheet = love.graphics.newImage("assets/graphics/lasersat.png")
+
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
@@ -27,11 +34,23 @@ function Class.create(options)
     -- Initialize attributes
     self.pos = options.position
     self.angle = options.angle
+    self.displayAngle = options.angle
     self.isFiring = false
     self.targetAsteroid = nil
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
 
     self.debugText = ""
+
+    self.sprite = Sprite.create{
+        pos = self.pos,
+        angle = self.displayAngle,
+        spriteSheet = spriteSheet,
+        frameCount = 1,
+        frameRate = 10000,
+        scale = 0.5
+    }
+
+
 
     return self
 end
@@ -60,18 +79,23 @@ function Class:draw()
     if (not self.debug) then
         return
     end
-
-    love.graphics.setColor(255, 255, 0)
-    love.graphics.circle('fill', self.pos.x , self.pos.y , 10, 32)
+    love.graphics.setColor(255,255,255)
+    self.sprite.angle = self.displayAngle
+    self.sprite.pos = self.pos + vec2(-48, -32):rotateRad(-self.displayAngle)
+    self.sprite:draw()
+   -- love.graphics.setColor(255, 255, 0)
+ --   love.graphics.circle('fill', self.pos.x , self.pos.y , 10, 32)
     love.graphics.setLineWidth(3);
-    love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.angle), self.pos.y + 20 * math.sin( -self.angle) )
+    --love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.displayAngle), self.pos.y + 20 * math.sin( -self.displayAngle) )
 
+   
     --love.graphics.print("Debug : " ..self.debugText, 200, 200)
 
    
     if(self.isFiring and not( self.targetAsteroid == nil)) then
-        love.graphics.setColor(255, 127, 0)
-        love.graphics.line(self.pos.x, self.pos.y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y )
+        love.graphics.setColor(255, 0, 0)
+        local offset = vec2(15, 0):rotateRad(-self.displayAngle)
+        love.graphics.line(self.pos.x + offset.x , self.pos.y + offset. y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y )
     end
 end
 
@@ -105,13 +129,16 @@ function Class:fire(fireAngle, asteroid)
         if (self:inFrontOf(asteroidAngle)) then      
             self.targetAsteroid = asteroid
             self.isFiring = true
+            self.displayAngle = asteroidAngle
 
         else
             self.targetAsteroid = nil
             self.isFiring = false
+            self.displayAngle = self.angle
         end
     else
         self.isFiring = false
+        self.displayAngle = self.angle
     end
 
     return self.isFiring
@@ -120,4 +147,5 @@ end
 function Class:stopFire()
     self.isFiring = false
     self.targetAsteroid = nil
+    self.displayAngle = self.angle
 end
