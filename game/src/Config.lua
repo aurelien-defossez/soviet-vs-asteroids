@@ -6,7 +6,7 @@ gameConfig = {
         -- defined around 1080px
         minVirtualHeight = 1080,
         maxVirtualHeight = 4000
-    }
+    },
 
     -- Debug options
     debug = {
