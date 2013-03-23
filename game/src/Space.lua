@@ -53,6 +53,13 @@ function Class:addMissile(missile)
 end
 
 function Class:addAsteroid( options )
+
+    if options == nil then
+        options = {}
+    end
+
+    options.space = self
+
     local asteroid = Asteroid.create( options )
     table.insert( self.asteroids, asteroid )
     return asteroid
@@ -63,6 +70,8 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
+    local somethingExploded
+
     if self.mode == "upgrade" then
         return
     end
@@ -83,12 +92,7 @@ function Class:update(dt)
                 -- exclude exploded asteroid from collision detection
                 if not ( asteroid.exploded == true ) and missile:collideAsteroid(asteroid) then
                     missile:explode()
-                    asteroid:explode()
-
-                    -- only split asteroids that have not been splitted yet
-                    if asteroid.splitted == 0 then
-                        self:splitAsteroid(i)
-                    end
+                    self:explodeAsteroid( asteroid )
 
                     -- Stop collision detection for this missile
                     break
@@ -116,6 +120,10 @@ function Class:update(dt)
             table.remove( self.asteroids, i )
         end
     end
+
+    if somethingExploded then
+        die()
+    end
 end
 
 -- Draw the game
@@ -129,8 +137,28 @@ function Class:draw()
     end
 end
 
-function Class:splitAsteroid( i )
-    local asteroid = self.asteroids[i]
+function Class:explodeAsteroid( asteroid )
+
+    if type( asteroid ) == number then
+        asteroid = self.asteroids[ asteroid ]
+    end
+
+    -- only split asteroids that have not been splitted yet
+    if asteroid.splitted == 0 then
+        self:splitAsteroid( asteroid )
+    end
+
+    asteroid:explode()
+
+    return self
+end
+
+function Class:splitAsteroid( asteroid )
+    if type( asteroid ) == number then
+        asteroid = self.asteroids[ asteroid ]
+    end
+
+    print( asteroid, "will split" )
 
     self:addAsteroid({
         pos = vec2( asteroid.pos.x, asteroid.pos.y ),

@@ -177,9 +177,9 @@ function Class:findClosestAsteroid(angle, width)
     local minDist = -1
     local minDistchecker = - 1
     for _, asteroid in pairs(self.space.asteroids) do
-        minDistchecker = math.abs(asteroid:distanceWithLine(angle))       
+        minDistchecker = math.abs(asteroid:distanceWithLine(angle))
         if ((minDistchecker < minDist or minDist == -1)  and minDistchecker < width ) then
-            
+
             minDist = minDistchecker
             closestAsteroid = asteroid
         end
