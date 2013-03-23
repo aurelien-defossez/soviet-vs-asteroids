@@ -26,6 +26,11 @@ gameConfig = {
     },
     asteroidBeltDistance = 1080,
 
+    station = {
+        maxLife = 100,
+        shieldRegeneration = .5
+    },
+
     controls = {
         default = "joystick", -- joystick, keyboard, mouse
         force = nil, -- joystick, keyboard, mouse
@@ -42,7 +47,7 @@ gameConfig = {
     -- Debug options
     debug = {
         all = false,
-        shapes = true
+        shapes = false
     },
 
 

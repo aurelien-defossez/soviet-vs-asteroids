@@ -76,27 +76,24 @@ end
 
 -- Draw the game
 function Class:draw()
-    if not self.debug then
-        return
-    end
     love.graphics.setColor(255,255,255)
     self.sprite.angle = self.displayAngle
     self.sprite.pos = self.pos + vec2(-48, -32):rotateRad(-self.displayAngle)
     self.sprite:draw()
-   -- love.graphics.setColor(255, 255, 0)
- --   love.graphics.circle('fill', self.pos.x , self.pos.y , 10, 32)
-    love.graphics.setLineWidth(3);
-    --love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.displayAngle), self.pos.y + 20 * math.sin( -self.displayAngle) )
-
-   
-    --love.graphics.print("Debug : " ..self.debugText, 200, 200)
-
    
     if(self.isFiring and not( self.targetAsteroid == nil)) then
         love.graphics.setColor(255, 0, 0)
         local offset = vec2(15, 0):rotateRad(-self.displayAngle)
         love.graphics.line(self.pos.x + offset.x , self.pos.y + offset. y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y )
     end
+
+    if not self.debug then
+        return
+    end
+
+    love.graphics.setLineWidth(3);
+    --love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.displayAngle), self.pos.y + 20 * math.sin( -self.displayAngle) )
+    --love.graphics.print("Debug : " ..self.debugText, 200, 200)
 end
 
 function Class:inFrontOf(fireAngle)

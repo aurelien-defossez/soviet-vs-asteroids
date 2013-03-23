@@ -17,6 +17,7 @@ function Class.create( options )
     setmetatable(self, Class)
 
     self.space = options.space
+    self.exploded = false
 
     -- Determine random position
     local x = math.random() - 0.5
@@ -91,10 +92,9 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
 
-    if not self.exploded then
-        if self.life <= 0 then
-            self.space:explodeAsteroid( self )
-        end
+    if not self.exploded and self.life <= 0 then
+        self.space:splitAsteroid( self )
+        self:explode()
     end
 
     self.pos = self.pos + self.speed * dt
