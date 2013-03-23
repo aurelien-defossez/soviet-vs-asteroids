@@ -39,7 +39,7 @@ gameConfig = {
     -- Debug options
     debug = {
         all = false,
-        shapes = true
+        shapes = false
     },
 
 

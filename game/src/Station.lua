@@ -44,7 +44,9 @@ function Class.create(options)
     self.laserAlreadyFiring = false
     self.score = 0
     self.coins = 0
+    self.life = 100
     self.shieldRotation = 0
+    self.boundingCircle = circle(vec2(0, 0), self.radius)
 
     self.platform = love.graphics.newImage("assets/graphics/cosmonaute_plateforme.png")
     self.body = love.graphics.newImage("assets/graphics/cosmonaute_corps.png")
@@ -157,6 +159,7 @@ function Class:draw()
 
     love.graphics.setColor(255, 255, 255)
     love.graphics.print("Roubles : " ..self.coins, 300, -450)
+    love.graphics.print("life : " ..self.life, 100, -450)
 
     -- Reset color
     love.graphics.setColor(255, 255, 255)

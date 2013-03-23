@@ -16,6 +16,7 @@ function Class.create( options )
     setmetatable(self, Class)
 
     self.space = options.space
+    self.exploded = false
 
     -- Determine random position
     local x = math.random() - 0.5
@@ -78,8 +79,9 @@ function Class:update(dt)
         self.life = self.life - math.pow(self.numberSatHit, gameConfig.laser.dpsExp);
 
         if self.life <= 0 then
-            --print( self, "will explode" )
-            self.space:explodeAsteroid( self )
+            self.space:explodeAsteroid{
+                asteroid = self
+            }
         end
 
         self.numberSatHit = 0

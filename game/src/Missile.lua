@@ -37,7 +37,7 @@ function Class.create(options)
     self.pos = options.pos
     self.angle = options.angle
     self.speed = options.speed
-
+    self.exploded = false
     self.radius = 32
     self.color = {42, 42, 255}
     self.boundingCircle = circle(self.pos, self.radius)
