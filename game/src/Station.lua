@@ -152,11 +152,6 @@ end
 
 -- Draw the game
 function Class:draw()
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Score : " ..self.score, 500, -450)
-
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Roubles : " ..self.coins, 300, -450)
 
     -- Reset color
     love.graphics.setColor(255, 255, 255)
