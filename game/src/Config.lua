@@ -25,5 +25,5 @@ gameConfig = {
 
     asteroidBeltDistance = 1080,
 
-    asteroidSpawnProbability = 0.04
+    asteroidSpawnEvery = 1
 }
