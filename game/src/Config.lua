@@ -1,6 +1,11 @@
 gameConfig = {
     virtualScreenHeight = 1080,
 
+    screen = {
+        width = 1024,
+        height = 768
+    },
+
     -- Camera
     camera = {
         -- defined around 1080px
