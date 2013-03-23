@@ -28,6 +28,7 @@ function Class.create(options)
     self.station = options.station
     self.missiles = {}
     self.asteroids = {}
+    self.dLastSpawn = 0
 
     return self
 end
@@ -62,8 +63,10 @@ function Class:update(dt)
     end
 
     -- spawn asteroids every once in a while
-    if math.random() * ( dt / 0.01666 ) < gameConfig.asteroidSpawnProbability then
+    self.dLastSpawn = self.dLastSpawn + dt
+    if self.dLastSpawn > gameConfig.asteroidSpawnEvery then
         self:addAsteroid()
+        self.dLastSpawn = 0
     end
 
     -- kill asteroids once they're offscreen
