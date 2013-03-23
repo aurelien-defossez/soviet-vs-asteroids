@@ -40,6 +40,7 @@ function Class.create(options)
     self.isFiring = false
     self.targetAsteroid = nil
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
+    self.beamScale = 0.1;
 
     self.debugText = ""
 
@@ -104,6 +105,13 @@ function Class:update(dt)
     self.laserOriginSprite:update(dt)
     self.laserImpactSprite:update(dt)
     self.laserBeamSprite:update(dt)
+    if self.beamScale < 1  and self.isFiring then
+        self.beamScale = self.beamScale + 0.2
+    else
+        if self.isFiring then
+            self.beamScale = 1
+        end
+    end
 
   --  self.isFiring = false
     if (self.targetAsteroid) then
@@ -115,18 +123,15 @@ end
 
 -- Draw the game
 function Class:draw()
-    
+
     love.graphics.setColor(255,255,255)
     self.sprite.angle = self.displayAngle
     self.sprite.pos = self.pos + vec2(-48, -32):rotateRad(-self.displayAngle)
     self.sprite:draw()
 
     if(self.isFiring and not( self.targetAsteroid == nil)) then
-
-
-        
         norm = math.sqrt(math.pow( self.targetAsteroid.pos.x - self.pos.x, 2 ) + math.pow( self.targetAsteroid.pos.y - self.pos.y, 2 ))
-        self.laserBeamSprite.scaleX = (norm - self.targetAsteroid.radius * 0.7 - 48) / 256
+        self.laserBeamSprite.scaleX = self.beamScale * (norm - self.targetAsteroid.radius * 0.7 - 48) / 256
         self.laserBeamSprite.angle = self.displayAngle
         self.laserBeamSprite.pos = self.pos + vec2( 32, -16):rotateRad(-self.displayAngle)
         self.laserBeamSprite:draw()
@@ -135,15 +140,12 @@ function Class:draw()
         self.laserOriginSprite.pos = self.pos + vec2( 16, -16):rotateRad(-self.displayAngle)
         self.laserOriginSprite:draw()
 
-        self.laserImpactSprite.angle = self.displayAngle
-        self.laserImpactSprite.pos = self.targetAsteroid.pos + vec2( -16, -16):rotateRad(-self.displayAngle)
-        self.laserImpactSprite.pos = self.laserImpactSprite.pos + vec2( self.targetAsteroid.radius * 0.7, self.targetAsteroid.radius * 0.7 ):rotateRad(-self.displayAngle + 0.75* math.pi)
-        self.laserImpactSprite:draw()
-
-
-
-
-
+        if self.beamScale >= 1 then
+            self.laserImpactSprite.angle = self.displayAngle
+            self.laserImpactSprite.pos = self.targetAsteroid.pos + vec2( -16, -16):rotateRad(-self.displayAngle)
+            self.laserImpactSprite.pos = self.laserImpactSprite.pos + vec2( self.targetAsteroid.radius * 0.7, self.targetAsteroid.radius * 0.7 ):rotateRad(-self.displayAngle + 0.75* math.pi)
+            self.laserImpactSprite:draw()
+        end
         if self.debug then
             -- love.graphics.setLineWidth(3);
            -- local offset = vec2(15, 0):rotateRad(-self.displayAngle)
@@ -212,4 +214,5 @@ function Class:stopFire()
     self.isFiring = false
     self.targetAsteroid = nil
     self.displayAngle = self.angle
+    self.beamScale = 0.1
 end
