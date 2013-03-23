@@ -13,7 +13,7 @@ Class.__index = Class
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
-
+require("src.SoundManager")
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -31,6 +31,8 @@ function Class.create(options)
     self.targetAsteroid = nil
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
 
+    self.debugText = ""
+
     return self
 end
 
@@ -47,7 +49,7 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-    self.isFiring = false
+  --  self.isFiring = false
 end
 
 -- Draw the game
@@ -61,9 +63,12 @@ function Class:draw()
     love.graphics.setLineWidth(3);
     love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.angle), self.pos.y + 20 * math.sin( -self.angle) )
 
+    --love.graphics.print("Debug : " ..self.debugText, 200, 200)
+
+   
     if(self.isFiring and not( self.targetAsteroid == nil)) then
         love.graphics.setColor(255, 127, 0)
-        love.graphics.line(self.pos.x, self.pos.y, self.targetAsteroid.x, self.targetAsteroid.y )
+        love.graphics.line(self.pos.x, self.pos.y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y )
     end
 end
 
@@ -89,17 +94,27 @@ function Class:fire(fireAngle, asteroid)
     -- Check if the lasetSat is oriented in the direction of the fireAngle
     if (self:inFrontOf(fireAngle)) then
 
-        local deltaX = asteroid.x - self.pos.x
-        local deltaY = asteroid.y - self.pos.y
+        local deltaX = asteroid.pos.x - self.pos.x
+        local deltaY = asteroid.pos.y - self.pos.y
         asteroidAngle = - math.atan2(deltaY, deltaX)
 
         -- Check if the lasetSat can shot the target
         if (self:inFrontOf(asteroidAngle)) then      
             self.targetAsteroid = asteroid
             self.isFiring = true
+
         else
             self.targetAsteroid = nil
+            self.isFiring = false
         end
-        return
+    else
+        self.isFiring = false
     end
+
+    return self.isFiring
+end
+
+function Class:stopFire()
+    self.isFiring = false
+    self.targetAsteroid = nil
 end

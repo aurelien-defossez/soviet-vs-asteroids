@@ -16,6 +16,7 @@ Class.__index = Class
 
 require("src.Missile")
 require("src.LaserSat")
+require("src.SoundManager")
 
 local sin = math.sin
 local cos = math.cos
@@ -38,12 +39,14 @@ function Class.create(options)
     self.laserStationOrbit = 100
     self.missileAngle = 0
     self.laserAngle = 0
+    self.laserAlreadyFiring = false
 
     -- Missiles cooldown
     self.lastSentMissileTime = - gameConfig.missiles.cooldown -- so we can shoot right away
     self.missileCoolDownTime = gameConfig.missiles.cooldown
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
+    self.debugText = ""
 
     return self
 end
@@ -82,11 +85,18 @@ function Class:fireLaser()
     local closestAsteroid = self:findClosestAsteroid(self.laserAngle, gameConfig.laser.laserWidth)
 
     if (closestAsteroid == nil) then
+        self:stopLaser()
         return
     end
 
     for _, laserSat in pairs(self.laserSats) do
         laserSat:fire(self.laserAngle, closestAsteroid)
+    end
+end
+
+function Class:stopLaser()
+    for _, laserSat in pairs(self.laserSats) do
+        laserSat:stopFire(self.laserAngle, closestAsteroid)
     end
 end
 
@@ -99,8 +109,24 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
+    local numberLaserFiring = 0
     for _, laserSat in pairs(self.laserSats) do
         laserSat:update(dt)
+        if (laserSat.isFiring) then
+            numberLaserFiring = numberLaserFiring + 1
+        end
+    end
+
+    if (numberLaserFiring > 0) then
+        if not (self.isLaserFiring) then
+            SoundManager.laserStart()
+            self.isLaserFiring = true
+        end
+    else
+        if (self.isLaserFiring) then
+            SoundManager.laserStop()
+            self.isLaserFiring = false
+        end
     end
 end
 
@@ -118,6 +144,8 @@ function Class:draw()
     love.graphics.circle('fill', self.radius * math.cos( -self.missileAngle), self.radius * math.sin( -self.missileAngle), 10, 32)
     love.graphics.setColor(0, 255, 0)
     love.graphics.circle('fill', self.radius * math.cos( -self.laserAngle ), self.radius * math.sin( -self.laserAngle ), 10, 32)
+
+    --love.graphics.print('Laser: ' ..self.debugText, -100, 200)
 
     for _, laserSat in pairs(self.laserSats) do
         laserSat:draw()

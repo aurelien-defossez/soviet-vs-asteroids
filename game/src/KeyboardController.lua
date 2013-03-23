@@ -52,6 +52,8 @@ function Class:update(dt)
     -- I’M A’ FIRIN’ MAH LAZER!!
     if (love.keyboard.isDown("rctrl")) then
         self.station:fireLaser()
+    else
+        self.station:stopLaser()
     end
 
     -- Control the missiles launcher

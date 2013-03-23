@@ -86,6 +86,8 @@ function Class:update(dt)
 
     if ( love.joystick.isDown( 1, 6 ) or love.joystick.isDown( 1, 7 ) ) then
         self.station:fireLaser()
+    else
+        self.station:stopLaser()
     end
 
 end

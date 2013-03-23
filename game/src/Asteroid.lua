@@ -69,7 +69,7 @@ function Class:isOffscreen()
 end
 
 function Class:distanceWithLine(shootAngle)
-    asteroidAngle = - math.atan2(self.y, self.x)
+    asteroidAngle = - math.atan2(self.pos.y, self.pos.x)
     collideAngle = shootAngle - asteroidAngle
     norm = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
 
