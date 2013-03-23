@@ -76,7 +76,7 @@ end
 
 -- Draw the game
 function Class:draw()
-    if (not self.debug) then
+    if not self.debug then
         return
     end
     love.graphics.setColor(255,255,255)
