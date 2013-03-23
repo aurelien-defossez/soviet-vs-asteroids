@@ -11,7 +11,7 @@ function SoundManager.setup()
    	self.soundMissile1=love.audio.newSource("assets/audio/missileshot1.ogg")
 	self.soundMissile2=love.audio.newSource("assets/audio/missileshot2.ogg")
 
-	self.soundLaser1=love.audio.newSource("assets/audio/lasershot1.ogg")
+	self.soundLaser1=love.audio.newSource("assets/audio/lasershot2.ogg")
 	self.soundLaser1:setLooping(true)
 
 	self.soundExplosion1=love.audio.newSource("assets/audio/explosion1.ogg")
