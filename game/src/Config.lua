@@ -55,5 +55,7 @@ gameConfig = {
     asteroidBeltDistance = 1080,
 
     -- an asteroid will spanwn every X seconds
-    asteroidSpawnPeriod = 2
+    asteroidSpawnPeriod = 2,
+
+    asteroidBaseRadius = 64
 }
