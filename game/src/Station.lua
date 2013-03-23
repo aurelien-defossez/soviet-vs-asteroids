@@ -41,6 +41,8 @@ function Class.create(options)
     self.missileAngle = 0
     self.laserAngle = 0
     self.laserAlreadyFiring = false
+    self.score = 0
+    self.coins = 0
 
     -- Missiles cooldown
     self.lastSentMissileTime = - gameConfig.missiles.cooldown -- so we can shoot right away
@@ -141,6 +143,17 @@ end
 
 -- Draw the game
 function Class:draw()
+
+    for _, laserSat in pairs(self.laserSats) do
+        laserSat:draw()
+    end
+
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.print("Score : " ..self.score, 500, -450)
+
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.print("Roubles : " ..self.coins, 300, -450)
+
     if (not self.debug) then
         return
     end
@@ -156,9 +169,7 @@ function Class:draw()
 
     --love.graphics.print('Laser: ' ..self.debugText, -100, 200)
 
-    for _, laserSat in pairs(self.laserSats) do
-        laserSat:draw()
-    end
+
 end
 
 function Class:setMissileLauncherAngle(angle)
@@ -195,5 +206,12 @@ end
 --  mode: "game" or "upgrade" mode
 function Class:setMode(mode)
     self.mode = mode
+end
+
+function Class:asteroidKilled(size, distance)
+    maxRange = 800
+    self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint *(distance / 1600) + 0.5)
+    self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint *(distance / 1600) + 0.5)
+    
 end
 

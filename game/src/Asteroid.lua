@@ -52,6 +52,9 @@ end
 
 function Class:explode()
     self.exploded = true
+    dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
+    game.station:asteroidKilled(1, dist)
+    
 
     -- darken color for debugging purpose
     self.color = {64, 0, 64}
@@ -69,7 +72,7 @@ function Class:update(dt)
 
     self.life = self.life - math.pow(self.numberSatHit, gameConfig.laser.dpsExp);
 
-    if (self.life <= 0) then
+    if (self.life <= 0 and not self.exploded) then
         self:explode()
     end
 
