@@ -46,6 +46,8 @@ function Class.create(options)
     self.body = love.graphics.newImage("assets/graphics/cosmonaute_corps.png")
     self.missileArmFront = love.graphics.newImage("assets/graphics/cosmonaute_missile_front.png")
     self.missileArmBack = love.graphics.newImage("assets/graphics/cosmonaute_missile_back.png")
+    self.laserArmFront = love.graphics.newImage("assets/graphics/cosmonaute_laser_front.png")
+    self.laserArmBack = love.graphics.newImage("assets/graphics/cosmonaute_laser_back.png")
 
     -- Missiles cooldown
     self.lastSentMissileTime = - gameConfig.missiles.cooldown -- so we can shoot right away
@@ -146,9 +148,22 @@ end
 
 -- Draw the game
 function Class:draw()
-    -- Draw cosmonaut
+    -- Reset color
     love.graphics.setColor(255, 255, 255)
+
+    -- Draw platform
     love.graphics.draw(self.platform, -52, 0, 0, .35, .35)
+
+    -- Draw laser arm
+     if math.abs(self.laserAngle) < halfPi then
+        local offset = vec2(-2, -19):rotateRad(-self.laserAngle) + vec2(16, 0)
+        love.graphics.draw(self.laserArmFront, offset.x, offset.y, -self.laserAngle, .35, .35)
+    else
+        local offset = vec2(42, 19):rotateRad(-self.laserAngle) + vec2(16, 0)
+        love.graphics.draw(self.laserArmBack, offset.x, offset.y, -self.laserAngle - math.pi, .35, .35)
+    end
+
+    -- Draw cosmonaut
     love.graphics.draw(self.body, -3, -26, 0, .35, .35)
 
     -- Draw missile arm
@@ -158,6 +173,11 @@ function Class:draw()
     else
         local offset = vec2(73, 15):rotateRad(-self.missileAngle)
         love.graphics.draw(self.missileArmBack, offset.x, offset.y, -self.missileAngle - math.pi, .35, .35)
+    end
+
+    -- Draw laser sats
+    for _, laserSat in pairs(self.laserSats) do
+        laserSat:draw()
     end
 
     if (not self.debug) then
@@ -172,12 +192,6 @@ function Class:draw()
     love.graphics.circle('fill', self.radius * math.cos( -self.missileAngle), self.radius * math.sin( -self.missileAngle), 10, 32)
     love.graphics.setColor(0, 255, 0)
     love.graphics.circle('fill', self.radius * math.cos( -self.laserAngle ), self.radius * math.sin( -self.laserAngle ), 10, 32)
-
-    --love.graphics.print('Laser: ' ..self.debugText, -100, 200)
-
-    for _, laserSat in pairs(self.laserSats) do
-        laserSat:draw()
-    end
 end
 
 function Class:setMissileLauncherAngle(angle)
