@@ -20,6 +20,7 @@ require("src.SoundManager")
 
 local sin = math.sin
 local cos = math.cos
+local halfPi = math.pi / 2
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -41,6 +42,10 @@ function Class.create(options)
     self.missileAngle = 0
     self.laserAngle = 0
     self.laserAlreadyFiring = false
+    self.platform = love.graphics.newImage("assets/graphics/cosmonaute_plateforme.png")
+    self.body = love.graphics.newImage("assets/graphics/cosmonaute_corps.png")
+    self.missileArmFront = love.graphics.newImage("assets/graphics/cosmonaute_missile_front.png")
+    self.missileArmBack = love.graphics.newImage("assets/graphics/cosmonaute_missile_back.png")
 
     -- Missiles cooldown
     self.lastSentMissileTime = - gameConfig.missiles.cooldown -- so we can shoot right away
@@ -141,6 +146,17 @@ end
 
 -- Draw the game
 function Class:draw()
+    -- Draw cosmonaut
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.draw(self.platform, -52, 0, 0, .35, .35)
+    love.graphics.draw(self.body, -3, -26, 0, .35, .35)
+
+    -- Draw missile arm
+    -- if math.abs(self.missileAngle) < halfPi then
+    --     love.graphics.draw(self.missileArmFront, -3, -26, 0, .35, .35)
+
+    vec2(0,0):draw()
+
     if (not self.debug) then
         return
     end
@@ -172,7 +188,6 @@ end
 -- Parameters :
 -- angle : the angle of the ray
 function Class:findClosestAsteroid(angle, width)
-
     local closestAsteroid = nil
     local minDist = -1
     local minDistchecker = - 1
