@@ -9,9 +9,7 @@ function Class.create( options )
     self = {}
     setmetatable(self, Class)
 
-    if options == nil then
-        options = {}
-    end
+    self.space = options.space
 
     -- Determine random position
     local x = math.random() - 0.5
@@ -44,8 +42,6 @@ function Class.create( options )
     self.boundingCircle = circle(self.pos, self.radius)
 
     self.splitted = options.splitted or 0
-    --self.colideX = 0
-    --self.colideY = 0
 
     return self
 end
@@ -72,8 +68,9 @@ function Class:update(dt)
 
     self.life = self.life - math.pow(self.numberSatHit, gameConfig.laser.dpsExp);
 
-    if (self.life <= 0 and not self.exploded) then
-        self:explode()
+    if self.life <= 0 then
+    	print( self, "will explode" )
+        self.space:explodeAsteroid( self )
     end
 
     self.numberSatHit = 0;
