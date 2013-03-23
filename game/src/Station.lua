@@ -92,6 +92,10 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
+    if self.mode == "upgrade" then
+        return
+    end
+
     for _, laserSat in pairs(self.laserSats) do
         laserSat:update(dt)
     end
@@ -128,6 +132,10 @@ function Class:setLaserSatAngle(angle)
     self.laserAngle = angle
 end
 
-
-
-
+-- Set the current mode of the game
+--
+-- Parameters
+--  mode: "game" or "upgrade" mode
+function Class:setMode(mode)
+    self.mode = mode
+end
