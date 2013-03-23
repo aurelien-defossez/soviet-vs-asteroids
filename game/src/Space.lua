@@ -143,8 +143,8 @@ function Class:explodeAsteroid( asteroid )
         asteroid = self.asteroids[ asteroid ]
     end
 
-    -- only split asteroids that have not been splitted yet
-    if asteroid.splitted == 0 then
+    -- only split asteroids that have not reached minimal width
+    if asteroid.radius > 16 then
         self:splitAsteroid( asteroid )
     end
 
@@ -165,8 +165,7 @@ function Class:splitAsteroid( asteroid )
         dir = asteroid.dir + math.pi / 16,
         speed1d = asteroid.speed1d,
         radius = asteroid.radius / 2,
-        color = {255,255,255},
-        splitted = asteroid.splitted + 1
+        color = {255,255,255}
     })
 
     self:addAsteroid({
@@ -174,8 +173,7 @@ function Class:splitAsteroid( asteroid )
         dir = asteroid.dir - math.pi / 16,
         speed1d = asteroid.speed1d,
         radius = asteroid.radius / 2,
-        color = {255,255,255},
-        splitted = asteroid.splitted + 1
+        color = {255,255,255}
     })
 end
 

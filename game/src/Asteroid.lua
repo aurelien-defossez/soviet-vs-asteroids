@@ -42,13 +42,28 @@ function Class.create( options )
         self.speed1d * math.sin( self.dir )
     )
 
-    self.radius = options.radius or baseRadius
+    if options.radius then
+        self.radius = options.radius
+    else
+        local rand = math.random()
+
+        -- 10% chance of big
+        if rand < 0.10 then
+            self.radius = 64
+
+        -- 60% chance of medium
+        elseif rand < 0.70 then
+            self.radius = 32
+
+        -- 30% chance of small
+        else
+            self.radius = 16
+        end
+    end
 
     self.color = options.color or { 255, 255, 255 }
 
     self.boundingCircle = circle(self.pos, self.radius)
-
-    self.splitted = options.splitted or 0
 
     self.sprite = sprites[ math.floor( math.random() * 3 + 1 ) ]
 
@@ -59,7 +74,6 @@ function Class:explode()
     self.exploded = true
     dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
     game.station:asteroidKilled(1, dist)
-    
 
     -- red color for debugging purpose
     self.color = {255, 0, 0}
