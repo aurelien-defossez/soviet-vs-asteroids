@@ -51,8 +51,8 @@ function Class:addMissile(missile)
     table.insert(self.missiles, missile)
 end
 
-function Class:addAsteroid(asteroid)
-    table.insert(self.asteroidS, asteroid)
+function Class:addAsteroid()
+    table.insert( self.asteroids, Asteroid.create() )
 end
 
 -- Update the station
@@ -66,6 +66,18 @@ function Class:update(dt)
 
     for _, asteroid in pairs(self.asteroids) do
         asteroid:update(dt)
+    end
+
+    -- spawn asteroids every once in a while
+    if math.random() * ( dt / 0.01666 ) < gameConfig.asteroidSpawnProbability then
+        self:addAsteroid()
+    end
+
+    -- kill asteroids once they're offscreen
+    for i, asteroid in pairs(self.asteroids) do
+        if asteroid:isOffscreen(dt) then
+            table.remove( self.asteroids, i )
+        end
     end
 end
 

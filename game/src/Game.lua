@@ -19,6 +19,7 @@ require("lib.json.json")
 require("src.Config")
 require("src.Station")
 require("src.PadController")
+require("src.KeyboardControler")
 require("src.Asteroid")
 require("src.Space")
 require("src.LaserSat")
@@ -48,9 +49,15 @@ function Class.create(options)
     self.space = Space.create{
         station = self.station
     }
-    self.controller = PadController.create{
-        station = self.station
-    }
+    if (love.joystick.isOpen(1)) then
+        self.controller = PadController.create{
+            station = self.station
+        }
+    else
+        self.controller = KeyboardControler.create{
+            station = self.station
+        }
+    end
 
     self.station.space = self.space
     self.station:addLaserSat( LaserSat.create{ position = vec2(0,100), angle = -1.57 } )
@@ -83,19 +90,19 @@ end
 function Class:draw()
 
     love.graphics.push()
-    
+
     -- Apply virtual resolution before rendering anything
     love.graphics.scale(self.virtualScaleFactor, self.virtualScaleFactor)
-    
+
     -- Apply camera zoom
     love.graphics.scale(self.zoom, self.zoom)
-    
+
     -- Move to camera position
     love.graphics.translate(
         (self.virtualScreenHeight * 0.5 / self.zoom) * self.screenRatio - self.camera.x,
         (self.virtualScreenHeight * 0.5 / self.zoom) - self.camera.y
     )
-    
+
     -- Draw background
     local screenExtent = vec2(self.virtualScreenHeight * self.screenRatio, self.virtualScreenHeight)
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)

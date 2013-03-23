@@ -5,7 +5,7 @@ function love.load()
 end
 
 function love.update(dt)
-    game:update(dt * 0.001)
+    game:update(dt)
 end
 
 function love.draw()
