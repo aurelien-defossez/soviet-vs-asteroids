@@ -7,4 +7,6 @@ gameConfig = {
         minVirtualHeight = 1080,
         maxVirtualHeight = 4000
     }
+
+    asteroidBeltDistance = 1080
 }

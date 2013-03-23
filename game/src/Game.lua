@@ -20,6 +20,7 @@ require("lib.math.vec2")
 require("lib.math.aabb")
 require("src.Config")
 require("src.Station")
+require("src.Asteroid")
 require("src.JoystickControler")
 
 -----------------------------------------------------------------------------------------
