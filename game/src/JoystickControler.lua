@@ -23,18 +23,7 @@ function Class.create(options)
     self = {}
     setmetatable(self, Class)
 
-    self.station = options.station
-    self.debugShape = true -- Config.debugShape
-
-    -- Set virtual viewport
-    self.virtualScreenHeight = gameConfig.camera.minVirtualHeight
-    self.virtualScaleFactor = love.graphics.getHeight() / self.virtualScreenHeight
-    self.screenRatio = love.graphics.getWidth() / love.graphics.getHeight()
-    self.camera = vec2(0, 0)
-    self.zoom = 1.0
-
-    -- Set font
-    love.graphics.setFont(love.graphics.newFont(20))
+  
 
     -- Create debug shape
     self.x = 0
@@ -46,6 +35,7 @@ function Class.create(options)
     self.axis5 = 0;
 
     self.joy1Angle = 0
+    self.joy2Angle = 0
 
     return self
 end
@@ -80,8 +70,14 @@ function Class:update(dt)
     end
 
     norm =  math.sqrt( self.axis1 * self.axis1 + self.axis2 * self.axis2 )
-    self.joy1Angle = math.atan2(self.axis2, self.axis1)
-    self.joy2Angle = math.atan2(self.axis4, self.axis5)
+    norm2 =  math.sqrt( self.axis4 * self.axis4 + self.axis5 * self.axis5 )
+    if (norm > 0.5) then
+        self.joy1Angle = math.atan2(self.axis2, self.axis1)
+    end
+
+    if (norm2 > 0.5) then
+        self.joy2Angle = math.atan2(self.axis4, self.axis5)
+    end
 
 end
 
@@ -90,35 +86,15 @@ function Class:draw()
     if (not love.joystick.isOpen(1)) then
         return
     end
-    
-    love.graphics.push()
-    
-    -- Apply virtual resolution before rendering anything
-    love.graphics.scale(self.virtualScaleFactor, self.virtualScaleFactor)
-    
-    -- Apply camera zoom
-    love.graphics.scale(self.zoom, self.zoom)
-    
-    -- Move to camera position
-    love.graphics.translate(
-        (self.virtualScreenHeight * 0.5 / self.zoom) * self.screenRatio - self.camera.x,
-        (self.virtualScreenHeight * 0.5 / self.zoom) - self.camera.y
-    )
-    
-    -- Draw background
-    local screenExtent = vec2(self.virtualScreenHeight * self.screenRatio, self.virtualScreenHeight)
-    local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
     -- Draw scene
     love.graphics.setColor(255, 0, 0)
     love.graphics.print(self.joy1Angle, 0, 0)
+    love.graphics.line(0 , 0, 100*math.cos(self.joy1Angle), 100*math.sin(self.joy1Angle))
     love.graphics.setColor(0, 255, 0)
     love.graphics.print(self.joy2Angle, 0, 30)
-        
-    -- Reset camera transform before hud drawing
-    love.graphics.pop()
+    love.graphics.line(0 , 0, 100*math.cos(self.joy2Angle), 100*math.sin(self.joy2Angle))
 
-    -- Draw HUD
-    --love.graphics.setColor(255, 0, 255)
-    --love.graphics.print(self.axis1, 0, 0)
+
+
 end
