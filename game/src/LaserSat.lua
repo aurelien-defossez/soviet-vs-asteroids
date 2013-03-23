@@ -87,13 +87,10 @@ function Class:draw()
         love.graphics.line(self.pos.x + offset.x , self.pos.y + offset. y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y )
     end
 
-    if not self.debug then
-        return
+    if self.debug then
+        -- love.graphics.setLineWidth(3);
+        -- love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.displayAngle), self.pos.y + 20 * math.sin( -self.displayAngle) )
     end
-
-    love.graphics.setLineWidth(3);
-    --love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.displayAngle), self.pos.y + 20 * math.sin( -self.displayAngle) )
-    --love.graphics.print("Debug : " ..self.debugText, 200, 200)
 end
 
 function Class:inFrontOf(fireAngle)

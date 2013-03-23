@@ -29,6 +29,8 @@ function Class.create(options)
     self.missiles = {}
     self.asteroids = {}
     self.dLastSpawn = 0
+    
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
     return self
 end
