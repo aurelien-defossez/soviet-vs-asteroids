@@ -20,7 +20,7 @@ require("lib.math.vec2")
 require("lib.math.aabb")
 require("src.Config")
 require("src.Station")
-require("src.PadControler")
+require("src.PadController")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -48,7 +48,7 @@ function Class.create(options)
     self.radius = 32
 
     self.station = Station.create();
-    controler = PadControler.create{ station = self.station}
+    controller = PadController.create{ station = self.station}
 
     return self
 end
@@ -67,7 +67,7 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
     self.station:update(dt)
-    self.controler:update(dt)
+    self.controller:update(dt)
 
 end
 
@@ -93,7 +93,7 @@ function Class:draw()
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
             self.station:draw()
-    self.controler:draw()
+    self.controller:draw()
 
     -- Reset camera transform before hud drawing
     love.graphics.pop()

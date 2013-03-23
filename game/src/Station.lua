@@ -70,3 +70,13 @@ end
 function Class:setLaserSatAngle(angle)
     self.laserAngle = angle
 end
+
+function Class:launchMissile()
+    print("Missile Launched !")
+
+end
+
+function Class:fireLaser()
+    print("Laser Fired !!")
+end
+
