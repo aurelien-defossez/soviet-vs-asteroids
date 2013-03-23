@@ -67,6 +67,6 @@ function Class:setMissileLauncherAngle(angle)
     self.missileAngle = angle
 end
 
-function Class:setLaserLauncherAngle(angle)
+function Class:setLaserSatAngle(angle)
     self.laserAngle = angle
 end

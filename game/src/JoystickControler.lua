@@ -26,10 +26,6 @@ function Class.create(options)
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes  
     self.station = options.station
 
-    -- Create debug shape
-    self.x = 0
-    self.y = 0
-
     self.axis1 = 0
     self.axis2 = 0
     self.axis4 = 0
@@ -59,6 +55,7 @@ function Class:update(dt)
     if (not love.joystick.isOpen(1)) then
         return
     end
+
     -- Joystick
     -- 1 X et 2 Y, left
     -- 3  L2, R2
@@ -79,7 +76,7 @@ function Class:update(dt)
 
     if (norm2 > 0.5) then
         self.joy2Angle = math.atan2(self.axis4, self.axis5)
-        self.station:setLaserLauncherAngle(self.joy2Angle)
+        self.station:setLaserSatAngle(self.joy2Angle)
     end
 
 end
@@ -97,7 +94,5 @@ function Class:draw()
     love.graphics.setColor(0, 255, 0)
     love.graphics.print(self.joy2Angle, 0, 30)
     love.graphics.line(0 , 0, 100*math.cos(self.joy2Angle), 100*math.sin(self.joy2Angle))
-
-
 
 end
