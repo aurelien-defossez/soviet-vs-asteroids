@@ -19,6 +19,11 @@ gameConfig = {
         shapes = true
     },
 
+    music = {
+        music_path="assets/audio/intro_music.ogg",
+        music_volume=1
+    },
+
     asteroidBeltDistance = 1080,
 
     asteroidSpawnEvery = 1

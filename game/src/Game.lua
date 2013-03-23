@@ -20,6 +20,7 @@ require("src.Config")
 require("src.Station")
 require("src.PadController")
 require("src.KeyboardControler")
+require("src.SoundManager")
 require("src.Asteroid")
 require("src.Space")
 
@@ -58,7 +59,8 @@ function Class.create(options)
         }
     end
 
-    self.station.space = self.space
+    SoundManager.setup()
+    SoundManager.startMusic()
 
     return self
 end
