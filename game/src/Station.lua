@@ -129,7 +129,7 @@ function Class:findClosestAsteroid(angle, width)
     local minDistchecker = - 1
     for _, asteroid in pairs(self.space.asteroids) do
         minDistchecker = math.abs(asteroid:distanceWithLine(angle))       
-        if ((minDistchecker < minDist or minDist == -1)  and minDistchecker < width ) then
+        if ((minDistchecker < minDist or minDist == -1)  and minDistchecker < width and not asteroid.exploded ) then
             
             minDist = minDistchecker
             closestAsteroid = asteroid
@@ -140,5 +140,11 @@ function Class:findClosestAsteroid(angle, width)
 end
 
 
-
+-- Set the current mode of the game
+--
+-- Parameters
+--  mode: "game" or "upgrade" mode
+function Class:setMode(mode)
+    self.mode = mode
+end
 
