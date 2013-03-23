@@ -17,6 +17,7 @@ Class.__index = Class
 require("src.Missile")
 require("src.LaserSat")
 require("src.SoundManager")
+require("src.utils")
 
 local sin = math.sin
 local cos = math.cos
@@ -35,7 +36,6 @@ function Class.create(options)
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
     self.radius = 100
-
     self.laserSats = {}
     self.missileArmLength = 100
     self.laserStationOrbit = 100
@@ -44,7 +44,7 @@ function Class.create(options)
     self.laserAlreadyFiring = false
     self.score = 0
     self.coins = 0
-    self.life = 100
+    self.life = gameConfig.station.maxLife
     self.shieldRotation = 0
     self.boundingCircle = circle(vec2(0, 0), self.radius)
 
@@ -150,6 +150,8 @@ function Class:update(dt)
             self.isLaserFiring = false
         end
     end
+
+    self.shieldRotation = self.shieldRotation + dt * .05
 end
 
 -- Draw the game
@@ -187,6 +189,12 @@ function Class:draw()
         local offset = vec2(73, 15):rotateRad(-self.missileAngle)
         love.graphics.draw(self.missileArmBack, offset.x, offset.y, -self.missileAngle - math.pi, .35, .35)
     end
+
+    -- Compute shield color
+    local lifePercentage = (self.life / gameConfig.station.maxLife)
+    local shieldColor = interpolateColorScheme(lifePercentage)
+
+    love.graphics.setColor(shieldColor[1], shieldColor[2], shieldColor[3])
 
     -- Draw shield
     local shieldOffset = vec2(-102, -102):rotateRad(self.shieldRotation)

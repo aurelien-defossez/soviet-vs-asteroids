@@ -23,6 +23,10 @@ gameConfig = {
         numberPoint = 100
     },
 
+    station = {
+        maxLife = 100
+    },
+
     controls = {
         default = "joystick", -- joystick, keyboard, mouse
         force = nil, -- joystick, keyboard, mouse
