@@ -15,12 +15,15 @@ local Sprite = require("lib.Sprite")
 -----------------------------------------------------------------------------------------
 -- Class attributes
 -----------------------------------------------------------------------------------------
+
 local spriteSheet = love.graphics.newImage("assets/graphics/lasersat.png")
 
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
+
 require("src.SoundManager")
+
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -47,10 +50,8 @@ function Class.create(options)
         spriteSheet = spriteSheet,
         frameCount = 1,
         frameRate = 10000,
-        scale = 0.5
+        scale = 0.3
     }
-
-
 
     return self
 end
@@ -78,10 +79,13 @@ end
 function Class:draw()
     love.graphics.setColor(255,255,255)
     self.sprite.angle = self.displayAngle
-    self.sprite.pos = self.pos + vec2(-48, -32):rotateRad(-self.displayAngle)
+    self.pos = gameConfig.station.shieldOffset
+        + vec2(math.cos(self.displayAngle), math.sin(-self.displayAngle))
+        * gameConfig.station.radius * gameConfig.laserSat.offOrbitRatio
+    self.sprite.pos = self.pos + vec2(-18, -18):rotateRad(-self.displayAngle)
     self.sprite:draw()
    
-    if(self.isFiring and not( self.targetAsteroid == nil)) then
+    if (self.isFiring and not( self.targetAsteroid == nil)) then
         love.graphics.setColor(255, 0, 0)
         local offset = vec2(15, 0):rotateRad(-self.displayAngle)
         love.graphics.line(self.pos.x + offset.x , self.pos.y + offset. y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y )
