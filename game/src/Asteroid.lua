@@ -9,6 +9,7 @@ local sprites = {
     love.graphics.newImage("assets/graphics/asteroid_2.png"),
     love.graphics.newImage("assets/graphics/asteroid_3.png")
 }
+local baseRadius = gameConfig.asteroidBaseRadius
 
 function Class.create( options )
     -- Create object
@@ -41,15 +42,15 @@ function Class.create( options )
         self.speed1d * math.sin( self.dir )
     )
 
-    self.radius = options.radius or 10
+    self.radius = options.radius or baseRadius
 
-    --self.color = options.color or { 255, 0, 255 }
+    self.color = options.color or { 255, 255, 255 }
 
     self.boundingCircle = circle(self.pos, self.radius)
 
     self.splitted = options.splitted or 0
 
-    self.sprite = sprites[ 1 or math.floor( math.random() * 3 + 1 ) ]
+    self.sprite = sprites[ math.floor( math.random() * 3 + 1 ) ]
 
     return self
 end
@@ -60,8 +61,8 @@ function Class:explode()
     game.station:asteroidKilled(1, dist)
     
 
-    -- darken color for debugging purpose
-    --self.color = {64, 0, 64}
+    -- red color for debugging purpose
+    self.color = {255, 0, 0}
 end
 
 function Class:hit()
@@ -90,7 +91,15 @@ function Class:update(dt)
 end
 
 function Class:draw()
-    love.graphics.draw( self.sprite, self.pos.x, self.pos.y, 0, 1, 1, 32, 32 )
+
+    love.graphics.setColor( unpack(self.color) )
+    love.graphics.draw(
+        self.sprite,
+        self.pos.x, self.pos.y,
+        0,
+        self.radius / baseRadius, self.radius / baseRadius,
+        baseRadius, baseRadius
+    )
 end
 
 function Class:isOffscreen()
