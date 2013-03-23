@@ -37,6 +37,7 @@ function Class.create(options)
 
     self.radius = gameConfig.station.radius
     self.laserSats = {}
+    self.drones = {}
     self.missileArmLength = 100
     self.laserStationOrbit = 100
     self.missileAngle = 0
@@ -132,6 +133,10 @@ function Class:addLaserSat(laserSat)
     table.insert(self.laserSats, laserSat)
 end
 
+function Class:addDrone(drone)
+    table.insert(self.drones, drone)
+end
+
 -- Update the station
 --
 -- Parameters:
@@ -147,6 +152,10 @@ function Class:update(dt)
         if (laserSat.isFiring) then
             numberLaserFiring = numberLaserFiring + 1
         end
+    end
+
+    for _, drone in pairs(self.drones) do
+        drone:update(dt)
     end
 
     if (numberLaserFiring > 0) then
@@ -204,6 +213,10 @@ function Class:draw()
     -- Draw shield
     local rotationOffset = vec2(-90, -90):rotateRad(self.shieldRotation) + self.boundingCircle.center
     love.graphics.draw(self.shield, rotationOffset.x, rotationOffset.y, self.shieldRotation, .35, .35)
+
+    for _, drone in pairs(self.drones) do
+        drone:draw()
+    end
 
     -- Draw laser sats
     for _, laserSat in pairs(self.laserSats) do

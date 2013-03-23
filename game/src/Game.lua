@@ -28,6 +28,7 @@ require("src.Asteroid")
 require("src.Space")
 require("src.LaserSat")
 require("src.MenusManager")
+require("src.Drone")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -65,6 +66,8 @@ function Class.create(options)
     self.station:addLaserSat( LaserSat.create{ angle = math.pi / 2 } )
     self.station:addLaserSat( LaserSat.create{ angle = 0 } )
     self.station:addLaserSat( LaserSat.create{ angle = math.pi } )
+
+    self.station:addDrone( Drone.create{ angle = math.pi / 2 } )
 
     -- Create the input controller
     if (
