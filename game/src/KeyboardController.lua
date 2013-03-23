@@ -32,6 +32,19 @@ function Class.create(options)
                 self.game:setMode("game")
             end
         end
+
+        if key == "escape" and self.mode == "upgrade" then
+            self.game:setMenu("upgrade")
+        end
+
+        -- Go to pause menu
+        if key == "p" or key == "escape" then
+            if self.mode == "menu" then
+                self.game:setMode("game")
+            elseif self.mode == "game" then
+                self.game:setMenu("pause")
+            end
+        end
     end
 
     return self
