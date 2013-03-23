@@ -20,7 +20,7 @@ require("lib.math.vec2")
 require("lib.math.aabb")
 require("src.Config")
 require("src.Station")
-require("src.JoystickControler")
+require("src.PadControler")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -48,7 +48,7 @@ function Class.create(options)
     self.radius = 32
 
     self.station = Station.create();
-    controler = JoystickControler.create{ station = self.station}
+    controler = PadControler.create{ station = self.station}
 
     return self
 end
