@@ -42,8 +42,6 @@ function Class.create(options)
     self.camera = vec2(0, 0)
     self.zoom = 1.0
 
-    self.upgradeMode = true
-
     -- Set font
     love.graphics.setFont(love.graphics.newFont(20))
 
