@@ -153,8 +153,12 @@ function Class:draw()
     love.graphics.pop()
 
     -- Draw HUD
-    --love.graphics.setColor(255, 0, 255)
-    --love.graphics.print(self.axis1, 0, 0)
+
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.print("Score : " ..self.station.score, 10, 10)
+
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.print("Roubles : " ..self.station.coins, 300, 10)
 
 end
 

@@ -152,11 +152,6 @@ end
 
 -- Draw the game
 function Class:draw()
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Score : " ..self.score, 500, -450)
-
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Roubles : " ..self.coins, 300, -450)
 
     -- Reset color
     love.graphics.setColor(255, 255, 255)
@@ -222,9 +217,10 @@ function Class:findClosestAsteroid(angle, width)
     local closestAsteroid = nil
     local minDist = -1
     local minDistchecker = - 1
-    for _, asteroid in pairs(self.space.asteroids) do
-        minDistchecker = math.abs(asteroid:distanceWithLine(angle))
-        if ((minDistchecker < minDist or minDist == -1)  and minDistchecker < width and not asteroid.exploded ) then
+    for _, asteroid in pairs( self.space.asteroids ) do
+        minDistchecker = math.abs( asteroid:distanceWithLine( angle ))
+        norm = math.sqrt(math.pow( asteroid.pos.x, 2 ) + math.pow( asteroid.pos.y, 2 ))
+        if ((minDistchecker < minDist or minDist == -1)  and minDistchecker < width and not asteroid.exploded and norm < gameConfig.laser.maxRange ) then
             minDist = minDistchecker
             closestAsteroid = asteroid
         end
@@ -243,9 +239,9 @@ function Class:setMode(mode)
 end
 
 function Class:asteroidKilled(size, distance)
-    maxRange = 800
-    self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint *(distance / 1600) + 0.5)
-    self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint *(distance / 1600) + 0.5)
+    maxRange = gameConfig.laser.maxRange
+    self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * (distance / ( 2 * maxRange )) + 0.5)
+    self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * (distance / ( 2 * maxRange )) + 0.5)
     
 end
 

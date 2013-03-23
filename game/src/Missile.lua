@@ -70,8 +70,6 @@ end
 function Class:explode()
     self.exploded = true
 
-    -- darken color, for debugging purpose
-    self.color = {10, 10, 64}
 end
 
 -- Update the missile
@@ -87,8 +85,7 @@ end
 
 -- Draw the game
 function Class:draw()
-    love.graphics.setColor( unpack( self.color ) )
-
+    love.graphics.setColor(255 ,255 ,255 )
     -- Position sprite
     self.sprite.pos = self.pos + vec2(-96, -32):rotateRad(-self.angle)
     self.sprite:draw()
