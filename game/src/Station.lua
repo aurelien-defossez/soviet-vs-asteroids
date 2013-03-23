@@ -30,7 +30,7 @@ function Class.create(options)
     self = {}
     setmetatable(self, Class)
 
-    self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes
     self.radius = 100
 
     self.laserSats = {}
@@ -39,7 +39,11 @@ function Class.create(options)
     self.missileAngle = 0
     self.laserAngle = 0
 
-    self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
+    -- Missiles cooldown
+    self.lastSentMissileTime = - gameConfig.missiles.cooldown -- so we can shoot right away
+    self.missileCoolDownTime = gameConfig.missiles.cooldown
+
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
     return self
 end
@@ -56,6 +60,15 @@ end
 -----------------------------------------------------------------------------------------
 
 function Class:launchMissile()
+    -- Verify the cooldown
+    if (self.lastSentMissileTime + self.missileCoolDownTime > love.timer.getTime()) then
+        -- don't send the missile
+        return
+    end
+
+    self.lastSentMissileTime = love.timer.getTime()
+
+    -- Send the missile
     self.space:addMissile(Missile.create{
         x = self.missileArmLength * math.cos(-self.missileAngle),
         y = self.missileArmLength * math.sin(-self.missileAngle),
@@ -63,7 +76,7 @@ function Class:launchMissile()
         speed = 10
     })
 end
-    
+
 function Class:fireLaser()
 
 

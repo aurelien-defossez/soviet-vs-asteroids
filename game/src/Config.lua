@@ -8,6 +8,11 @@ gameConfig = {
         maxVirtualHeight = 4000
     },
 
+    missiles = {
+        cooldown = 0.3, -- in seconds
+        deleteDistance = 1080, -- in pixels
+    },
+
     -- Debug options
     debug = {
         all = false,
