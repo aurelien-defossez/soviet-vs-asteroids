@@ -9,7 +9,6 @@ local sprites = {
     love.graphics.newImage("assets/graphics/asteroid_2.png"),
     love.graphics.newImage("assets/graphics/asteroid_3.png")
 }
-local explosion = love.graphics.newImage("assets/graphics/explosion.png")
 local baseRadius = gameConfig.asteroid.baseRadius
 
 function Class.create( options )
