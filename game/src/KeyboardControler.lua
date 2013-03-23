@@ -59,6 +59,11 @@ function Class:update(dt)
         self.station:setLaserSatAngle(self.station.laserAngle + deltaRad)
     end
 
+    -- I’M A’ FIRIN’ MAH LAZER!!
+    if (love.keyboard.isDown("rctrl")) then
+        self.station:fireLaser()
+    end
+
     -- Control the missiles launcher
     if (love.keyboard.isDown("a")) then
         self.station:setMissileLauncherAngle(self.station.missileAngle - deltaRad)
@@ -66,6 +71,11 @@ function Class:update(dt)
 
     if (love.keyboard.isDown("d")) then
         self.station:setMissileLauncherAngle(self.station.missileAngle + deltaRad)
+    end
+
+    -- SHOOP DA WHOOP!!!!
+    if (love.keyboard.isDown(" ")) then
+        self.station:launchMissile()
     end
 end
 
