@@ -61,9 +61,14 @@ function Class.create(options)
 
     self.station.space = self.space
     self.station:addLaserSat( LaserSat.create{ position = vec2(0,100), angle = -1.57 } )
-    self.station:addLaserSat( LaserSat.create{ position = vec2(0,-100), angle = 1.57 } )
-    self.station:addLaserSat( LaserSat.create{ position = vec2(100,0), angle = 0 } )
-    self.station:addLaserSat( LaserSat.create{ position = vec2(-100,0), angle = 3.14 } )
+--    self.station:addLaserSat( LaserSat.create{ position = vec2(0,-100), angle = 1.57 } )
+--    self.station:addLaserSat( LaserSat.create{ position = vec2(100,0), angle = 0 } )
+--    self.station:addLaserSat( LaserSat.create{ position = vec2(-100,0), angle = 3.14 } )
+
+--    self.station:addLaserSat( LaserSat.create{ position = vec2(50,50), angle = -0.785 } )
+--    self.station:addLaserSat( LaserSat.create{ position = vec2(50,-50), angle = 0.785 } )
+--    self.station:addLaserSat( LaserSat.create{ position = vec2(-50,50), angle = -2.35 } )
+--    self.station:addLaserSat( LaserSat.create{ position = vec2(-50,-50), angle = 2.35 } )
 
     return self
 end

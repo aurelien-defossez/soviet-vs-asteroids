@@ -104,8 +104,8 @@ function Class:draw()
     love.graphics.setColor(0, 255, 0)
     love.graphics.circle('fill', self.radius * math.cos( -self.laserAngle ), self.radius * math.sin( -self.laserAngle ), 10, 32)
 
-    love.graphics.setColor(255,255,0)
-    love.graphics.print("Button :" .. self.buttonPressed, -200, -200)
+    --love.graphics.setColor(255,255,0)
+    --love.graphics.print("Button :" .. self.buttonPressed, -200, -200)
 
     for _, laserSat in pairs(self.laserSats) do
         laserSat:draw()

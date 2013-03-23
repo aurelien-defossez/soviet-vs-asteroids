@@ -27,6 +27,7 @@ function Class.create(options)
     -- Initialize attributes
     self.pos = options.position
     self.angle = options.angle
+    self.shiftedAngle = 0
     self.fireAngle = 0
     self.isFiring = false
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
@@ -61,6 +62,9 @@ function Class:draw()
     love.graphics.setLineWidth(3);
     love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.angle), self.pos.y + 20 * math.sin( -self.angle) )
 
+    love.graphics.setColor(0, 255, 0)
+    love.graphics.print(self.shiftedAngle, 0, 100)
+
     if(self.isFiring) then
         love.graphics.setColor(255, 127, 0)
         love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 2000 * math.cos( -self.fireAngle), self.pos.y + 2000 * math.sin( -self.fireAngle) )
@@ -69,6 +73,19 @@ end
 
 function Class:fire(angle)
     self.fireAngle = angle
-    self.isFiring = true
+    self.shiftedAngle = self.fireAngle - self.angle
+
+    if (self.shiftedAngle < -4.71) then
+        self.shiftedAngle = 1 + self.shiftedAngle + 4.71
+    end
+
+    if (self.shiftedAngle > 4.71) then
+        self.shiftedAngle =  self.shiftedAngle - 4.71
+    end
+
+    if ( self.shiftedAngle > -1.57 and self.shiftedAngle < 1.57 ) then
+        self.isFiring = true
+    end
+
 
 end
