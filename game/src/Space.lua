@@ -158,7 +158,7 @@ function Class:splitAsteroid( asteroid )
         asteroid = self.asteroids[ asteroid ]
     end
 
-    print( asteroid, "will split" )
+    --print( asteroid, "will split" )
 
     self:addAsteroid({
         pos = vec2( asteroid.pos.x, asteroid.pos.y ),
