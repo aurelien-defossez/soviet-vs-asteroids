@@ -2,11 +2,11 @@
 --
 -- Station.lua
 --
--- The joystickControler class.
+-- The padController class.
 --
 -----------------------------------------------------------------------------------------
-module("JoystickControler", package.seeall)
-local Class = JoystickControler
+module("PadController", package.seeall)
+local Class = PadController
 Class.__index = Class
 local sin = math.sin
 local cos = math.cos
@@ -17,7 +17,7 @@ local cos = math.cos
 require("src.Config")
 require("src.Station")
 
--- Create the joystickControler
+-- Create the padController
 function Class.create(options)
     -- Create object
     self = {}
@@ -33,11 +33,12 @@ function Class.create(options)
 
     self.joy1Angle = 0
     self.joy2Angle = 0
+    self.buttonPressed = ""
 
     return self
 end
 
--- Destroy the joystickControler
+-- Destroy the padController
 function Class:destroy()
 end
 
@@ -45,7 +46,7 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
--- Update the joystickControler
+-- Update the padController
 --
 -- Parameters:
 --  dt: The time in seconds since last frame
@@ -95,4 +96,20 @@ function Class:draw()
     love.graphics.print(self.joy2Angle, 0, 30)
     love.graphics.line(0 , 0, 100*math.cos(self.joy2Angle), 100*math.sin(self.joy2Angle))
 
+
+
+end
+
+-----------------------------------------------------------------------------------------
+-- Callbacks
+-----------------------------------------------------------------------------------------
+function love.joystickpressed( joystick, button )
+
+    if (button == 5) then
+        self.station:launchMissile()
+    end
+
+    if (button == 6 or button == 7) then
+        self.station:fireLaser()
+    end
 end

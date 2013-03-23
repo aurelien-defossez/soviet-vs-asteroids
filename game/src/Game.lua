@@ -9,9 +9,6 @@ module("Game", package.seeall)
 local Class = Game
 Class.__index = Class
 
-local joystick1Position = 0;
-local joystick2Position = 0;
-
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
@@ -21,8 +18,9 @@ require("lib.math.aabb")
 require("lib.json.json")
 require("src.Config")
 require("src.Station")
+require("src.PadController")
 require("src.Asteroid")
-require("src.JoystickControler")
+require("src.Space")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -44,15 +42,16 @@ function Class.create(options)
     -- Set font
     love.graphics.setFont(love.graphics.newFont(20))
 
-    -- Create debug shape
-    self.x = 0
-    self.y = 0
-    self.radius = 32
+    -- Initialize attributes
+    self.station = Station.create()
+    self.space = Space.create{
+        station = self.station
+    }
+    self.controller = PadController.create{
+        station = self.station
+    }
 
-    self.station = Station.create();
-    controler = JoystickControler.create{ station = self.station}
-
-    --self.asteroids = Table.create()
+    self.station.space = self.space
 
     return self
 end
@@ -71,45 +70,34 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
     self.station:update(dt)
-    self.controler:update(dt)
-
-    --for _, asteroid in pairs( self.asteroids ) do
-    --    asteroid:update()
-    --end
-
-    --if math.random() * ( dt / 0.01666 ) > gameConfig.asteroidSpawnProbability then
-    --    self.asteroids.push( Asteroid.create() )
-    --end
-
+    self.space:update(dt)
+    self.controller:update(dt)
 end
 
 -- Draw the game
 function Class:draw()
 
     love.graphics.push()
-    
+
     -- Apply virtual resolution before rendering anything
     love.graphics.scale(self.virtualScaleFactor, self.virtualScaleFactor)
-    
+
     -- Apply camera zoom
     love.graphics.scale(self.zoom, self.zoom)
-    
+
     -- Move to camera position
     love.graphics.translate(
         (self.virtualScreenHeight * 0.5 / self.zoom) * self.screenRatio - self.camera.x,
         (self.virtualScreenHeight * 0.5 / self.zoom) - self.camera.y
     )
-    
+
     -- Draw background
     local screenExtent = vec2(self.virtualScreenHeight * self.screenRatio, self.virtualScreenHeight)
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
     self.station:draw()
-    self.controler:draw()
-
-    --for _, asteroid in pairs( self.asteroids ) do
-    --    asteroid:draw()
-    --end
+    self.space:draw()
+    self.controller:draw()
 
     -- Reset camera transform before hud drawing
     love.graphics.pop()
