@@ -15,6 +15,8 @@ Class.__index = Class
 -----------------------------------------------------------------------------------------
 
 require("src.Missile")
+require("src.LaserSat")
+
 local sin = math.sin
 local cos = math.cos
 
@@ -32,12 +34,11 @@ function Class.create(options)
     self.buttonPressed = ""
     self.radius = 100
 
-
+    self.laserSats = {}
     self.missileArmLength = 100
     self.laserStationOrbit = 100
     self.missileAngle = 0
     self.laserAngle = 0
-    self.missiles = {}
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
 
@@ -46,8 +47,8 @@ end
 
 -- Destroy the station
 function Class:destroy()
-    for _, missile in pairs(self.missiles) do
-        missile:destroy()
+    for _, laserSat in pairs(self.laserSats) do
+        laserSat:destroy()
     end
 end
 
@@ -57,8 +58,8 @@ end
 
 function Class:launchMissile()
     self.space:addMissile(Missile.create{
-        x = self.missileArmLength * math.cos( -self.missileAngle) ,
-        y = self.missileArmLength * math.sin( -self.missileAngle),
+        x = self.missileArmLength * math.cos(-self.missileAngle),
+        y = self.missileArmLength * math.sin(-self.missileAngle),
         angle = self.missileAngle,
         speed = 10
     })
@@ -71,12 +72,18 @@ function Class:fireLaser()
     self.buttonPressed = "Laser !"
 end
 
+function Class:addLaserSat(laserSat)
+    table.insert(self.laserSats, laserSat)
+end
+
 -- Update the station
 --
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-  
+    for _, laserSat in pairs(self.laserSats) do
+        laserSat:update(dt)
+    end
 end
 
 -- Draw the game
@@ -97,6 +104,9 @@ function Class:draw()
     love.graphics.setColor(255,255,0)
     love.graphics.print("Button :" .. self.buttonPressed, -200, -200)
 
+    for _, laserSat in pairs(self.laserSats) do
+        laserSat:draw()
+    end
 end
 
 function Class:setMissileLauncherAngle(angle)
