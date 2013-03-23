@@ -3,7 +3,7 @@ local Class = Asteroid
 Class.__index = Class
 
 require("lib.math.circle")
-
+require("SoundManager")
 local sprites = {
     love.graphics.newImage("assets/graphics/asteroid_1.png"),
     love.graphics.newImage("assets/graphics/asteroid_2.png"),
@@ -78,6 +78,8 @@ function Class:explode()
     self.exploded = true
     dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
     game.station:asteroidKilled(1, dist)
+
+    SoundManager.explosion()
 end
 
 function Class:hit()

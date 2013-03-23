@@ -29,6 +29,14 @@ function Class.create(options)
         station = self.station
     }
 
+    function love.mousereleased(x, y, button)
+        if button == "l" or button == "r" then
+            if self.mode == "menu" then
+                self.game.menus:enterSelected()
+            end
+        end
+    end
+
     return self
 end
 
@@ -46,29 +54,34 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
     mouse = vec2(love.mouse.getPosition())
-    mouse = mouse / self.game.virtualScaleFactor / self.game.zoom
-    mouse = mouse - self.game.translateVector
 
-    deltaRad = - math.atan2(mouse.y, mouse.x)
+    if self.mode == "menu" then
+        self.game.menus:selectButtonIn(mouse.x, mouse.y)
+    elseif self.mode == "game" then
+        mouse = mouse / self.game.virtualScaleFactor / self.game.zoom
+        mouse = mouse - self.game.translateVector
 
-    if gameConfig.controls.mouse.controls == "lasers" then
-        self.station:setLaserSatAngle(deltaRad)
+        deltaRad = - math.atan2(mouse.y, mouse.x)
 
-        if self.mode == "game" then
-            if love.mouse.isDown("l", "r") then
-                self.station:fireLaser()
+        if gameConfig.controls.mouse.controls == "lasers" then
+            self.station:setLaserSatAngle(deltaRad)
+
+            if self.mode == "game" then
+                if love.mouse.isDown("l", "r") then
+                    self.station:fireLaser()
+                end
             end
-        end
-    elseif gameConfig.controls.mouse.controls == "missiles" then
-        self.station:setMissileLauncherAngle(deltaRad)
+        elseif gameConfig.controls.mouse.controls == "missiles" then
+            self.station:setMissileLauncherAngle(deltaRad)
 
-        if self.mode == "game" then
-            if love.mouse.isDown("l", "r") then
-                self.station:launchMissile()
+            if self.mode == "game" then
+                if love.mouse.isDown("l", "r") then
+                    self.station:launchMissile()
+                end
             end
+        else
+            print("MouseController says: I don't know what a " .. gameConfig.controls.mouse.controls .. " is")
         end
-    else
-        print("MouseController says: I don't know what a " .. gameConfig.controls.mouse.controls .. " is")
     end
 
     -- we can't control both lasers and missiles with a single mouse,
