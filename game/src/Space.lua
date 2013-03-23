@@ -89,7 +89,7 @@ function Class:update(dt)
         end
 
         -- and split them randomly for debug purpose
-        if math.random() > 0.999 then
+        if math.random() > 0.995 then
             self:splitAsteroid( i )
         end
     end
