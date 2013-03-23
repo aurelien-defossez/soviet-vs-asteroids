@@ -39,7 +39,7 @@ function Class.create(options)
     -- Create object
     self = {}
     setmetatable(self, Class)
-    Game=self
+    game=self
 
     -- Set virtual viewport
     self.virtualScreenHeight = gameConfig.camera.minVirtualHeight
@@ -94,6 +94,7 @@ function Class.create(options)
 
     SoundManager.setup()
     SoundManager.startMusic()
+    SoundManager.setNoSound()
 
     return self
 end

@@ -16,7 +16,7 @@ gameConfig = {
     },
 
     missiles = {
-        cooldown = 0.3, -- in seconds
+        cooldown = 1, -- in seconds
         deleteDistance = 1080, -- in pixels
     },
 
@@ -46,7 +46,7 @@ gameConfig = {
     },
 
     missile = {
-        speed = 6
+        speed = 8
     },
 
     controls = {

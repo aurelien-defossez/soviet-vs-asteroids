@@ -171,7 +171,7 @@ function Class:splitAsteroid( asteroid )
 
     self:addAsteroid({
         pos = vec2( asteroid.pos.x, asteroid.pos.y ),
-        dir = asteroid.dir + math.pi / 16,
+        dir = asteroid.dir + math.pi / 4,
         speed1d = asteroid.speed1d,
         radius = asteroid.radius / 2,
         color = { unpack(asteroid.color) }
@@ -179,7 +179,7 @@ function Class:splitAsteroid( asteroid )
 
     self:addAsteroid({
         pos = vec2( asteroid.pos.x, asteroid.pos.y ),
-        dir = asteroid.dir - math.pi / 16,
+        dir = asteroid.dir - math.pi / 4,
         speed1d = asteroid.speed1d,
         radius = asteroid.radius / 2,
         color = { unpack(asteroid.color) }
