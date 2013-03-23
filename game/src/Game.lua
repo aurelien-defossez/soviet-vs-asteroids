@@ -19,13 +19,9 @@ require("lib.json.json")
 require("src.Config")
 require("src.Station")
 require("src.PadController")
-<<<<<<< HEAD
 require("src.KeyboardControler")
-require("src.SoundManager")
-=======
-require("src.KeyboardController")
 require("src.MouseController")
->>>>>>> e3daa329f10f6b9564b3924ae277f9267d2d9982
+require("src.SoundManager")
 require("src.Asteroid")
 require("src.Space")
 
@@ -79,7 +75,7 @@ function Class.create(options)
     end
     
     self:computeTranslateVector()
-    
+
     SoundManager.setup()
     SoundManager.startMusic()
 
