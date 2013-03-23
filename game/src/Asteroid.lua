@@ -9,6 +9,7 @@ local sprites = {
     love.graphics.newImage("assets/graphics/asteroid_2.png"),
     love.graphics.newImage("assets/graphics/asteroid_3.png")
 }
+local explosion = love.graphics.newImage("assets/graphics/explosion.png")
 local baseRadius = gameConfig.asteroid.baseRadius
 
 function Class.create( options )
@@ -17,6 +18,7 @@ function Class.create( options )
     setmetatable(self, Class)
 
     self.space = options.space
+    self.index = options.index
     self.exploded = false
 
     -- Determine random position
@@ -76,9 +78,6 @@ function Class:explode()
     self.exploded = true
     dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
     game.station:asteroidKilled(1, dist)
-
-    -- green color for debugging purpose
-    self.color = {0, 255, 0}
 end
 
 function Class:hit()
@@ -92,9 +91,10 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
 
-    if not self.exploded and self.life <= 0 then
+    if self.life <= 0 then
         self.space:splitAsteroid( self )
         self:explode()
+        self.space:removeAsteroid( self.index )
     end
 
     self.pos = self.pos + self.speed * dt

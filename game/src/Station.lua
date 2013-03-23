@@ -162,7 +162,7 @@ function Class:draw()
     love.graphics.draw(self.platform, -52, 0, 0, .35, .35)
 
     -- Draw laser arm
-     if math.abs(self.laserAngle) < halfPi then
+    if math.abs(self.laserAngle) < halfPi then
         local offset = vec2(-2, -19):rotateRad(-self.laserAngle) + vec2(16, 0)
         love.graphics.draw(self.laserArmFront, offset.x, offset.y, -self.laserAngle, .35, .35)
     else

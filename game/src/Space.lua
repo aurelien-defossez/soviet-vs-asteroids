@@ -61,10 +61,18 @@ function Class:addAsteroid( options )
     end
 
     options.space = self
+    options.index = #self.asteroids + 1
 
     local asteroid = Asteroid.create( options )
     table.insert( self.asteroids, asteroid )
     return asteroid
+end
+
+function Class:removeAsteroid( i )
+    local asteroid = self.asteroids[i]
+
+    table.remove( self.asteroids, i )
+    asteroid.space = nil;
 end
 
 -- Update the station
@@ -95,6 +103,7 @@ function Class:update(dt)
                     missile:explode()
                     self:splitAsteroid( asteroid )
                     asteroid:explode()
+                    self:removeAsteroid( i )
 
                     -- Stop collision detection for this missile
                     break
@@ -106,7 +115,7 @@ function Class:update(dt)
     for i, asteroid in pairs(self.asteroids) do
         -- exclude exploded asteroid from collision detection
         if not asteroid.exploded and asteroid.boundingCircle:collideCircle(self.station.boundingCircle) then
-            asteroid:explode()
+            self:removeAsteroid( i )
 
             self.station.life = self.station.life - asteroid.radius
         end

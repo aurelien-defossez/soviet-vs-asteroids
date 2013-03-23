@@ -40,8 +40,8 @@ function Class.create(options)
     self.radius = 32
     self.color = {42, 42, 255}
     self.boundingCircle = circle(self.pos, self.radius)
-    
-    self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
+
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
     self.sprite = Sprite.create{
         pos = self.pos,
