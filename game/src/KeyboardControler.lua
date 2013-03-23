@@ -65,7 +65,7 @@ function Class:update(dt)
     end
 
     -- Control the missiles launcher
-    if (love.keyboard.isDown("a")) then
+    if (love.keyboard.isDown("a", "q")) then
         self.station:setMissileLauncherAngle(self.station.missileAngle - deltaRad)
     end
 
