@@ -43,7 +43,8 @@ gameConfig = {
 
 
     laser = {
-        laserWidth =100
+        laserWidth =100,
+        dpsExp = 0.75
     },
 
     music = {

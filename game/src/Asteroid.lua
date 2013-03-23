@@ -59,7 +59,7 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
 
-    self.life = self.life - self.numberSatHit;
+    self.life = self.life - math.pow(self.numberSatHit, gameConfig.laser.dpsExp);
 
     if (self.life <= 0) then
         self:explode()
