@@ -41,7 +41,7 @@ function Class.create(options)
     self.zoom = 1.0
 
     -- Set font
-    love.graphics.setFont(love.graphics.newFont(40))
+    love.graphics.setFont(love.graphics.newFont(20))
 
     -- Create debug shape
     self.x = 0
@@ -70,22 +70,38 @@ function Class:update(dt)
     self.station:update(dt)
     self.controler:update(dt)
 
-    --love.joystick.open(1)
-
-
-    -- self.x = self.x + dt * 10000 * axisDir2 * 100
-   -- self.y = self.y + dt * 10000 * axisDir7 * 100
-    love.graphics.setColor(255, 0, 255)
-    love.graphics.print("Hello world", 200, 100)
-
-    
-
 end
 
 -- Draw the game
 function Class:draw()
-    self.station:draw()
+
+    love.graphics.push()
+    
+    -- Apply virtual resolution before rendering anything
+    love.graphics.scale(self.virtualScaleFactor, self.virtualScaleFactor)
+    
+    -- Apply camera zoom
+    love.graphics.scale(self.zoom, self.zoom)
+    
+    -- Move to camera position
+    love.graphics.translate(
+        (self.virtualScreenHeight * 0.5 / self.zoom) * self.screenRatio - self.camera.x,
+        (self.virtualScreenHeight * 0.5 / self.zoom) - self.camera.y
+    )
+    
+    -- Draw background
+    local screenExtent = vec2(self.virtualScreenHeight * self.screenRatio, self.virtualScreenHeight)
+    local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
+
+            self.station:draw()
     self.controler:draw()
+
+    -- Reset camera transform before hud drawing
+    love.graphics.pop()
+
+    -- Draw HUD
+    --love.graphics.setColor(255, 0, 255)
+    --love.graphics.print(self.axis1, 0, 0)
 
 end
 
