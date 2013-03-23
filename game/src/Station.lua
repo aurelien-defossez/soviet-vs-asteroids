@@ -152,6 +152,8 @@ function Class:update(dt)
     end
 
     self.shieldRotation = self.shieldRotation + dt * .05
+
+    self.life = math.min(self.life + gameConfig.station.shieldRegeneration * dt, 100)
 end
 
 -- Draw the game
@@ -161,7 +163,7 @@ function Class:draw()
 
     love.graphics.setColor(255, 255, 255)
     love.graphics.print("Roubles : " ..self.coins, 300, -450)
-    love.graphics.print("life : " ..self.life, 100, -450)
+    love.graphics.print("life : " ..math.floor(self.life), 100, -450)
 
     -- Reset color
     love.graphics.setColor(255, 255, 255)

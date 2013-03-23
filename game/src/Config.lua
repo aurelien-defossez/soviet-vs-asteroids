@@ -24,7 +24,8 @@ gameConfig = {
     },
 
     station = {
-        maxLife = 100
+        maxLife = 100,
+        shieldRegeneration = .5
     },
 
     controls = {
