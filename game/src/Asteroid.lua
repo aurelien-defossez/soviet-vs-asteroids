@@ -4,6 +4,12 @@ Class.__index = Class
 
 require("lib.math.circle")
 
+local sprites = {
+    love.graphics.newImage("assets/graphics/asteroid_1.png"),
+    love.graphics.newImage("assets/graphics/asteroid_2.png"),
+    love.graphics.newImage("assets/graphics/asteroid_3.png")
+}
+
 function Class.create( options )
     -- Create object
     self = {}
@@ -37,11 +43,13 @@ function Class.create( options )
 
     self.radius = options.radius or 10
 
-    self.color = options.color or { 255, 0, 255 }
+    --self.color = options.color or { 255, 0, 255 }
 
     self.boundingCircle = circle(self.pos, self.radius)
 
     self.splitted = options.splitted or 0
+
+    self.sprite = sprites[ 1 or math.floor( math.random() * 3 + 1 ) ]
 
     return self
 end
@@ -50,7 +58,7 @@ function Class:explode()
     self.exploded = true
 
     -- darken color for debugging purpose
-    self.color = {64, 0, 64}
+    --self.color = {64, 0, 64}
 end
 
 function Class:hit()
@@ -66,7 +74,7 @@ function Class:update(dt)
     self.life = self.life - math.pow(self.numberSatHit, gameConfig.laser.dpsExp);
 
     if self.life <= 0 then
-    	print( self, "will explode" )
+    	--print( self, "will explode" )
         self.space:explodeAsteroid( self )
     end
 
@@ -76,10 +84,7 @@ function Class:update(dt)
 end
 
 function Class:draw()
-    love.graphics.setColor( unpack( self.color ) )
-
-    love.graphics.circle('fill', self.pos.x, self.pos.y, self.radius, 6)
-
+    love.graphics.draw( self.sprite, self.pos.x, self.pos.y, 0, 1, 1, 32, 32 )
 end
 
 function Class:isOffscreen()
