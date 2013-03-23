@@ -37,7 +37,7 @@ function Class.create(options)
     self.pos = options.pos
     self.angle = options.angle
     self.speed = options.speed
-    self.radius = 10
+    self.radius = 32
 
     self.sprite = Sprite.create{
         pos = self.pos,
