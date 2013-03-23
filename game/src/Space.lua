@@ -34,6 +34,13 @@ end
 
 -- Destroy the station
 function Class:destroy()
+    for _, missile in pairs(self.missiles) do
+        missile:destroy()
+    end
+
+    for _, asteroid in pairs(self.asteroids) do
+        asteroid:destroy()
+    end
 end
 
 -----------------------------------------------------------------------------------------
