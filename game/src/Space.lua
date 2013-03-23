@@ -14,6 +14,7 @@ Class.__index = Class
 -- Imports
 -----------------------------------------------------------------------------------------
 
+require("src.SoundManager")
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -109,6 +110,8 @@ function Class:update(dt)
             asteroid:explode()
 
             self.station.life = self.station.life - asteroid.radius
+            SoundManager.explosion()
+            SoundManager.voice()
         end
     end
 
