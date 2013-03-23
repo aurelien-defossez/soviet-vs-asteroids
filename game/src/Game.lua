@@ -19,8 +19,13 @@ require("lib.json.json")
 require("src.Config")
 require("src.Station")
 require("src.PadController")
+<<<<<<< HEAD
 require("src.KeyboardControler")
 require("src.SoundManager")
+=======
+require("src.KeyboardController")
+require("src.MouseController")
+>>>>>>> e3daa329f10f6b9564b3924ae277f9267d2d9982
 require("src.Asteroid")
 require("src.Space")
 
@@ -49,16 +54,32 @@ function Class.create(options)
     self.space = Space.create{
         station = self.station
     }
-    if (love.joystick.isOpen(1)) then
+    self.station.space = self.space
+
+    -- Create the input controller
+    if (
+        gameConfig.controls.default == "joystick" and
+        (
+            love.joystick.isOpen(1) or
+            gameConfig.controls.force == "joystick"
+        )
+    ) then
         self.controller = PadController.create{
             station = self.station
         }
-    else
-        self.controller = KeyboardControler.create{
+    elseif gameConfig.controls.default == "keyboard" then
+        self.controller = KeyboardController.create{
             station = self.station
         }
+    else
+        self.controller = MouseController.create{
+            station = self.station,
+            game = self
+        }
     end
-
+    
+    self:computeTranslateVector()
+    
     SoundManager.setup()
     SoundManager.startMusic()
 
@@ -67,6 +88,14 @@ end
 
 -- Destroy the game
 function Class:destroy()
+end
+
+-- Compute the translate vector for the camera
+function Class:computeTranslateVector()
+    self.translateVector = vec2(
+        (self.virtualScreenHeight * 0.5 / self.zoom) * self.screenRatio - self.camera.x,
+        (self.virtualScreenHeight * 0.5 / self.zoom) - self.camera.y
+    )
 end
 
 -----------------------------------------------------------------------------------------
@@ -78,9 +107,9 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
+    self.controller:update(dt)
     self.station:update(dt)
     self.space:update(dt)
-    self.controller:update(dt)
 end
 
 -- Draw the game
@@ -96,17 +125,17 @@ function Class:draw()
 
     -- Move to camera position
     love.graphics.translate(
-        (self.virtualScreenHeight * 0.5 / self.zoom) * self.screenRatio - self.camera.x,
-        (self.virtualScreenHeight * 0.5 / self.zoom) - self.camera.y
+        self.translateVector.x,
+        self.translateVector.y
     )
 
     -- Draw background
     local screenExtent = vec2(self.virtualScreenHeight * self.screenRatio, self.virtualScreenHeight)
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
+    self.controller:draw()
     self.station:draw()
     self.space:draw()
-    self.controller:draw()
 
     -- Reset camera transform before hud drawing
     love.graphics.pop()
