@@ -35,6 +35,13 @@ end
 
 -- Destroy the station
 function Class:destroy()
+    for _, missile in pairs(self.missiles) do
+        missile:destroy()
+    end
+
+    for _, asteroid in pairs(self.asteroids) do
+        asteroid:destroy()
+    end
 end
 
 -----------------------------------------------------------------------------------------
@@ -69,9 +76,15 @@ function Class:update(dt)
         self.dLastSpawn = 0
     end
 
+    -- kill missiles once they're offscreen
+    for i, missile in pairs(self.missiles) do
+        if missile:isOffscreen() then
+            table.remove( self.missiles, i )
+        end
+    end
     -- kill asteroids once they're offscreen
     for i, asteroid in pairs(self.asteroids) do
-        if asteroid:isOffscreen(dt) then
+        if asteroid:isOffscreen() then
             table.remove( self.asteroids, i )
         end
     end
