@@ -54,28 +54,18 @@ function Class:update(dt)
     if gameConfig.controls.mouse.controls == "lasers" then
         self.station:setLaserSatAngle(deltaRad)
 
-<<<<<<< HEAD
-        if love.mouse.isDown("l", "r") then
-            self.station:fireLaser()
-=======
         if self.mode == "game" then
             if love.mouse.isDown("l", "r") then
                 self.station:fireLaser()
             end
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
         end
     elseif gameConfig.controls.mouse.controls == "missiles" then
         self.station:setMissileLauncherAngle(deltaRad)
 
-<<<<<<< HEAD
-        if love.mouse.isDown("l", "r") then
-            self.station:launchMissile()
-=======
         if self.mode == "game" then
             if love.mouse.isDown("l", "r") then
                 self.station:launchMissile()
             end
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
         end
     else
         print("MouseController says: I don't know what a " .. gameConfig.controls.mouse.controls .. " is")
@@ -89,9 +79,6 @@ end
 -- Draw the game
 function Class:draw()
 end
-<<<<<<< HEAD
-=======
-
 -- Set the current mode of the game
 --
 -- Parameters
@@ -104,4 +91,3 @@ end
 -----------------------------------------------------------------------------------------
 
 return Class
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de

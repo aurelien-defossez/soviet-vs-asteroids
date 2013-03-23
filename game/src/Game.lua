@@ -63,20 +63,6 @@ function Class.create(options)
             gameConfig.controls.force == "joystick"
         )
     ) then
-<<<<<<< HEAD
-        self.controller = PadController.create{
-            station = self.station
-        }
-    elseif gameConfig.controls.default == "keyboard" then
-        self.controller = KeyboardController.create{
-            station = self.station
-        }
-    else
-        self.controller = MouseController.create{
-            station = self.station,
-            game = self
-        }
-    end
 
     self.station.space = self.space
     self.station:addLaserSat( LaserSat.create{ position = vec2(0,100), angle = -1.57 } )
@@ -88,8 +74,7 @@ function Class.create(options)
  --  self.station:addLaserSat( LaserSat.create{ position = vec2(50,-50), angle = 0.785 } )
   -- self.station:addLaserSat( LaserSat.create{ position = vec2(-50,50), angle = -2.35 } )
 --    self.station:addLaserSat( LaserSat.create{ position = vec2(-50,-50), angle = 2.35 } )
-    self:computeTranslateVector()
-=======
+
         ControllerClass = PadController
     elseif gameConfig.controls.default == "keyboard" then
         ControllerClass = KeyboardController
@@ -104,7 +89,6 @@ function Class.create(options)
 
     self:computeTranslateVector()
     self:setMode("game")
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
 
     SoundManager.setup()
     SoundManager.startMusic()

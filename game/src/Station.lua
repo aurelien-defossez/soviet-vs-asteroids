@@ -32,10 +32,7 @@ function Class.create(options)
     setmetatable(self, Class)
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
-<<<<<<< HEAD
-=======
-    self.buttonPressed = ""
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
+
     self.radius = 100
 
     self.laserSats = {}
@@ -50,10 +47,9 @@ function Class.create(options)
     self.missileCoolDownTime = gameConfig.missiles.cooldown
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
-<<<<<<< HEAD
+
     self.debugText = ""
-=======
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
+
 
     return self
 end
@@ -84,10 +80,7 @@ function Class:launchMissile()
         angle = self.missileAngle,
         speed = 10
     })
-<<<<<<< HEAD
-=======
-    self.buttonPressed = "Missile !"
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
+
 end
 
 function Class:fireLaser()
@@ -120,14 +113,12 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-<<<<<<< HEAD
-    local numberLaserFiring = 0
-=======
+
     if self.mode == "upgrade" then
         return
     end
 
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
+    local numberLaserFiring = 0
     for _, laserSat in pairs(self.laserSats) do
         laserSat:update(dt)
         if (laserSat.isFiring) then
@@ -178,7 +169,6 @@ function Class:setLaserSatAngle(angle)
     self.laserAngle = angle
 end
 
-<<<<<<< HEAD
 -- Parameters :
 -- angle : the angle of the ray
 function Class:findClosestAsteroid(angle, width)
@@ -199,9 +189,6 @@ function Class:findClosestAsteroid(angle, width)
 end
 
 
-
-
-=======
 -- Set the current mode of the game
 --
 -- Parameters
@@ -209,4 +196,4 @@ end
 function Class:setMode(mode)
     self.mode = mode
 end
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
+

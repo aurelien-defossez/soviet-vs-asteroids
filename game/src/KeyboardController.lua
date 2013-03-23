@@ -23,8 +23,6 @@ function Class.create(options)
     self.station = options.station
     self.game = options.game
 
-<<<<<<< HEAD:game/src/KeyboardController.lua
-=======
     function love.keypressed(key)
         -- Go to upgrade mode
         if key == "backspace" or key == "tab" then
@@ -36,7 +34,6 @@ function Class.create(options)
         end
     end
 
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de:game/src/KeyboardController.lua
     return self
 end
 
@@ -64,16 +61,7 @@ function Class:update(dt)
         self.station:setLaserSatAngle(self.station.laserAngle + deltaRad)
     end
 
-<<<<<<< HEAD:game/src/KeyboardController.lua
-    -- I’M A’ FIRIN’ MAH LAZER!!
-    if (love.keyboard.isDown("rctrl")) then
-        self.station:fireLaser()
-    else
-        self.station:stopLaser()
-    end
 
-=======
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de:game/src/KeyboardController.lua
     -- Control the missiles launcher
     if (love.keyboard.isDown("a", "q")) then
         self.station:setMissileLauncherAngle(self.station.missileAngle - deltaRad)
@@ -86,7 +74,9 @@ function Class:update(dt)
     if self.mode == "game" then
         -- I’M A’ FIRIN’ MAH LAZER!!
         if (love.keyboard.isDown("rctrl")) then
-            self.station:fireLaser()
+             self.station:fireLaser()
+        else
+            self.station:stopLaser()
         end
 
         -- SHOOP DA WHOOP!!!!

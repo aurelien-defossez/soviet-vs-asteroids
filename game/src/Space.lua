@@ -85,11 +85,7 @@ function Class:update(dt)
             end
         end
     end
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
     -- spawn asteroids every once in a while
     self.dLastSpawn = self.dLastSpawn + dt
     if self.dLastSpawn > gameConfig.asteroidSpawnEvery then
