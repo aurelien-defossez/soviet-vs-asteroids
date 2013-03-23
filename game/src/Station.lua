@@ -21,6 +21,7 @@ function Class.create(options)
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
 
+    self.buttonPressed = ""
     self.radius = 100
     self.missileAngle = 0
     self.laserAngle = 0
@@ -61,6 +62,9 @@ function Class:draw()
     love.graphics.setColor(0, 255, 0)
     love.graphics.circle('fill', self.radius * math.cos(self.laserAngle), self.radius * math.sin(self.laserAngle), 10, 32)
 
+    love.graphics.setColor(255,255,0)
+    love.graphics.print("Button :" .. self.buttonPressed, -200, -200)
+
 end
 
 function Class:setMissileLauncherAngle(angle)
@@ -73,10 +77,12 @@ end
 
 function Class:launchMissile()
     print("Missile Launched !")
+    self.buttonPressed = "Missile !"
 
 end
 
 function Class:fireLaser()
     print("Laser Fired !!")
+    self.buttonPressed = "Laser !"
 end
 

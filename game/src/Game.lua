@@ -21,6 +21,7 @@ require("lib.math.aabb")
 require("src.Config")
 require("src.Station")
 require("src.PadController")
+require("src.Asteroid")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction

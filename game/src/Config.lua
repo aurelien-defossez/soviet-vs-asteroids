@@ -12,5 +12,7 @@ gameConfig = {
     debug = {
         all = false,
         shapes = true
-    }
+    },
+
+    asteroidBeltDistance = 1080
 }

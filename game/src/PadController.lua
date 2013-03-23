@@ -96,8 +96,7 @@ function Class:draw()
     love.graphics.print(self.joy2Angle, 0, 30)
     love.graphics.line(0 , 0, 100*math.cos(self.joy2Angle), 100*math.sin(self.joy2Angle))
 
-    love.graphics.setColor(255,255,0)
-    love.graphics.print("Button :" .. self.buttonPressed, -200, -200)
+
 
 end
 
@@ -107,12 +106,10 @@ end
 function love.joystickpressed( joystick, button )
 
     if (button == 5) then
-        self.buttonPressed = "Missile !"
-        self.station.launchMissile()
+        self.station:launchMissile()
     end
 
     if (button == 6 or button == 7) then
-        self.buttonPressed = "Laser !"
-        self.station.fireLaser()
+        self.station:fireLaser()
     end
 end
