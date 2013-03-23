@@ -91,15 +91,19 @@ local mt = {
 
         -- Rotate the vector around a point (by default its origin)
         rotate = function(self, angle, center)
+           return self:rotateRad(self, angle * PI / 180, center)
+        end,
+
+        -- Rotate the vector around a point (by default its origin), radian mode
+        rotateRad = function(self, angle, center)
             center = center or vec2(0, 0)
 
             -- Translate vector to the center of rotation
             local translated = self - center
 
             -- Rotate
-            local radAngle = angle * PI / 180
-            local cosAngle = cos(radAngle)
-            local sinAngle = sin(radAngle)
+            local cosAngle = cos(angle)
+            local sinAngle = sin(angle)
 
             local rotated = vec2(
                 translated.x * cosAngle - translated.y * sinAngle,
@@ -174,7 +178,8 @@ local mt = {
         draw = function(self, options)
             options = options or {}
 
-            -- TODO!
+            love.graphics.setColor(255, 0, 0)
+            love.graphics.circle('fill', self.x, self.y, 4, 6)
         end
     }
 }

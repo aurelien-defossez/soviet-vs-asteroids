@@ -10,6 +10,8 @@ module("Missile", package.seeall)
 local Class = Missile
 Class.__index = Class
 
+local Sprite = require("lib.Sprite")
+
 -----------------------------------------------------------------------------------------
 -- Class attributes
 -----------------------------------------------------------------------------------------
@@ -17,6 +19,8 @@ Class.__index = Class
 local cos = math.cos
 local sin = math.sin
 local ctId = 0
+local spriteSheet = love.graphics.newImage("assets/graphics/missile.png")
+
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -33,9 +37,18 @@ function Class.create(options)
     self.pos = options.pos
     self.angle = options.angle
     self.speed = options.speed
-    self.radius = 10
+
+    self.radius = 32
     self.color = {42, 42, 255}
     self.boundingCircle = circle(self.pos, self.radius)
+
+    self.sprite = Sprite.create{
+        pos = self.pos,
+        angle = self.angle,
+        spriteSheet = spriteSheet,
+        frameCount = 2,
+        frameRate = 0.1
+    }
 
     ctId = ctId + 1
 
@@ -68,13 +81,20 @@ end
 function Class:update(dt)
     self.pos = self.pos + vec2(self.speed * cos(self.angle), self.speed * -sin(self.angle))
     self.boundingCircle = circle(self.pos, self.radius)
+    self.sprite:udpate(dt)
+
 end
 
 -- Draw the game
 function Class:draw()
     love.graphics.setColor( unpack( self.color ) )
 
-    love.graphics.rectangle('fill', self.pos.x, self.pos.y, 12, 12)
+    -- Position sprite
+    self.sprite.pos = self.pos + vec2(-96, -32):rotateRad(-self.angle)
+    self.sprite:draw()
+
+    self.pos:draw()
+    self.boundingCircle:draw()
 end
 
 function Class:isOffscreen()

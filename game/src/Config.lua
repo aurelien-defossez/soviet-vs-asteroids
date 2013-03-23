@@ -1,6 +1,11 @@
 gameConfig = {
     virtualScreenHeight = 1080,
 
+    screen = {
+        width = 1024,
+        height = 768
+    },
+
     -- Camera
     camera = {
         -- defined around 1080px
@@ -32,8 +37,18 @@ gameConfig = {
         shapes = true
     },
 
+
+    laser = {
+        laserWidth =100
+    },
+
+    music = {
+        music_path="assets/audio/intro_music.ogg",
+        music_volume=1
+    },
+
     asteroidBeltDistance = 1080,
 
     -- an asteroid will spanwn every X seconds
-    asteroidSpawnEvery = 2
+    asteroidSpawnPeriod = 2
 }

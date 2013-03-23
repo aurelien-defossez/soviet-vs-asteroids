@@ -63,6 +63,10 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
+    if self.mode == "upgrade" then
+        return
+    end
+
     for _, missile in pairs(self.missiles) do
         missile:update(dt)
     end
@@ -95,9 +99,9 @@ function Class:update(dt)
 
     -- spawn asteroids every once in a while
     self.dLastSpawn = self.dLastSpawn + dt
-    if self.dLastSpawn > gameConfig.asteroidSpawnEvery then
+    if self.dLastSpawn > gameConfig.asteroidSpawnPeriod then
         self:addAsteroid()
-        self.dLastSpawn = 0
+        self.dLastSpawn = self.dLastSpawn - gameConfig.asteroidSpawnPeriod
     end
 
     -- kill missiles once they're offscreen
@@ -145,4 +149,12 @@ function Class:splitAsteroid( i )
         color = {255,255,255},
         splitted = asteroid.splitted + 1
     })
+end
+
+-- Set the current mode of the game
+--
+-- Parameters
+--  mode: "game" or "upgrade" mode
+function Class:setMode(mode)
+    self.mode = mode
 end

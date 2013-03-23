@@ -41,6 +41,8 @@ function Class.create( options )
     self.boundingCircle = circle(self.pos, self.radius)
 
     self.splitted = options.splitted or 0
+    --self.colideX = 0
+    --self.colideY = 0
 
     return self
 end
@@ -65,8 +67,17 @@ function Class:draw()
     love.graphics.setColor( unpack( self.color ) )
 
     love.graphics.circle('fill', self.pos.x, self.pos.y, self.radius, 6)
+
 end
 
 function Class:isOffscreen()
-    return self.pos:length() > gameConfig.asteroidBeltDistance + 1
+	return self.pos:length() > gameConfig.asteroidBeltDistance + 1
+end
+
+function Class:distanceWithLine(shootAngle)
+    asteroidAngle = - math.atan2(self.pos.y, self.pos.x)
+    collideAngle = shootAngle - asteroidAngle
+    norm = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
+
+    return norm * math.sin(collideAngle)
 end

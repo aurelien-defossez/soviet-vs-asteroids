@@ -21,8 +21,10 @@ require("src.Station")
 require("src.PadController")
 require("src.KeyboardController")
 require("src.MouseController")
+require("src.SoundManager")
 require("src.Asteroid")
 require("src.Space")
+require("src.LaserSat")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -59,21 +61,35 @@ function Class.create(options)
             gameConfig.controls.force == "joystick"
         )
     ) then
-        self.controller = PadController.create{
-            station = self.station
-        }
+
+    self.station.space = self.space
+    self.station:addLaserSat( LaserSat.create{ position = vec2(0,100), angle = -1.57 } )
+    self.station:addLaserSat( LaserSat.create{ position = vec2(0,-100), angle = 1.57 } )
+    self.station:addLaserSat( LaserSat.create{ position = vec2(100,0), angle = 0 } )
+    self.station:addLaserSat( LaserSat.create{ position = vec2(-100,0), angle = 3.14 } )
+
+ --   self.station:addLaserSat( LaserSat.create{ position = vec2(50,50), angle = -0.785 } )
+ --  self.station:addLaserSat( LaserSat.create{ position = vec2(50,-50), angle = 0.785 } )
+  -- self.station:addLaserSat( LaserSat.create{ position = vec2(-50,50), angle = -2.35 } )
+--    self.station:addLaserSat( LaserSat.create{ position = vec2(-50,-50), angle = 2.35 } )
+
+        ControllerClass = PadController
     elseif gameConfig.controls.default == "keyboard" then
-        self.controller = KeyboardController.create{
-            station = self.station
-        }
+        ControllerClass = KeyboardController
     else
-        self.controller = MouseController.create{
-            station = self.station,
-            game = self
-        }
+        ControllerClass = MouseController
     end
 
+    self.controller = ControllerClass.create{
+        station = self.station,
+        game = self,
+    }
+
     self:computeTranslateVector()
+    self:setMode("game")
+
+    SoundManager.setup()
+    SoundManager.startMusic()
 
     return self
 end
@@ -136,6 +152,25 @@ function Class:draw()
     --love.graphics.setColor(255, 0, 255)
     --love.graphics.print(self.axis1, 0, 0)
 
+end
+
+-- Compute the translate vector for the camera
+function Class:computeTranslateVector()
+    self.translateVector = vec2(
+        (self.virtualScreenHeight * 0.5 / self.zoom) * self.screenRatio - self.camera.x,
+        (self.virtualScreenHeight * 0.5 / self.zoom) - self.camera.y
+    )
+end
+
+-- Set the current mode of the game
+--
+-- Parameters
+--  mode: "game" or "upgrade" mode
+function Class:setMode(mode)
+    self.mode = mode
+    self.controller:setMode(mode)
+    self.station:setMode(mode)
+    self.space:setMode(mode)
 end
 
 -----------------------------------------------------------------------------------------

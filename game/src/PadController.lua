@@ -23,8 +23,9 @@ function Class.create(options)
     self = {}
     setmetatable(self, Class)
 
-    self.debug = gameConfig.debug.all or gameConfig.debug.shapes  
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes
     self.station = options.station
+    self.game = options.game
 
     self.axis1 = 0
     self.axis2 = 0
@@ -86,6 +87,8 @@ function Class:update(dt)
 
     if ( love.joystick.isDown( 1, 6 ) or love.joystick.isDown( 1, 7 ) ) then
         self.station:fireLaser()
+    else
+        self.station:stopLaser()
     end
 
 end
@@ -98,12 +101,20 @@ function Class:draw()
 
     -- Draw scene
     love.graphics.setColor(255, 0, 0)
-    love.graphics.print(self.joy1Angle, 0, 0)
+    --love.graphics.print(self.joy1Angle, 0, 0)
     love.graphics.line(0 , 0, 100*math.cos(self.joy1Angle), 100*math.sin(self.joy1Angle))
     love.graphics.setColor(0, 255, 0)
-    love.graphics.print(self.joy2Angle, 0, 30)
+    --love.graphics.print(self.joy2Angle, 0, 30)
     love.graphics.line(0 , 0, 100*math.cos(self.joy2Angle), 100*math.sin(self.joy2Angle))
 
 
 
+end
+
+-- Set the current mode of the game
+--
+-- Parameters
+--  mode: "game" or "upgrade" mode
+function Class:setMode(mode)
+    self.mode = mode
 end
