@@ -1,3 +1,5 @@
+require("lib.math.vec2")
+
 gameConfig = {
     virtualScreenHeight = 1080,
 
@@ -27,8 +29,14 @@ gameConfig = {
     asteroidBeltDistance = 1080,
 
     station = {
+        radius = 90,
         maxLife = 100,
-        shieldRegeneration = .5
+        shieldRegeneration = .5,
+        shieldOffset = vec2(0, 15)
+    },
+
+    laserSat = {
+        offOrbitRatio = 1.0
     },
 
     controls = {

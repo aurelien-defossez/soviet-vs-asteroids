@@ -15,6 +15,7 @@ local Sprite = require("lib.Sprite")
 -----------------------------------------------------------------------------------------
 -- Class attributes
 -----------------------------------------------------------------------------------------
+
 local spriteSheet = love.graphics.newImage("assets/graphics/lasersat.png")
 local laserSpriteSheet = love.graphics.newImage("assets/graphics/laser_boule.png")
 local laserBeamSpriteSheet = love.graphics.newImage("assets/graphics/laser_jet.png")
@@ -22,7 +23,9 @@ local laserBeamSpriteSheet = love.graphics.newImage("assets/graphics/laser_jet.p
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
+
 require("src.SoundManager")
+
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -50,7 +53,7 @@ function Class.create(options)
         spriteSheet = spriteSheet,
         frameCount = 1,
         frameRate = 1,
-        scale = 0.5
+        scale = 0.3
     }
 
     self.laserOriginSprite = Sprite.create{
@@ -79,8 +82,6 @@ function Class.create(options)
         frameRate = 0.1,
         scale = 0.25
     }
-
-
 
     return self
 end
@@ -126,7 +127,10 @@ function Class:draw()
 
     love.graphics.setColor(255,255,255)
     self.sprite.angle = self.displayAngle
-    self.sprite.pos = self.pos + vec2(-48, -32):rotateRad(-self.displayAngle)
+    self.pos = gameConfig.station.shieldOffset
+        + vec2(math.cos(self.displayAngle), math.sin(-self.displayAngle))
+        * gameConfig.station.radius * gameConfig.laserSat.offOrbitRatio
+    self.sprite.pos = self.pos + vec2(-18, -18):rotateRad(-self.displayAngle)
     self.sprite:draw()
 
     if(self.isFiring and not( self.targetAsteroid == nil)) then

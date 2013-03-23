@@ -45,7 +45,7 @@ function Class.create(options)
     self.virtualScaleFactor = love.graphics.getHeight() / self.virtualScreenHeight
     self.screenRatio = love.graphics.getWidth() / love.graphics.getHeight()
     self.camera = vec2(0, 0)
-    self.zoom = 1.0
+    self.zoom = 1.25
 
     -- Set font
     love.graphics.setFont(love.graphics.newFont(20))
@@ -53,12 +53,18 @@ function Class.create(options)
     -- Initialize attributes
     self.station = Station.create()
     self.space = Space.create{
-    station = self.station
+        station = self.station
     }
+
     self.station.space = self.space
     self.menus = MenusManager.create{
         game = self
     }
+
+    self.station:addLaserSat( LaserSat.create{ angle = -math.pi / 2 } )
+    self.station:addLaserSat( LaserSat.create{ angle = math.pi / 2 } )
+    self.station:addLaserSat( LaserSat.create{ angle = 0 } )
+    self.station:addLaserSat( LaserSat.create{ angle = math.pi } )
 
     -- Create the input controller
     if (
@@ -68,18 +74,6 @@ function Class.create(options)
             gameConfig.controls.force == "joystick"
         )
     ) then
-
-    self.station.space = self.space
-    self.station:addLaserSat( LaserSat.create{ position = vec2(0,150), angle = -1.57 } )
-    self.station:addLaserSat( LaserSat.create{ position = vec2(0,-150), angle = 1.57 } )
-    self.station:addLaserSat( LaserSat.create{ position = vec2(150,0), angle = 0 } )
-    self.station:addLaserSat( LaserSat.create{ position = vec2(-150,0), angle = 3.14 } )
-
- --   self.station:addLaserSat( LaserSat.create{ position = vec2(50,50), angle = -0.785 } )
- --  self.station:addLaserSat( LaserSat.create{ position = vec2(50,-50), angle = 0.785 } )
-  -- self.station:addLaserSat( LaserSat.create{ position = vec2(-50,50), angle = -2.35 } )
---    self.station:addLaserSat( LaserSat.create{ position = vec2(-50,-50), angle = 2.35 } )
-
         ControllerClass = PadController
     elseif gameConfig.controls.default == "keyboard" then
         ControllerClass = KeyboardController
