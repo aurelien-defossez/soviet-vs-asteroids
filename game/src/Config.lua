@@ -14,6 +14,10 @@ gameConfig = {
         shapes = true
     },
 
+    laser = {
+        laserWidth =100
+    },
+
     asteroidBeltDistance = 1080,
 
     asteroidSpawnProbability = 0.04

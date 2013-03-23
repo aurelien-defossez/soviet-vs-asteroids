@@ -19,6 +19,9 @@ function Class.create()
     self.speedX = ( -x * 10 + ( math.random() - 0.5 ) * 2 ) * 1E2
     self.speedY = ( -y * 10 + ( math.random() - 0.5 ) * 2 ) * 1E2
 
+    self.colideX = 0
+    self.colideY = 0
+
     self.radius = 10
 
     return self
@@ -36,8 +39,17 @@ end
 function Class:draw()
     love.graphics.setColor(255, 0, 255)
     love.graphics.circle('fill', self.x, self.y, self.radius, 6)
+
 end
 
 function Class:isOffscreen()
 	return math.sqrt( self.x * self.x + self.y * self.y ) > gameConfig.asteroidBeltDistance + 1
+end
+
+function Class:distanceWithLine(shootAngle)
+    asteroidAngle = - math.atan2(self.y, self.x)
+    collideAngle = shootAngle - asteroidAngle
+    norm = math.sqrt(self.x * self.x + self.y * self.y)
+
+    return norm * math.sin(collideAngle)
 end

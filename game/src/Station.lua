@@ -31,7 +31,6 @@ function Class.create(options)
     setmetatable(self, Class)
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
-    self.buttonPressed = ""
     self.radius = 100
 
     self.laserSats = {}
@@ -63,16 +62,20 @@ function Class:launchMissile()
         angle = self.missileAngle,
         speed = 10
     })
-    print("Missile Launched !")
-    self.buttonPressed = "Missile !"
 end
     
 function Class:fireLaser()
-    for _, laserSat in pairs(self.laserSats) do
-        laserSat:fire(self.laserAngle)
+
+
+    local closestAsteroid = self:findClosestAsteroid(self.laserAngle, gameConfig.laser.laserWidth)
+
+    if (closestAsteroid == nil) then
+        return
     end
-    print("Laser Fired !!")
-    self.buttonPressed = "Laser !"
+
+    for _, laserSat in pairs(self.laserSats) do
+        laserSat:fire(self.laserAngle, closestAsteroid)
+    end
 end
 
 function Class:addLaserSat(laserSat)
@@ -104,9 +107,6 @@ function Class:draw()
     love.graphics.setColor(0, 255, 0)
     love.graphics.circle('fill', self.radius * math.cos( -self.laserAngle ), self.radius * math.sin( -self.laserAngle ), 10, 32)
 
-    --love.graphics.setColor(255,255,0)
-    --love.graphics.print("Button :" .. self.buttonPressed, -200, -200)
-
     for _, laserSat in pairs(self.laserSats) do
         laserSat:draw()
     end
@@ -118,6 +118,25 @@ end
 
 function Class:setLaserSatAngle(angle)
     self.laserAngle = angle
+end
+
+-- Parameters :
+-- angle : the angle of the ray
+function Class:findClosestAsteroid(angle, width)
+
+    local closestAsteroid = nil
+    local minDist = -1
+    local minDistchecker = - 1
+    for _, asteroid in pairs(self.space.asteroids) do
+        minDistchecker = math.abs(asteroid:distanceWithLine(angle))       
+        if ((minDistchecker < minDist or minDist == -1)  and minDistchecker < width ) then
+            
+            minDist = minDistchecker
+            closestAsteroid = asteroid
+        end
+    end
+
+    return closestAsteroid
 end
 
 

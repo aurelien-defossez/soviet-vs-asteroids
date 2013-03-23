@@ -27,9 +27,8 @@ function Class.create(options)
     -- Initialize attributes
     self.pos = options.position
     self.angle = options.angle
-    self.shiftedAngle = 0
-    self.fireAngle = 0
     self.isFiring = false
+    self.targetAsteroid = nil
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
 
     return self
@@ -62,30 +61,45 @@ function Class:draw()
     love.graphics.setLineWidth(3);
     love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.angle), self.pos.y + 20 * math.sin( -self.angle) )
 
-    love.graphics.setColor(0, 255, 0)
-    love.graphics.print(self.shiftedAngle, 0, 100)
-
-    if(self.isFiring) then
+    if(self.isFiring and not( self.targetAsteroid == nil)) then
         love.graphics.setColor(255, 127, 0)
-        love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 2000 * math.cos( -self.fireAngle), self.pos.y + 2000 * math.sin( -self.fireAngle) )
+        love.graphics.line(self.pos.x, self.pos.y, self.targetAsteroid.x, self.targetAsteroid.y )
     end
 end
 
-function Class:fire(angle)
-    self.fireAngle = angle
-    self.shiftedAngle = self.fireAngle - self.angle
-
-    if (self.shiftedAngle < -4.71) then
-        self.shiftedAngle = 1 + self.shiftedAngle + 4.71
+function Class:inFrontOf(fireAngle)
+    shiftedAngle = fireAngle - self.angle
+     if (shiftedAngle < -4.71) then
+        shiftedAngle = 1 + shiftedAngle + 4.71
     end
 
-    if (self.shiftedAngle > 4.71) then
-        self.shiftedAngle =  self.shiftedAngle - 4.71
+    if (shiftedAngle > 4.71) then
+        shiftedAngle =  shiftedAngle - 4.71
     end
 
-    if ( self.shiftedAngle > -1.57 and self.shiftedAngle < 1.57 ) then
-        self.isFiring = true
+    if ( shiftedAngle > -1.57 and shiftedAngle < 1.57 ) then
+        return true
+    else
+        return false
     end
+end
 
+function Class:fire(fireAngle, asteroid)
 
+    -- Check if the lasetSat is oriented in the direction of the fireAngle
+    if (self:inFrontOf(fireAngle)) then
+
+        local deltaX = asteroid.x - self.pos.x
+        local deltaY = asteroid.y - self.pos.y
+        asteroidAngle = - math.atan2(deltaY, deltaX)
+
+        -- Check if the lasetSat can shot the target
+        if (self:inFrontOf(asteroidAngle)) then      
+            self.targetAsteroid = asteroid
+            self.isFiring = true
+        else
+            self.targetAsteroid = nil
+        end
+        return
+    end
 end

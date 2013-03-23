@@ -101,7 +101,7 @@ function Class:draw()
     --love.graphics.print(self.joy1Angle, 0, 0)
     love.graphics.line(0 , 0, 100*math.cos(self.joy1Angle), 100*math.sin(self.joy1Angle))
     love.graphics.setColor(0, 255, 0)
-    love.graphics.print(self.joy2Angle, 0, 30)
+    --love.graphics.print(self.joy2Angle, 0, 30)
     love.graphics.line(0 , 0, 100*math.cos(self.joy2Angle), 100*math.sin(self.joy2Angle))
 
 
