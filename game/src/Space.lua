@@ -1,22 +1,18 @@
 -----------------------------------------------------------------------------------------
 --
--- Station.lua
+-- Space.lua
 --
--- The station class.
+-- In space no one can hear you scream.
 --
 -----------------------------------------------------------------------------------------
 
-module("Station", package.seeall)
-local Class = Station
+module("Space", package.seeall)
+local Class = Space
 Class.__index = Class
 
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
-
-require("src.Missile")
-local sin = math.sin
-local cos = math.cos
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -29,35 +25,27 @@ function Class.create(options)
     setmetatable(self, Class)
 
     -- Initialize attributes
-    self.x = 0
-    self.y = 0
-    self.radius = 100
+    self.station = options.station
     self.missiles = {}
-
-    self.joy1Angle = 0
-    self.joy2Angle = 0
+    self.asteroids = {}
 
     return self
 end
 
 -- Destroy the station
 function Class:destroy()
-    for _, missile in pairs(self.missiles) do
-        missile:destroy()
-    end
 end
 
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
 
-function Class:launchMissile()
-    self.space:addMissile(Missile.create{
-        x = 0,
-        y = 0,
-        angle = math.random(0, 360),
-        speed = 10
-    })
+function Class:addMissile(missile)
+    table.insert(self.missiles, missile)
+end
+
+function Class:addAsteroid(asteroid)
+    table.insert(self.asteroidS, asteroid)
 end
 
 -- Update the station
@@ -65,15 +53,22 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-    -- Update missiles
-    if math.random() < 0.01 then
-        self:launchMissile()
+    for _, missile in pairs(self.missiles) do
+        missile:update(dt)
+    end
+
+    for _, asteroid in pairs(self.asteroids) do
+        asteroid:update(dt)
     end
 end
 
 -- Draw the game
 function Class:draw()
-    -- Draw debug station
-    love.graphics.setColor(0, 0, 255)
-    love.graphics.circle('line', self.x, self.y, self.radius, 32)
+    for _, missile in pairs(self.missiles) do
+        missile:draw()
+    end
+
+    for _, asteroid in pairs(self.asteroids) do
+        asteroid:draw()
+    end
 end
