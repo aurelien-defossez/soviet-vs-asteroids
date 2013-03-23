@@ -152,10 +152,13 @@ function Class:draw()
     love.graphics.draw(self.body, -3, -26, 0, .35, .35)
 
     -- Draw missile arm
-    -- if math.abs(self.missileAngle) < halfPi then
-    --     love.graphics.draw(self.missileArmFront, -3, -26, 0, .35, .35)
-
-    vec2(0,0):draw()
+    if math.abs(self.missileAngle) < halfPi then
+        local offset = vec2(-3, -15):rotateRad(-self.missileAngle)
+        love.graphics.draw(self.missileArmFront, offset.x, offset.y, -self.missileAngle, .35, .35)
+    else
+        local offset = vec2(73, 15):rotateRad(-self.missileAngle)
+        love.graphics.draw(self.missileArmBack, offset.x, offset.y, -self.missileAngle - math.pi, .35, .35)
+    end
 
     if (not self.debug) then
         return
