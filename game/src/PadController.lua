@@ -80,6 +80,14 @@ function Class:update(dt)
         self.station:setLaserSatAngle( -self.joy2Angle)
     end
 
+    if ( love.joystick.isDown( 1, 5 ) ) then
+        self.station:launchMissile()
+    end
+
+    if ( love.joystick.isDown( 1, 6 ) or love.joystick.isDown( 1, 7 ) ) then
+        self.station:fireLaser()
+    end
+
 end
 
 -- Draw the game
@@ -98,18 +106,4 @@ function Class:draw()
 
 
 
-end
-
------------------------------------------------------------------------------------------
--- Callbacks
------------------------------------------------------------------------------------------
-function love.joystickpressed( joystick, button )
-
-    if (button == 5) then
-        self.station:launchMissile()
-    end
-
-    if (button == 6 or button == 7) then
-        self.station:fireLaser()
-    end
 end
