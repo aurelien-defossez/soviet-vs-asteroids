@@ -62,11 +62,13 @@ function Class:explode()
     
 
     -- red color for debugging purpose
-    self.color = {255, 0, 0}
+    self.color = {255, 255*0.25, 0}
 end
 
 function Class:hit()
     self.numberSatHit = self.numberSatHit + 1
+
+
 end
 
 -- Update the asteroid
@@ -77,6 +79,8 @@ function Class:update(dt)
 
     if not self.exploded then
         self.life = self.life - math.pow(self.numberSatHit, gameConfig.laser.dpsExp);
+        self.lifeColor = 255*(1 - self.life / gameConfig.asteroid.life )
+        self.color = {255, 255 - self.lifeColor * 0.75, 255 - self.lifeColor}
 
         if self.life <= 0 then
             --print( self, "will explode" )
