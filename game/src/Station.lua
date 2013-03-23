@@ -35,7 +35,7 @@ function Class.create(options)
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
-    self.radius = 100
+    self.radius = gameConfig.station.radius
     self.laserSats = {}
     self.missileArmLength = 100
     self.laserStationOrbit = 100
@@ -46,7 +46,7 @@ function Class.create(options)
     self.coins = 0
     self.life = gameConfig.station.maxLife
     self.shieldRotation = 0
-    self.boundingCircle = circle(vec2(0, 0), self.radius)
+    self.boundingCircle = circle(gameConfig.station.shieldOffset, self.radius)
 
     self.platform = love.graphics.newImage("assets/graphics/cosmonaute_plateforme.png")
     self.body = love.graphics.newImage("assets/graphics/cosmonaute_corps.png")
@@ -189,8 +189,8 @@ function Class:draw()
     love.graphics.setColor(shieldColor[1], shieldColor[2], shieldColor[3])
 
     -- Draw shield
-    local shieldOffset = vec2(-102, -102):rotateRad(self.shieldRotation)
-    love.graphics.draw(self.shield, shieldOffset.x, shieldOffset.y, self.shieldRotation, .4, .4)
+    local rotationOffset = vec2(-90, -90):rotateRad(self.shieldRotation) + self.boundingCircle.center
+    love.graphics.draw(self.shield, rotationOffset.x, rotationOffset.y, self.shieldRotation, .35, .35)
 
     -- Draw laser sats
     for _, laserSat in pairs(self.laserSats) do
@@ -198,8 +198,7 @@ function Class:draw()
     end
 
     if self.debug then
-        love.graphics.setColor(0, 0, 255)
-        love.graphics.circle('line', 0, 0, self.radius, 32)
+        self.boundingCircle:draw()
 
         love.graphics.setColor(255, 0, 0)
         love.graphics.circle('fill', self.radius * math.cos( -self.missileAngle), self.radius * math.sin( -self.missileAngle), 10, 32)
