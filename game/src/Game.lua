@@ -19,6 +19,7 @@ require("lib.json.json")
 require("src.Config")
 require("src.Station")
 require("src.PadController")
+require("src.KeyboardControler")
 require("src.Asteroid")
 require("src.Space")
 
@@ -47,9 +48,15 @@ function Class.create(options)
     self.space = Space.create{
         station = self.station
     }
-    self.controller = PadController.create{
-        station = self.station
-    }
+    if (love.joystick.isOpen(1)) then
+        self.controller = PadController.create{
+            station = self.station
+        }
+    else
+        self.controller = KeyboardControler.create{
+            station = self.station
+        }
+    end
 
     self.station.space = self.space
 
