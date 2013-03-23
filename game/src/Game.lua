@@ -9,9 +9,6 @@ module("Game", package.seeall)
 local Class = Game
 Class.__index = Class
 
-local joystick1Position = 0;
-local joystick2Position = 0;
-
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
@@ -23,6 +20,7 @@ require("src.Config")
 require("src.Station")
 require("src.PadController")
 require("src.Asteroid")
+require("src.Space")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -44,15 +42,16 @@ function Class.create(options)
     -- Set font
     love.graphics.setFont(love.graphics.newFont(20))
 
-    -- Create debug shape
-    self.x = 0
-    self.y = 0
-    self.radius = 32
+    -- Initialize attributes
+    self.station = Station.create()
+    self.space = Space.create{
+        station = self.station
+    }
+    self.controller = PadController.create{
+        station = self.station
+    }
 
-    self.station = Station.create();
-    controller = PadController.create{ station = self.station}
-
-    --self.asteroid = Asteroid.create();
+    self.station.space = self.space
 
     return self
 end
@@ -71,9 +70,8 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
     self.station:update(dt)
+    self.space:update(dt)
     self.controller:update(dt)
-    -- Add json lib for debugging, yeaaaaaaaah!
-
 end
 
 -- Draw the game
@@ -98,8 +96,8 @@ function Class:draw()
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
     self.station:draw()
+    self.space:draw()
     self.controller:draw()
-    -- Add json lib for debugging, yeaaaaaaaah!
 
     -- Reset camera transform before hud drawing
     love.graphics.pop()
