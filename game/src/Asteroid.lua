@@ -19,6 +19,8 @@ function Class.create( options )
     self.space = options.space
     self.index = options.index
     self.exploded = false
+    self.rotation = math.random() * 2 * math.pi
+    self.rotationSpeed = -math.pi / 2 + math.random() * math.pi
 
     -- Determine random position
     local x = math.random() - 0.5
@@ -91,7 +93,6 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-
     if self.life <= 0 then
         self.space:splitAsteroid( self )
         self:explode()
@@ -100,15 +101,19 @@ function Class:update(dt)
 
     self.pos = self.pos + self.speed * dt
     self.boundingCircle = circle(self.pos, self.radius)
+
+    self.rotation = self.rotation + self.rotationSpeed * dt
 end
 
 function Class:draw()
     love.graphics.setColor( unpack(self.color) )
     love.graphics.draw(
         self.sprite,
-        self.pos.x, self.pos.y,
-        0,
-        self.radius / baseRadius, self.radius / baseRadius,
+        self.pos.x,
+        self.pos.y,
+        self.rotation,
+        self.radius / baseRadius,
+        self.radius / baseRadius,
         baseRadius, baseRadius
     )
 end
