@@ -70,8 +70,7 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-    local somethingExploded
-
+    -- Do not update space when in upgrade mode
     if self.mode == "upgrade" then
         return
     end
@@ -87,17 +86,31 @@ function Class:update(dt)
     -- Check for collisions
     for _, missile in pairs(self.missiles) do
         -- exclude exploded missiles from collision detection
-        if not ( missile.exploded == true ) then
+        if not missile.exploded then
             for i, asteroid in pairs(self.asteroids) do
                 -- exclude exploded asteroid from collision detection
-                if not ( asteroid.exploded == true ) and missile:collideAsteroid(asteroid) then
+                if not asteroid.exploded and missile:collideAsteroid(asteroid) then
                     missile:explode()
-                    self:explodeAsteroid( asteroid )
+                    self:explodeAsteroid{
+                        asteroid = asteroid
+                    }
 
                     -- Stop collision detection for this missile
                     break
                 end
             end
+        end
+    end
+
+    for i, asteroid in pairs(self.asteroids) do
+        -- exclude exploded asteroid from collision detection
+        if not asteroid.exploded and asteroid.boundingCircle:collideCircle(self.station.boundingCircle) then
+            self:explodeAsteroid{
+                asteroid = asteroid,
+                noSplit = true
+            }
+
+            self.station.life = self.station.life - asteroid.radius
         end
     end
 
@@ -114,15 +127,12 @@ function Class:update(dt)
             table.remove( self.missiles, i )
         end
     end
+
     -- kill asteroids once they're offscreen
     for i, asteroid in pairs(self.asteroids) do
         if asteroid:isOffscreen() then
             table.remove( self.asteroids, i )
         end
-    end
-
-    if somethingExploded then
-        die()
     end
 end
 
@@ -137,14 +147,15 @@ function Class:draw()
     end
 end
 
-function Class:explodeAsteroid( asteroid )
+function Class:explodeAsteroid(options)
+    local asteroid = options.asteroid
 
-    if type( asteroid ) == number then
+    if type(asteroid) == number then
         asteroid = self.asteroids[ asteroid ]
     end
 
     -- only split asteroids that have not been splitted yet
-    if asteroid.splitted == 0 then
+    if asteroid.splitted == 0 and not options.noSplit then
         self:splitAsteroid( asteroid )
     end
 

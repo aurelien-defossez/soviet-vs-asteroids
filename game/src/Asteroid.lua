@@ -17,6 +17,7 @@ function Class.create( options )
     setmetatable(self, Class)
 
     self.space = options.space
+    self.exploded = false
 
     -- Determine random position
     local x = math.random() - 0.5
@@ -83,8 +84,9 @@ function Class:update(dt)
         self.color = {255, 255 - self.lifeColor * 0.75, 255 - self.lifeColor}
 
         if self.life <= 0 then
-            --print( self, "will explode" )
-            self.space:explodeAsteroid( self )
+            self.space:explodeAsteroid{
+                asteroid = self
+            }
         end
 
         self.numberSatHit = 0
