@@ -49,5 +49,5 @@ gameConfig = {
 
     asteroidBeltDistance = 1080,
 
-    asteroidSpawnEvery = 1
+    asteroidSpawnPeriod = 1
 }

@@ -81,16 +81,16 @@ function Class:update(dt)
                 asteroid:explode()
 
                 -- Stop collision detection for this asteroid
-                return
+                break
             end
         end
     end
 
     -- spawn asteroids every once in a while
     self.dLastSpawn = self.dLastSpawn + dt
-    if self.dLastSpawn > gameConfig.asteroidSpawnEvery then
+    if self.dLastSpawn > gameConfig.asteroidSpawnPeriod then
         self:addAsteroid()
-        self.dLastSpawn = 0
+        self.dLastSpawn = self.dLastSpawn - gameConfig.asteroidSpawnPeriod
     end
 
     -- kill missiles once they're offscreen
