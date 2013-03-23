@@ -19,7 +19,8 @@ local Sprite = require("lib.Sprite")
 local cos = math.cos
 local sin = math.sin
 local ctId = 0
-local spriteSheet = love.graphics.newImage("assets/graphics/missile.png")
+local missile = love.graphics.newImage("assets/graphics/missile.png")
+local explosion = love.graphics.newImage("assets/graphics/explosion.png")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -46,7 +47,7 @@ function Class.create(options)
     self.sprite = Sprite.create{
         pos = self.pos,
         angle = self.angle,
-        spriteSheet = spriteSheet,
+        spriteSheet = missile,
         frameCount = 2,
         frameRate = 0.1
     }
@@ -70,6 +71,14 @@ end
 
 function Class:explode()
     self.exploded = true
+
+    self.sprite = Sprite.create{
+        pos = self.pos + vec2( -64, -64 ):rotateRad( -self.angle ),
+        angle = self.angle,
+        spriteSheet = explosion,
+        frameCount = 2,
+        frameRate = 0.1
+    }
 end
 
 -- Update the missile
@@ -77,8 +86,11 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-    self.pos = self.pos + vec2(self.speed * cos(self.angle), self.speed * -sin(self.angle))
-    self.boundingCircle = circle(self.pos, self.radius)
+    if not self.exploded then
+        self.pos = self.pos + vec2(self.speed * cos(self.angle), self.speed * -sin(self.angle))
+        self.boundingCircle = circle(self.pos, self.radius)
+    end
+
     self.sprite:udpate(dt)
 end
 
@@ -88,7 +100,9 @@ function Class:draw()
     love.graphics.setColor(255, 255, 255)
 
     -- Position sprite
-    self.sprite.pos = self.pos + vec2(-96, -32):rotateRad(-self.angle)
+    if not self.exploded then
+        self.sprite.pos = self.pos + vec2(-96, -32):rotateRad(-self.angle)
+    end
     self.sprite:draw()
 
     if self.debug then
