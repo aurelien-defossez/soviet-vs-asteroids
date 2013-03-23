@@ -18,6 +18,7 @@ local joystick2Position = 0;
 
 require("lib.math.vec2")
 require("lib.math.aabb")
+require("lib.json.json")
 require("src.Config")
 require("src.Station")
 require("src.Asteroid")
@@ -51,6 +52,8 @@ function Class.create(options)
     self.station = Station.create();
     controler = JoystickControler.create{ station = self.station}
 
+    --self.asteroid = Asteroid.create();
+
     return self
 end
 
@@ -69,6 +72,7 @@ end
 function Class:update(dt)
     self.station:update(dt)
     self.controler:update(dt)
+    --self.asteroid:update(dt)
 
 end
 
@@ -93,8 +97,9 @@ function Class:draw()
     local screenExtent = vec2(self.virtualScreenHeight * self.screenRatio, self.virtualScreenHeight)
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
-            self.station:draw()
+    self.station:draw()
     self.controler:draw()
+    --self.asteroid:draw()
 
     -- Reset camera transform before hud drawing
     love.graphics.pop()

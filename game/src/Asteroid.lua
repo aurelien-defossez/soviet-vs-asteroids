@@ -1,5 +1,5 @@
 module("Asteroid", package.seeall)
-local Class = Station
+local Class = Asteroid
 Class.__index = Class
 
 function Class.create()
@@ -8,16 +8,18 @@ function Class.create()
     setmetatable(self, Class)
 
     -- Determine random position
-    local x = Math.random() - 0.5
-    local y = Math.random() - 0.5
+    local x = math.random() - 0.5
+    local y = math.random() - 0.5
 
-    self.a = Math.atan2( x, y )
+    self.a = math.atan2( x, y )
 
-    self.x = gameConfig.asteroidBeltDistance * Math.cos( a )
-    self.y = gameConfig.asteroidBeltDistance * Math.sin( a )
+    print( json.encode( { x = x, y = y, a = a } ) )
 
-    self.speedX = -x * 10 + ( Math.random() - 0.5 ) * 2
-    self.speedY = -y * 10 + ( Math.random() - 0.5 ) * 2
+    self.x = gameConfig.asteroidBeltDistance * math.cos( a )
+    self.y = gameConfig.asteroidBeltDistance * math.sin( a )
+
+    self.speedX = -x * 10 + ( math.random() - 0.5 ) * 2
+    self.speedY = -y * 10 + ( math.random() - 0.5 ) * 2
 
     self.radius = 10
 
