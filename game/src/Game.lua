@@ -19,8 +19,13 @@ require("lib.json.json")
 require("src.Config")
 require("src.Station")
 require("src.PadController")
+<<<<<<< HEAD
 require("src.KeyboardController")
 require("src.MouseController")
+=======
+require("src.KeyboardControler")
+require("src.SoundManager")
+>>>>>>> ajout du sound manager
 require("src.Asteroid")
 require("src.Space")
 require("src.LaserSat")
@@ -85,6 +90,8 @@ function Class.create(options)
   -- self.station:addLaserSat( LaserSat.create{ position = vec2(-50,50), angle = -2.35 } )
 --    self.station:addLaserSat( LaserSat.create{ position = vec2(-50,-50), angle = 2.35 } )
     self:computeTranslateVector()
+    SoundManager.setup()
+    SoundManager.startMusic()
 
     return self
 end
