@@ -14,6 +14,9 @@ Class.__index = Class
 -- Imports
 -----------------------------------------------------------------------------------------
 
+local cos = math.cos
+local sin = math.sin
+
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -46,14 +49,13 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-    self.y = self.y + self.speed
+    self.x = self.x + self.speed * cos(self.angle)
+    self.y = self.y + self.speed * -sin(self.angle)
 end
 
 -- Draw the game
 function Class:draw()
-
     -- Draw scene
     love.graphics.setColor(42, 42, 255)
-    love.graphics.rectangle('fill', self.x, self.y, 12, 42)
-
+    love.graphics.rectangle('fill', self.x, self.y, 12, 12)
 end

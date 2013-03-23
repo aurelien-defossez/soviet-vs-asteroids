@@ -56,7 +56,7 @@ function Class:launchMissile()
     self.space:addMissile(Missile.create{
         x = 0,
         y = 0,
-        angle = math.random(0, 360),
+        angle = math.random(-math.pi, math.pi),
         speed = 10
     })
 end
@@ -67,7 +67,7 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
     -- Update missiles
-    if math.random() < 0.01 then
+    if math.random() < 0.05 then
         self:launchMissile()
     end
 end
