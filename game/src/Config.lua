@@ -14,5 +14,7 @@ gameConfig = {
         shapes = true
     },
 
-    asteroidBeltDistance = 1080
+    asteroidBeltDistance = 1080,
+
+    asteroidSpawnProbability = 0.9
 }

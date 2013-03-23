@@ -52,7 +52,7 @@ function Class.create(options)
     self.station = Station.create();
     controler = JoystickControler.create{ station = self.station}
 
-    --self.asteroid = Asteroid.create();
+    --self.asteroids = Table.create()
 
     return self
 end
@@ -72,7 +72,14 @@ end
 function Class:update(dt)
     self.station:update(dt)
     self.controler:update(dt)
-    --self.asteroid:update(dt)
+
+    --for _, asteroid in pairs( self.asteroids ) do
+    --    asteroid:update()
+    --end
+
+    --if math.random() * ( dt / 0.01666 ) > gameConfig.asteroidSpawnProbability then
+    --    self.asteroids.push( Asteroid.create() )
+    --end
 
 end
 
@@ -99,7 +106,10 @@ function Class:draw()
 
     self.station:draw()
     self.controler:draw()
-    --self.asteroid:draw()
+
+    --for _, asteroid in pairs( self.asteroids ) do
+    --    asteroid:draw()
+    --end
 
     -- Reset camera transform before hud drawing
     love.graphics.pop()
