@@ -17,6 +17,13 @@ Class.__index = Class
 local cos = math.cos
 local sin = math.sin
 local ctId = 0
+local spriteSheet = love.graphics.newImage("assets/graphics/missile.png")
+local width = spriteSheet:getWidth()
+local height = spriteSheet:getHeight()
+local animation = {
+    love.graphics.newQuad(0, 0, 128, 65, width, height),
+    love.graphics.newQuad(128, 0, 128, 65, width, height)
+}
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -34,7 +41,10 @@ function Class.create(options)
     self.speed = options.speed
     self.pos = options.pos
     self.radius = 32
-    self.image = love.graphics.newImage("assets/graphics/missile_1.png")
+    self.spriteBatch = love.graphics.newSpriteBatch(spriteSheet, 2)
+
+    self.spriteBatch:clear()
+    self.spriteBatch:addq(animation[2], 0, 0)
 
     ctId = ctId + 1
 
@@ -77,7 +87,7 @@ function Class:draw()
     -- Position sprite
     local spritePos = self.pos + vec2(-96, -32):rotateRad(-self.angle)
 
-    love.graphics.draw(self.image, spritePos.x, spritePos.y, -self.angle)
+    love.graphics.draw(self.spriteBatch, spritePos.x, spritePos.y, -self.angle)
     
     self.pos:draw()
     self.boundingCircle:draw()
