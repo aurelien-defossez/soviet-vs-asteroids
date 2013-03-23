@@ -28,6 +28,7 @@ function Class.create(options)
     self.station = options.station
     self.missiles = {}
     self.asteroids = {}
+    self.dLastSpawn = 0
 
     return self
 end
@@ -48,11 +49,13 @@ end
 -----------------------------------------------------------------------------------------
 
 function Class:addMissile(missile)
-    table.insert(self.missiles, missile)
+    self.missiles[missile.id] = missile
 end
 
-function Class:addAsteroid()
-    table.insert( self.asteroids, Asteroid.create() )
+function Class:addAsteroid( options )
+    local asteroid = Asteroid.create( options )
+    table.insert( self.asteroids, asteroid )
+    return asteroid
 end
 
 -- Update the station
@@ -60,6 +63,10 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
+    if self.mode == "upgrade" then
+        return
+    end
+
     for _, missile in pairs(self.missiles) do
         missile:update(dt)
     end
@@ -68,14 +75,44 @@ function Class:update(dt)
         asteroid:update(dt)
     end
 
-    -- spawn asteroids every once in a while
-    if math.random() * ( dt / 0.01666 ) < gameConfig.asteroidSpawnProbability then
-        self:addAsteroid()
+    -- Check for collisions
+    for _, missile in pairs(self.missiles) do
+        -- exclude exploded missiles from collision detection
+        if not ( missile.exploded == true ) then
+            for i, asteroid in pairs(self.asteroids) do
+                -- exclude exploded asteroid from collision detection
+                if not ( asteroid.exploded == true ) and missile:collideAsteroid(asteroid) then
+                    missile:explode()
+                    asteroid:explode()
+
+                    -- only split asteroids that have not been splitted yet
+                    if asteroid.splitted == 0 then
+                        self:splitAsteroid(i)
+                    end
+
+                    -- Stop collision detection for this missile
+                    break
+                end
+            end
+        end
     end
 
+    -- spawn asteroids every once in a while
+    self.dLastSpawn = self.dLastSpawn + dt
+    if self.dLastSpawn > gameConfig.asteroidSpawnPeriod then
+        self:addAsteroid()
+        self.dLastSpawn = self.dLastSpawn - gameConfig.asteroidSpawnPeriod
+    end
+
+    -- kill missiles once they're offscreen
+    for i, missile in pairs(self.missiles) do
+        if missile:isOffscreen() then
+            table.remove( self.missiles, i )
+        end
+    end
     -- kill asteroids once they're offscreen
     for i, asteroid in pairs(self.asteroids) do
-        if asteroid:isOffscreen(dt) then
+        if asteroid:isOffscreen() then
             table.remove( self.asteroids, i )
         end
     end
@@ -90,4 +127,34 @@ function Class:draw()
     for _, asteroid in pairs(self.asteroids) do
         asteroid:draw()
     end
+end
+
+function Class:splitAsteroid( i )
+    local asteroid = self.asteroids[i]
+
+    self:addAsteroid({
+        pos = vec2( asteroid.pos.x, asteroid.pos.y ),
+        dir = asteroid.dir + math.pi / 16,
+        speed1d = asteroid.speed1d,
+        radius = asteroid.radius / 2,
+        color = {255,255,255},
+        splitted = asteroid.splitted + 1
+    })
+
+    self:addAsteroid({
+        pos = vec2( asteroid.pos.x, asteroid.pos.y ),
+        dir = asteroid.dir - math.pi / 16,
+        speed1d = asteroid.speed1d,
+        radius = asteroid.radius / 2,
+        color = {255,255,255},
+        splitted = asteroid.splitted + 1
+    })
+end
+
+-- Set the current mode of the game
+--
+-- Parameters
+--  mode: "game" or "upgrade" mode
+function Class:setMode(mode)
+    self.mode = mode
 end

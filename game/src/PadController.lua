@@ -23,8 +23,9 @@ function Class.create(options)
     self = {}
     setmetatable(self, Class)
 
-    self.debug = gameConfig.debug.all or gameConfig.debug.shapes  
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes
     self.station = options.station
+    self.game = options.game
 
     self.axis1 = 0
     self.axis2 = 0
@@ -86,6 +87,8 @@ function Class:update(dt)
 
     if ( love.joystick.isDown( 1, 6 ) or love.joystick.isDown( 1, 7 ) ) then
         self.station:fireLaser()
+    else
+        self.station:stopLaser()
     end
 
 end
@@ -106,4 +109,12 @@ function Class:draw()
 
 
 
+end
+
+-- Set the current mode of the game
+--
+-- Parameters
+--  mode: "game" or "upgrade" mode
+function Class:setMode(mode)
+    self.mode = mode
 end

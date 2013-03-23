@@ -1,41 +1,43 @@
 -----------------------------------------------------------------------------------------
 --
--- KeyboardControler.lua
+-- KeyboardController.lua
 --
--- The KeyboardControler class.
+-- The KeyboardController class.
 --
 -----------------------------------------------------------------------------------------
-module("KeyboardControler", package.seeall)
-local Class = KeyboardControler
+module("KeyboardController", package.seeall)
+local Class = KeyboardController
 Class.__index = Class
-local sin = math.sin
-local cos = math.cos
 
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
 require("src.Config")
-require("src.Station")
 
--- Create the KeyboardControler
+-- Create the KeyboardController
 function Class.create(options)
     -- Create object
     self = {}
     setmetatable(self, Class)
 
     self.station = options.station
+    self.game = options.game
 
-    -- Set virtual viewport
-    self.virtualScreenHeight = gameConfig.camera.minVirtualHeight
-    self.virtualScaleFactor = love.graphics.getHeight() / self.virtualScreenHeight
-    self.screenRatio = love.graphics.getWidth() / love.graphics.getHeight()
-    self.camera = vec2(0, 0)
-    self.zoom = 1.0
+    function love.keypressed(key)
+        -- Go to upgrade mode
+        if key == "backspace" or key == "tab" then
+            if self.mode == "game" then
+                self.game:setMode("upgrade")
+            elseif self.mode == "upgrade" then
+                self.game:setMode("game")
+            end
+        end
+    end
 
     return self
 end
 
--- Destroy the KeyboardControler
+-- Destroy the KeyboardController
 function Class:destroy()
 end
 
@@ -43,12 +45,12 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
--- Update the KeyboardControler
+-- Update the KeyboardController
 --
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-    deltaRad = math.pi / 36 -- 10°
+    deltaRad = gameConfig.controls.keyboard.delta
 
     -- Control the laser command
     if (love.keyboard.isDown("left")) then
@@ -59,10 +61,6 @@ function Class:update(dt)
         self.station:setLaserSatAngle(self.station.laserAngle + deltaRad)
     end
 
-    -- I’M A’ FIRIN’ MAH LAZER!!
-    if (love.keyboard.isDown("rctrl")) then
-        self.station:fireLaser()
-    end
 
     -- Control the missiles launcher
     if (love.keyboard.isDown("a", "q")) then
@@ -73,14 +71,33 @@ function Class:update(dt)
         self.station:setMissileLauncherAngle(self.station.missileAngle + deltaRad)
     end
 
-    -- SHOOP DA WHOOP!!!!
-    if (love.keyboard.isDown(" ")) then
-        self.station:launchMissile()
+    if self.mode == "game" then
+        -- I’M A’ FIRIN’ MAH LAZER!!
+        if (love.keyboard.isDown("rctrl")) then
+             self.station:fireLaser()
+        else
+            self.station:stopLaser()
+        end
+
+        -- SHOOP DA WHOOP!!!!
+        if (love.keyboard.isDown(" ")) then
+            self.station:launchMissile()
+        end
     end
 end
 
 -- Draw the game
 function Class:draw()
-    love.graphics.push()
-    love.graphics.pop()
 end
+
+-- Set the current mode of the game
+--
+-- Parameters
+--  mode: "game" or "upgrade" mode
+function Class:setMode(mode)
+    self.mode = mode
+end
+
+-----------------------------------------------------------------------------------------
+
+return Class
