@@ -52,8 +52,8 @@ function Class:addMissile(missile)
     table.insert(self.missiles, missile)
 end
 
-function Class:addAsteroid()
-    table.insert( self.asteroids, Asteroid.create() )
+function Class:addAsteroid( options )
+    table.insert( self.asteroids, Asteroid.create( options ) )
 end
 
 -- Update the station
@@ -87,6 +87,11 @@ function Class:update(dt)
         if asteroid:isOffscreen() then
             table.remove( self.asteroids, i )
         end
+
+        -- and split them randomly for debug purpose
+        if math.random() > 0.999 then
+            self:splitAsteroid( i )
+        end
     end
 end
 
@@ -99,4 +104,24 @@ function Class:draw()
     for _, asteroid in pairs(self.asteroids) do
         asteroid:draw()
     end
+end
+
+function Class:splitAsteroid( i )
+    local asteroid = self.asteroids[i]
+
+    self:addAsteroid({
+        pos = asteroid.pos,
+        dir = asteroid.dir + math.pi / 4,
+        speed1d = asteroid.speed1d,
+        radius = asteroid.radius / 2
+    })
+
+    self:addAsteroid({
+        pos = asteroid.pos,
+        dir = asteroid.dir - math.pi / 4,
+        speed1d = asteroid.speed1d,
+        radius = asteroid.radius / 2
+    })
+
+    table.remove( self.asteroids, i )
 end
