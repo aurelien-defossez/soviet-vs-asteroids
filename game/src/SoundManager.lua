@@ -19,6 +19,8 @@ function SoundManager.setup()
 	self.soundExplosion3=love.audio.newSource("assets/audio/explosion3.ogg")
 	self.soundExplosion4=love.audio.newSource("assets/audio/explosion4.ogg")
 
+	self.soundUpgrade=love.audio.newSource("assets/audio/upgrade.ogg")
+
 	self.voiceShit=love.audio.newSource("assets/audio/shit.ogg")
 	self.voiceFuckyou=love.audio.newSource("assets/audio/fuckyou.ogg")
 	self.voiceForMotherRussia=love.audio.newSource("assets/audio/formotherrussia.ogg")
@@ -93,6 +95,12 @@ end
 function SoundManager.laserStop()
 	if not self.noSound then
 		self.soundLaser1:stop()
+	end
+end
+
+function SoundManager.upgrade()
+	if not self.noSound then
+		self.soundUpgrade:play()
 	end
 end
 
