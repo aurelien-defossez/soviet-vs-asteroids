@@ -58,6 +58,13 @@ function Class:launchMissile()
         angle = math.random(-math.pi, math.pi),
         speed = 10
     })
+    print("Missile Launched !")
+    self.buttonPressed = "Missile !"
+end
+
+function Class:fireLaser()
+    print("Laser Fired !!")
+    self.buttonPressed = "Laser !"
 end
 
 -- Update the station
@@ -65,10 +72,7 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-    -- Update missiles
-    if math.random() < 0.05 then
-        self:launchMissile()
-    end
+  
 end
 
 -- Draw the game
@@ -99,14 +103,6 @@ function Class:setLaserSatAngle(angle)
     self.laserAngle = angle
 end
 
-function Class:launchMissile()
-    print("Missile Launched !")
-    self.buttonPressed = "Missile !"
 
-end
 
-function Class:fireLaser()
-    print("Laser Fired !!")
-    self.buttonPressed = "Laser !"
-end
 
