@@ -27,6 +27,7 @@ function Class.create(options)
     -- Initialize attributes
     self.pos = options.position
     self.angle = options.angle
+    self.displayAngle = options.angle
     self.isFiring = false
     self.targetAsteroid = nil
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
@@ -64,7 +65,7 @@ function Class:draw()
     love.graphics.setColor(255, 255, 0)
     love.graphics.circle('fill', self.pos.x , self.pos.y , 10, 32)
     love.graphics.setLineWidth(3);
-    love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.angle), self.pos.y + 20 * math.sin( -self.angle) )
+    love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.displayAngle), self.pos.y + 20 * math.sin( -self.displayAngle) )
 
     --love.graphics.print("Debug : " ..self.debugText, 200, 200)
 
@@ -105,13 +106,16 @@ function Class:fire(fireAngle, asteroid)
         if (self:inFrontOf(asteroidAngle)) then      
             self.targetAsteroid = asteroid
             self.isFiring = true
+            self.displayAngle = asteroidAngle
 
         else
             self.targetAsteroid = nil
             self.isFiring = false
+            self.displayAngle = self.angle
         end
     else
         self.isFiring = false
+        self.displayAngle = self.angle
     end
 
     return self.isFiring
@@ -120,4 +124,5 @@ end
 function Class:stopFire()
     self.isFiring = false
     self.targetAsteroid = nil
+    self.displayAngle = self.angle
 end
