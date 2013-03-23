@@ -91,7 +91,7 @@ function Class:launchMissile()
         angle = self.missileAngle,
         speed = 10
     })
-
+    SoundManager.missile()
 end
 
 function Class:fireLaser()
