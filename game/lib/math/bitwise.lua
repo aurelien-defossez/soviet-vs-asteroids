@@ -9,8 +9,8 @@
 -- Author: Ansca Mobile
 --
 -- Demonstrates: 
--- 		Bitwise operators using Lua
---  	
+--    Bitwise operators using Lua
+--    
 --
 -- File dependencies: bitwise.lua
 --
