@@ -20,7 +20,8 @@ local mt = {
 
         -- Draw shape
         draw = function(self)
-            -- TODO
+            love.graphics.setColor(255, 255, 0)
+            love.graphics.circle('line', self.center.x, self.center.y, self.radius, 12)
         end
     }
 }

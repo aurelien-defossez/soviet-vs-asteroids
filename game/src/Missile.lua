@@ -30,10 +30,11 @@ function Class.create(options)
 
     -- Initialize attributes
     self.id = ctId
-    self.pos = options.pos
     self.angle = options.angle
     self.speed = options.speed
-    self.radius = 10
+    self.pos = options.pos
+    self.radius = 32
+    self.image = love.graphics.newImage("assets/graphics/missile_1.png")
 
     ctId = ctId + 1
 
@@ -68,12 +69,18 @@ end
 -- Draw the game
 function Class:draw()
     if self.exploded then
-        love.graphics.setColor(255, 42, 42)
+        love.graphics.setColor(255, 0, 0)
     else
-        love.graphics.setColor(42, 42, 255)
+        love.graphics.setColor(255, 255, 255)
     end
 
-    love.graphics.rectangle('fill', self.pos.x, self.pos.y, 12, 12)
+    -- Position sprite
+    local spritePos = self.pos + vec2(-96, -32):rotateRad(-self.angle)
+
+    love.graphics.draw(self.image, spritePos.x, spritePos.y, -self.angle)
+    
+    self.pos:draw()
+    self.boundingCircle:draw()
 end
 
 function Class:isOffscreen()
