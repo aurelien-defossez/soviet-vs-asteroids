@@ -68,6 +68,9 @@ function Class:launchMissile()
 end
     
 function Class:fireLaser()
+    for _, laserSat in pairs(self.laserSats) do
+        laserSat:fire(self.laserAngle)
+    end
     print("Laser Fired !!")
     self.buttonPressed = "Laser !"
 end

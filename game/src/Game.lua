@@ -21,6 +21,7 @@ require("src.Station")
 require("src.PadController")
 require("src.Asteroid")
 require("src.Space")
+require("src.LaserSat")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -52,6 +53,10 @@ function Class.create(options)
     }
 
     self.station.space = self.space
+    self.station:addLaserSat( LaserSat.create{ position = vec2(0,100), angle = -1.57 } )
+    self.station:addLaserSat( LaserSat.create{ position = vec2(0,-100), angle = 1.57 } )
+    self.station:addLaserSat( LaserSat.create{ position = vec2(100,0), angle = 0 } )
+    self.station:addLaserSat( LaserSat.create{ position = vec2(-100,0), angle = 3.14 } )
 
     return self
 end
