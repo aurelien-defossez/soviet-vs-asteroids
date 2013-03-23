@@ -9,6 +9,8 @@ module("Game", package.seeall)
 local Class = Game
 Class.__index = Class
 
+game = nil
+
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
@@ -35,6 +37,7 @@ function Class.create(options)
     -- Create object
     self = {}
     setmetatable(self, Class)
+    Game=self
 
     -- Set virtual viewport
     self.virtualScreenHeight = gameConfig.camera.minVirtualHeight
@@ -49,7 +52,7 @@ function Class.create(options)
     -- Initialize attributes
     self.station = Station.create()
     self.space = Space.create{
-        station = self.station
+    station = self.station
     }
     self.station.space = self.space
 
@@ -144,6 +147,7 @@ function Class:draw()
     self.controller:draw()
     self.station:draw()
     self.space:draw()
+
 
     -- Reset camera transform before hud drawing
     love.graphics.pop()

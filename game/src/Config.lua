@@ -19,7 +19,8 @@ gameConfig = {
     },
 
     asteroid = {
-        life = 50
+        life = 50,
+        numberPoint = 100
     },
 
     controls = {
