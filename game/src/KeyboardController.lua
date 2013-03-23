@@ -1,23 +1,20 @@
 -----------------------------------------------------------------------------------------
 --
--- KeyboardControler.lua
+-- KeyboardController.lua
 --
--- The KeyboardControler class.
+-- The KeyboardController class.
 --
 -----------------------------------------------------------------------------------------
-module("KeyboardControler", package.seeall)
-local Class = KeyboardControler
+module("KeyboardController", package.seeall)
+local Class = KeyboardController
 Class.__index = Class
-local sin = math.sin
-local cos = math.cos
 
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
 require("src.Config")
-require("src.Station")
 
--- Create the KeyboardControler
+-- Create the KeyboardController
 function Class.create(options)
     -- Create object
     self = {}
@@ -25,17 +22,10 @@ function Class.create(options)
 
     self.station = options.station
 
-    -- Set virtual viewport
-    self.virtualScreenHeight = gameConfig.camera.minVirtualHeight
-    self.virtualScaleFactor = love.graphics.getHeight() / self.virtualScreenHeight
-    self.screenRatio = love.graphics.getWidth() / love.graphics.getHeight()
-    self.camera = vec2(0, 0)
-    self.zoom = 1.0
-
     return self
 end
 
--- Destroy the KeyboardControler
+-- Destroy the KeyboardController
 function Class:destroy()
 end
 
@@ -43,12 +33,12 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
--- Update the KeyboardControler
+-- Update the KeyboardController
 --
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-    deltaRad = math.pi / 36 -- 10°
+    deltaRad = gameConfig.controls.keyboard.delta
 
     -- Control the laser command
     if (love.keyboard.isDown("left")) then
@@ -81,6 +71,4 @@ end
 
 -- Draw the game
 function Class:draw()
-    love.graphics.push()
-    love.graphics.pop()
 end
