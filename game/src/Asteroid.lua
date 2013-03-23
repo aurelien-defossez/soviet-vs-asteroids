@@ -21,6 +21,9 @@ function Class.create()
     	gameConfig.asteroidBeltDistance * math.sin( self.a )
     )
 
+    self.life = gameConfig.asteroid.life
+    self.numberSatHit = 0
+
     -- direction is toward the center +/- 9 degrees
     local dir = self.a + math.pi + ( ( math.random() - 0.5 ) * math.pi / 10 )
 
@@ -45,11 +48,24 @@ function Class:explode()
     self.exploded = true
 end
 
+function Class:hit()
+    self.numberSatHit = self.numberSatHit + 1
+end
+
+
 -- Update the station
 --
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
+
+    self.life = self.life - self.numberSatHit;
+
+    if (self.life <= 0) then
+        self:explode()
+    end
+    
+    self.numberSatHit = 0;
     self.pos = self.pos + self.speed * dt
     self.boundingCircle = circle(self.pos, self.radius)
 end

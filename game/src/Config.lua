@@ -18,6 +18,10 @@ gameConfig = {
         deleteDistance = 1080, -- in pixels
     },
 
+    asteroid = {
+        life = 50
+    },
+
     controls = {
         default = "joystick", -- joystick, keyboard, mouse
         force = nil, -- joystick, keyboard, mouse
