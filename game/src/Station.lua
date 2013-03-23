@@ -31,6 +31,10 @@ function Class.create(options)
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
     self.buttonPressed = ""
     self.radius = 100
+
+
+    self.missileArmLength = 100
+    self.laserStationOrbit = 100
     self.missileAngle = 0
     self.laserAngle = 0
     self.missiles = {}
@@ -53,15 +57,15 @@ end
 
 function Class:launchMissile()
     self.space:addMissile(Missile.create{
-        x = 0,
-        y = 0,
-        angle = math.random(-math.pi, math.pi),
+        x = self.missileArmLength * math.cos( -self.missileAngle) ,
+        y = self.missileArmLength * math.sin( -self.missileAngle),
+        angle = self.missileAngle,
         speed = 10
     })
     print("Missile Launched !")
     self.buttonPressed = "Missile !"
 end
-
+    
 function Class:fireLaser()
     print("Laser Fired !!")
     self.buttonPressed = "Laser !"
@@ -86,9 +90,9 @@ function Class:draw()
     love.graphics.circle('line', 0, 0, self.radius, 32)
 
     love.graphics.setColor(255, 0, 0)
-    love.graphics.circle('fill', self.radius * math.cos(self.missileAngle), self.radius * math.sin(self.missileAngle), 10, 32)
+    love.graphics.circle('fill', self.radius * math.cos( -self.missileAngle), self.radius * math.sin( -self.missileAngle), 10, 32)
     love.graphics.setColor(0, 255, 0)
-    love.graphics.circle('fill', self.radius * math.cos(self.laserAngle), self.radius * math.sin(self.laserAngle), 10, 32)
+    love.graphics.circle('fill', self.radius * math.cos( -self.laserAngle ), self.radius * math.sin( -self.laserAngle ), 10, 32)
 
     love.graphics.setColor(255,255,0)
     love.graphics.print("Button :" .. self.buttonPressed, -200, -200)

@@ -72,12 +72,20 @@ function Class:update(dt)
     norm2 =  math.sqrt( self.axis4 * self.axis4 + self.axis5 * self.axis5 )
     if (norm > 0.5) then
         self.joy1Angle = math.atan2(self.axis2, self.axis1)
-        self.station:setMissileLauncherAngle(self.joy1Angle)
+        self.station:setMissileLauncherAngle( -self.joy1Angle)
     end
 
     if (norm2 > 0.5) then
         self.joy2Angle = math.atan2(self.axis4, self.axis5)
-        self.station:setLaserSatAngle(self.joy2Angle)
+        self.station:setLaserSatAngle( -self.joy2Angle)
+    end
+
+    if ( love.joystick.isDown( 1, 5 ) ) then
+        self.station:launchMissile()
+    end
+
+    if ( love.joystick.isDown( 1, 6 ) or love.joystick.isDown( 1, 7 ) ) then
+        self.station:fireLaser()
     end
 
 end
@@ -98,18 +106,4 @@ function Class:draw()
 
 
 
-end
-
------------------------------------------------------------------------------------------
--- Callbacks
------------------------------------------------------------------------------------------
-function love.joystickpressed( joystick, button )
-
-    if (button == 5) then
-        self.station:launchMissile()
-    end
-
-    if (button == 6 or button == 7) then
-        self.station:fireLaser()
-    end
 end
