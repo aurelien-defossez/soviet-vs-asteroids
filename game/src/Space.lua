@@ -71,9 +71,8 @@ end
 
 function Class:removeAsteroid( i )
     local asteroid = self.asteroids[i]
-
-    table.remove( self.asteroids, i )
     asteroid.space = nil;
+    table.remove( self.asteroids, i )
 end
 
 -- Update the station
@@ -119,8 +118,11 @@ function Class:update(dt)
             self:removeAsteroid( i )
 
             self.station.life = self.station.life - asteroid.radius
-            SoundManager.explosion()
-            SoundManager.voice()
+            -- SoundManager.explosion()
+            -- SoundManager.voice()
+
+            break
+
         end
     end
 

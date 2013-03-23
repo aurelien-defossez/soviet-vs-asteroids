@@ -82,7 +82,6 @@ function Class.create(options)
         frameRate = 0.1,
         scale = 0.25
     }
-
     return self
 end
 
