@@ -2,22 +2,29 @@
 --
 -- Station.lua
 --
--- The station class.
+-- The joystickControler class.
 --
 -----------------------------------------------------------------------------------------
-module("Station", package.seeall)
-local Class = Station
+module("JoystickControler", package.seeall)
+local Class = JoystickControler
 Class.__index = Class
 local sin = math.sin
 local cos = math.cos
 
+-----------------------------------------------------------------------------------------
+-- Imports
+-----------------------------------------------------------------------------------------
+require("src.Config")
+require("src.Station")
 
-
--- Create the station
+-- Create the joystickControler
 function Class.create(options)
     -- Create object
     self = {}
     setmetatable(self, Class)
+
+    self.station = options.station
+    self.debugShape = true -- Config.debugShape
 
     -- Set virtual viewport
     self.virtualScreenHeight = gameConfig.camera.minVirtualHeight
@@ -27,20 +34,23 @@ function Class.create(options)
     self.zoom = 1.0
 
     -- Set font
-    love.graphics.setFont(love.graphics.newFont(40))
+    love.graphics.setFont(love.graphics.newFont(20))
 
     -- Create debug shape
     self.x = 0
     self.y = 0
-    self.radius = 100
+
+    self.axis1 = 0;
+    self.axis2 = 0;
+    self.axis4 = 0;
+    self.axis5 = 0;
 
     self.joy1Angle = 0
-    self.joy2Angle = 0
 
     return self
 end
 
--- Destroy the station
+-- Destroy the joystickControler
 function Class:destroy()
 end
 
@@ -48,18 +58,30 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
--- Update the station
+-- Update the joystickControler
 --
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
 
+
+    if (not love.joystick.isOpen) then
+        return
+    end
     -- Joystick
     -- 1 X et 2 Y, left
     -- 3  L2, R2
     -- 4 Y et 5 X
     self.axis1, self.axis2, self.axis3, self.axis4, self.axis5  = love.joystick.getAxes( 1 )
 
+    if (not self.axis5) then
+        self.axis5 = self.axis4
+        self.axis4 = self.axis3
+    end
+
+    norm =  math.sqrt( self.axis1 * self.axis1 + self.axis2 * self.axis2 )
+    self.joy1Angle = math.atan2(self.axis2, self.axis1)
+    self.joy2Angle = math.atan2(self.axis4, self.axis5)
 
 end
 
@@ -84,12 +106,10 @@ function Class:draw()
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
     -- Draw scene
-    love.graphics.setColor(0, 0, 255)
-    love.graphics.circle('line', self.x, self.y, self.radius, 32)
     love.graphics.setColor(255, 0, 0)
-    love.graphics.line(0, 0, 100*self.axis1, 100*self.axis2)
+    love.graphics.print(self.joy1Angle, 0, 0)
     love.graphics.setColor(0, 255, 0)
-    love.graphics.line(0, 0, 100*self.axis5, 100*self.axis4)
+    love.graphics.print(self.joy2Angle, 0, 30)
         
     -- Reset camera transform before hud drawing
     love.graphics.pop()

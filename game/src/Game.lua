@@ -20,6 +20,7 @@ require("lib.math.vec2")
 require("lib.math.aabb")
 require("src.Config")
 require("src.Station")
+require("src.JoystickControler")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -47,6 +48,7 @@ function Class.create(options)
     self.radius = 32
 
     self.station = Station.create();
+    controler = JoystickControler.create{ station = self.station}
 
     return self
 end
@@ -65,14 +67,12 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
     self.station:update(dt)
+    self.controler:update(dt)
 
     --love.joystick.open(1)
-    local axisDir1, axisDir2, axisDir3, axisDir4, axisDir5  = love.joystick.getAxes( 1 )
-    -- Joystick
-    -- 1 X et 2 Y, left
-    -- 3  L2, R2
-    -- 4 Y et 5 X
-    self.x = self.x + dt * 10000 * axisDir2 * 100
+
+
+    -- self.x = self.x + dt * 10000 * axisDir2 * 100
    -- self.y = self.y + dt * 10000 * axisDir7 * 100
     love.graphics.setColor(255, 0, 255)
     love.graphics.print("Hello world", 200, 100)
@@ -84,6 +84,7 @@ end
 -- Draw the game
 function Class:draw()
     self.station:draw()
+    self.controler:draw()
 
 end
 
