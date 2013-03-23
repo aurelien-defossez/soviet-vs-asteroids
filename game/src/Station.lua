@@ -32,10 +32,11 @@ function Class.create(options)
     self.x = 0
     self.y = 0
     self.radius = 100
+    self.missileAngle = 0
+    self.laserAngle = 0
     self.missiles = {}
 
-    self.joy1Angle = 0
-    self.joy2Angle = 0
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
 
     return self
 end
@@ -73,7 +74,25 @@ end
 
 -- Draw the game
 function Class:draw()
-    -- Draw debug station
+    if (not self.debug) then
+        return
+    end
+
+    -- Draw scene
     love.graphics.setColor(0, 0, 255)
-    love.graphics.circle('line', self.x, self.y, self.radius, 32)
+    love.graphics.circle('line', 0, 0, self.radius, 32)
+
+    love.graphics.setColor(255, 0, 0)
+    love.graphics.circle('fill', self.radius * math.cos(self.missileAngle), self.radius * math.sin(self.missileAngle), 10, 32)
+    love.graphics.setColor(0, 255, 0)
+    love.graphics.circle('fill', self.radius * math.cos(self.laserAngle), self.radius * math.sin(self.laserAngle), 10, 32)
+
+end
+
+function Class:setMissileLauncherAngle(angle)
+    self.missileAngle = angle
+end
+
+function Class:setLaserSatAngle(angle)
+    self.laserAngle = angle
 end

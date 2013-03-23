@@ -15,9 +15,11 @@ Class.__index = Class
 
 require("lib.math.vec2")
 require("lib.math.aabb")
+require("lib.json.json")
 require("src.Config")
 require("src.Station")
 require("src.Space")
+require("src.Asteroid")
 require("src.JoystickControler")
 
 -----------------------------------------------------------------------------------------
