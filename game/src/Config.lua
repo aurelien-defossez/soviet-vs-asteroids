@@ -37,11 +37,14 @@ gameConfig = {
         shapes = true
     },
 
+<<<<<<< HEAD
 
     laser = {
         laserWidth =100
     },
 
+=======
+>>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
     music = {
         music_path="assets/audio/intro_music.ogg",
         music_volume=1

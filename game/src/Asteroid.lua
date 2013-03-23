@@ -23,17 +23,27 @@ function Class.create()
 
     -- direction is toward the center +/- 9 degrees
     local dir = self.a + math.pi + ( ( math.random() - 0.5 ) * math.pi / 10 )
+<<<<<<< HEAD
 
     -- speed in 1 dimension is between 450 and 500
     local speed = math.random() * 50 + 450
 
+=======
+
+    -- speed in 1 dimension is between 450 and 500
+    local speed = math.random() * 50 + 450
+
+>>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
     self.speed = vec2(
         speed * math.cos( dir ),
         speed * math.sin( dir )
     )
+<<<<<<< HEAD
 
     self.colideX = 0
     self.colideY = 0
+=======
+>>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
 
     self.radius = 10
 
@@ -61,6 +71,7 @@ function Class:draw()
     end
 
     love.graphics.circle('fill', self.pos.x, self.pos.y, self.radius, 6)
+<<<<<<< HEAD
 
 end
 
@@ -74,4 +85,10 @@ function Class:distanceWithLine(shootAngle)
     norm = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
 
     return norm * math.sin(collideAngle)
+=======
+end
+
+function Class:isOffscreen()
+    return self.pos:length() > gameConfig.asteroidBeltDistance + 1
+>>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de
 end

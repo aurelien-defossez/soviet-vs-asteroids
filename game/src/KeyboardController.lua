@@ -21,7 +21,22 @@ function Class.create(options)
     setmetatable(self, Class)
 
     self.station = options.station
+    self.game = options.game
 
+<<<<<<< HEAD:game/src/KeyboardController.lua
+=======
+    function love.keypressed(key)
+        -- Go to upgrade mode
+        if key == "backspace" or key == "tab" then
+            if self.mode == "game" then
+                self.game:setMode("upgrade")
+            elseif self.mode == "upgrade" then
+                self.game:setMode("game")
+            end
+        end
+    end
+
+>>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de:game/src/KeyboardController.lua
     return self
 end
 
@@ -49,6 +64,7 @@ function Class:update(dt)
         self.station:setLaserSatAngle(self.station.laserAngle + deltaRad)
     end
 
+<<<<<<< HEAD:game/src/KeyboardController.lua
     -- I’M A’ FIRIN’ MAH LAZER!!
     if (love.keyboard.isDown("rctrl")) then
         self.station:fireLaser()
@@ -56,6 +72,8 @@ function Class:update(dt)
         self.station:stopLaser()
     end
 
+=======
+>>>>>>> 169d5d6809febcb8e4363739e6d26b959da212de:game/src/KeyboardController.lua
     -- Control the missiles launcher
     if (love.keyboard.isDown("a", "q")) then
         self.station:setMissileLauncherAngle(self.station.missileAngle - deltaRad)
@@ -65,12 +83,31 @@ function Class:update(dt)
         self.station:setMissileLauncherAngle(self.station.missileAngle + deltaRad)
     end
 
-    -- SHOOP DA WHOOP!!!!
-    if (love.keyboard.isDown(" ")) then
-        self.station:launchMissile()
+    if self.mode == "game" then
+        -- I’M A’ FIRIN’ MAH LAZER!!
+        if (love.keyboard.isDown("rctrl")) then
+            self.station:fireLaser()
+        end
+
+        -- SHOOP DA WHOOP!!!!
+        if (love.keyboard.isDown(" ")) then
+            self.station:launchMissile()
+        end
     end
 end
 
 -- Draw the game
 function Class:draw()
 end
+
+-- Set the current mode of the game
+--
+-- Parameters
+--  mode: "game" or "upgrade" mode
+function Class:setMode(mode)
+    self.mode = mode
+end
+
+-----------------------------------------------------------------------------------------
+
+return Class
