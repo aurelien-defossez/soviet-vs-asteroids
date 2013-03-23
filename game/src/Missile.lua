@@ -91,7 +91,7 @@ function Class:update(dt)
         self.boundingCircle = circle(self.pos, self.radius)
     end
 
-    self.sprite:udpate(dt)
+    self.sprite:update(dt)
 end
 
 -- Draw the game

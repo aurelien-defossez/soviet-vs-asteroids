@@ -71,10 +71,9 @@ end
 
 function Class:removeAsteroid( i )
     local asteroid = self.asteroids[i]
-    print( "there", asteroid, i )
 
-    table.remove( self.asteroids, i )
     asteroid.space = nil;
+    table.remove( self.asteroids, i )
 end
 
 -- Update the station
@@ -124,6 +123,7 @@ function Class:update(dt)
             -- SoundManager.voice()
 
             break
+
         end
     end
 

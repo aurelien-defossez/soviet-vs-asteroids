@@ -76,7 +76,6 @@ function Class:explode()
     self.exploded = true
     dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
     game.station:asteroidKilled(1, dist)
-
     SoundManager.explosion()
 end
 

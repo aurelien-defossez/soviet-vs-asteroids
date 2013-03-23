@@ -30,7 +30,16 @@ function Class.create(options)
     self.frameRate = options.frameRate
     self.time = 0
     self.currentFrame = options.firstFrame or 1
-    self.scale = options.scale
+    
+    if (options.scaleX and options.scaleY) then
+        self.scaleX = options.scaleX
+        self.scaleY = options.scaleY
+    else
+        if (options.scale) then
+            self.scaleX = options.scale
+            self.scaleY = options.scale
+        end
+    end
 
     local width = options.spriteSheet:getWidth()
     local height = options.spriteSheet:getHeight()
@@ -57,7 +66,7 @@ end
 -----------------------------------------------------------------------------------------
 
 -- Draw the game
-function Class:udpate(dt)
+function Class:update(dt)
     self.time = self.time + dt
 
     if self.time > self.frameRate then
@@ -74,7 +83,7 @@ end
 
 -- Draw the game
 function Class:draw()
-    love.graphics.draw(self.spriteBatch, self.pos.x, self.pos.y, -self.angle, self.scale, self.scale)
+    love.graphics.draw(self.spriteBatch, self.pos.x, self.pos.y, -self.angle, self.scaleX, self.scaleY)
 end
 
 -----------------------------------------------------------------------------------------
