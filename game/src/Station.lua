@@ -42,12 +42,15 @@ function Class.create(options)
     self.missileAngle = 0
     self.laserAngle = 0
     self.laserAlreadyFiring = false
+    self.shieldRotation = 0
+
     self.platform = love.graphics.newImage("assets/graphics/cosmonaute_plateforme.png")
     self.body = love.graphics.newImage("assets/graphics/cosmonaute_corps.png")
     self.missileArmFront = love.graphics.newImage("assets/graphics/cosmonaute_missile_front.png")
     self.missileArmBack = love.graphics.newImage("assets/graphics/cosmonaute_missile_back.png")
     self.laserArmFront = love.graphics.newImage("assets/graphics/cosmonaute_laser_front.png")
     self.laserArmBack = love.graphics.newImage("assets/graphics/cosmonaute_laser_back.png")
+    self.shield = love.graphics.newImage("assets/graphics/shield.png")
 
     -- Missiles cooldown
     self.lastSentMissileTime = - gameConfig.missiles.cooldown -- so we can shoot right away
@@ -120,7 +123,6 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-
     if self.mode == "upgrade" then
         return
     end
@@ -148,6 +150,7 @@ end
 
 -- Draw the game
 function Class:draw()
+    love.graphics.print("dt : " ..self.dt, 200, 200)
     -- Reset color
     love.graphics.setColor(255, 255, 255)
 
@@ -175,12 +178,16 @@ function Class:draw()
         love.graphics.draw(self.missileArmBack, offset.x, offset.y, -self.missileAngle - math.pi, .35, .35)
     end
 
+    -- Draw shield
+    local shieldOffset = vec2(-102, -102):rotateRad(self.shieldRotation)
+    love.graphics.draw(self.shield, shieldOffset.x, shieldOffset.y, self.shieldRotation, .4, .4)
+
     -- Draw laser sats
     for _, laserSat in pairs(self.laserSats) do
         laserSat:draw()
     end
 
-    if (not self.debug) then
+    if not self.debug then
         return
     end
 
