@@ -2,6 +2,8 @@ module("Asteroid", package.seeall)
 local Class = Asteroid
 Class.__index = Class
 
+require("lib.math.circle")
+
 function Class.create()
     -- Create object
     self = {}
@@ -38,22 +40,32 @@ function Class.create()
     return self
 end
 
+function Class:explode()
+    self.exploded = true
+end
+
 -- Update the station
 --
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
     self.pos = self.pos + self.speed * dt
+    self.boundingCircle = circle(self.pos, self.radius)
 end
 
 function Class:draw()
-    love.graphics.setColor(255, 0, 255)
+    if self.exploded then
+        love.graphics.setColor(255, 0, 128)
+    else
+        love.graphics.setColor(255, 0, 255)
+    end
+
     love.graphics.circle('fill', self.pos.x, self.pos.y, self.radius, 6)
 
 end
 
 function Class:isOffscreen()
-	return math.sqrt( self.pos.x * self.pos.x + self.pos.y * self.pos.y ) > gameConfig.asteroidBeltDistance + 1
+	return self.pos:length() > gameConfig.asteroidBeltDistance + 1
 end
 
 function Class:distanceWithLine(shootAngle)

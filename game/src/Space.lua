@@ -49,7 +49,7 @@ end
 -----------------------------------------------------------------------------------------
 
 function Class:addMissile(missile)
-    table.insert(self.missiles, missile)
+    self.missiles[missile.id] = missile
 end
 
 function Class:addAsteroid()
@@ -69,6 +69,19 @@ function Class:update(dt)
         asteroid:update(dt)
     end
 
+    -- Check for collisions
+    for _, missile in pairs(self.missiles) do
+        for _, asteroid in pairs(self.asteroids) do
+            if missile:collideAsteroid(asteroid) then
+                missile:explode()
+                asteroid:explode()
+
+                -- Stop collision detection for this asteroid
+                return
+            end
+        end
+    end
+    
     -- spawn asteroids every once in a while
     self.dLastSpawn = self.dLastSpawn + dt
     if self.dLastSpawn > gameConfig.asteroidSpawnEvery then
