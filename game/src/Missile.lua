@@ -10,6 +10,8 @@ module("Missile", package.seeall)
 local Class = Missile
 Class.__index = Class
 
+local Sprite = require("lib.Sprite")
+
 -----------------------------------------------------------------------------------------
 -- Class attributes
 -----------------------------------------------------------------------------------------
@@ -18,12 +20,6 @@ local cos = math.cos
 local sin = math.sin
 local ctId = 0
 local spriteSheet = love.graphics.newImage("assets/graphics/missile.png")
-local width = spriteSheet:getWidth()
-local height = spriteSheet:getHeight()
-local animation = {
-    love.graphics.newQuad(0, 0, 128, 65, width, height),
-    love.graphics.newQuad(128, 0, 128, 65, width, height)
-}
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -41,10 +37,13 @@ function Class.create(options)
     self.speed = options.speed
     self.pos = options.pos
     self.radius = 32
-    self.spriteBatch = love.graphics.newSpriteBatch(spriteSheet, 2)
-
-    self.spriteBatch:clear()
-    self.spriteBatch:addq(animation[2], 0, 0)
+    self.sprite = Sprite.create{
+        pos = self.pos,
+        angle = self.angle,
+        spriteSheet = spriteSheet,
+        frameCount = 2,
+        frameRate = 0.25
+    }
 
     ctId = ctId + 1
 
@@ -74,6 +73,7 @@ end
 function Class:update(dt)
     self.pos = self.pos + vec2(self.speed * cos(self.angle), self.speed * -sin(self.angle))
     self.boundingCircle = circle(self.pos, self.radius)
+    self.sprite:udpate(dt)
 end
 
 -- Draw the game
@@ -85,9 +85,8 @@ function Class:draw()
     end
 
     -- Position sprite
-    local spritePos = self.pos + vec2(-96, -32):rotateRad(-self.angle)
-
-    love.graphics.draw(self.spriteBatch, spritePos.x, spritePos.y, -self.angle)
+    self.sprite.pos = self.pos + vec2(-96, -32):rotateRad(-self.angle)
+    self.sprite:draw()
     
     self.pos:draw()
     self.boundingCircle:draw()
