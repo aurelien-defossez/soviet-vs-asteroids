@@ -30,6 +30,7 @@ function Class.create(options)
     self.frameRate = options.frameRate
     self.time = 0
     self.currentFrame = options.firstFrame or 1
+    self.scale = options.scale
 
     local width = options.spriteSheet:getWidth()
     local height = options.spriteSheet:getHeight()
@@ -73,7 +74,7 @@ end
 
 -- Draw the game
 function Class:draw()
-    love.graphics.draw(self.spriteBatch, self.pos.x, self.pos.y, -self.angle)
+    love.graphics.draw(self.spriteBatch, self.pos.x, self.pos.y, -self.angle, self.scale, self.scale)
 end
 
 -----------------------------------------------------------------------------------------
