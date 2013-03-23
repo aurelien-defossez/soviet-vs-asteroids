@@ -37,13 +37,16 @@ function Class.create(options)
     setmetatable(self, Class)
 
     -- Initialize attributes
-    self.pos = options.position
+ 
     self.angle = options.angle
     self.displayAngle = options.angle
     self.isFiring = false
     self.targetAsteroid = nil
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
     self.beamScale = 0.1;
+    self.pos = gameConfig.station.shieldOffset
+        + vec2(math.cos(self.displayAngle), math.sin(-self.displayAngle))
+        * gameConfig.station.radius * gameConfig.laserSat.offOrbitRatio
 
     self.debugText = ""
 
@@ -125,10 +128,8 @@ end
 function Class:draw()
 
     love.graphics.setColor(255,255,255)
+
     self.sprite.angle = self.displayAngle
-    self.pos = gameConfig.station.shieldOffset
-        + vec2(math.cos(self.displayAngle), math.sin(-self.displayAngle))
-        * gameConfig.station.radius * gameConfig.laserSat.offOrbitRatio
     self.sprite.pos = self.pos + vec2(-18, -18):rotateRad(-self.displayAngle)
     self.sprite:draw()
 
@@ -140,7 +141,7 @@ function Class:draw()
         self.laserBeamSprite:draw()
 
         self.laserOriginSprite.angle = self.displayAngle
-        self.laserOriginSprite.pos = self.pos + vec2( 16, -16):rotateRad(-self.displayAngle)
+        self.laserOriginSprite.pos = self.pos + vec2( 20, -16):rotateRad(-self.displayAngle)
         self.laserOriginSprite:draw()
 
         if self.beamScale >= 1 then
