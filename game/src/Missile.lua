@@ -58,3 +58,7 @@ function Class:draw()
     love.graphics.setColor(42, 42, 255)
     love.graphics.rectangle('fill', self.x, self.y, 12, 12)
 end
+
+function Class:isOffscreen()
+    return math.sqrt( self.x * self.x + self.y * self.y ) > gameConfig.missiles.deleteDistance + 1
+end
