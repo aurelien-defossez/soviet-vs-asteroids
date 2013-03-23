@@ -13,6 +13,19 @@ gameConfig = {
         deleteDistance = 1080, -- in pixels
     },
 
+    controls = {
+        default = "joystick", -- joystick, keyboard, mouse
+        force = nil, -- joystick, keyboard, mouse
+
+        mouse = {
+            controls = "missiles", -- lasers, missiles
+        },
+
+        keyboard = {
+            delta = math.pi / 36, -- in radian
+        },
+    },
+
     -- Debug options
     debug = {
         all = false,
