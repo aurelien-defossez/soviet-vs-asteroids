@@ -9,7 +9,7 @@ local sprites = {
     love.graphics.newImage("assets/graphics/asteroid_2.png"),
     love.graphics.newImage("assets/graphics/asteroid_3.png")
 }
-local baseRadius = gameConfig.asteroidBaseRadius
+local baseRadius = gameConfig.asteroid.baseRadius
 
 function Class.create( options )
     -- Create object
@@ -30,9 +30,6 @@ function Class.create( options )
 
     -- direction is toward the center +/- 18 degrees
     self.dir = options.dir or a + math.pi + ( ( math.random() - 0.5 ) * math.pi / 5 )
-
-    self.life = gameConfig.asteroid.life
-    self.numberSatHit = 0
 
     -- speed in 1 dimension is between 180 and 260
     self.speed1d = options.speed1d or math.random() * 50 + 100
@@ -61,6 +58,10 @@ function Class.create( options )
         end
     end
 
+    -- life of the asteroid depends of its radius
+    self.life = self.radius / baseRadius
+    self.numberSatHit = 0
+
     self.color = options.color or { 255, 255, 255 }
 
     self.boundingCircle = circle(self.pos, self.radius)
@@ -75,14 +76,13 @@ function Class:explode()
     dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
     game.station:asteroidKilled(1, dist)
 
-    -- red color for debugging purpose
-    self.color = {255, 255*0.25, 0}
+    -- green color for debugging purpose
+    self.color = {0, 255, 0}
 end
 
 function Class:hit()
-    self.numberSatHit = self.numberSatHit + 1
-
-
+    self.life = self.life - gameConfig.laser.baseDmg
+    self.color = { 255, 128 + ( self.life * 128 ), 128 + ( self.life * 128 ) }
 end
 
 -- Update the asteroid
@@ -92,16 +92,9 @@ end
 function Class:update(dt)
 
     if not self.exploded then
-        self.life = self.life - math.pow(self.numberSatHit, gameConfig.laser.dpsExp);
-        self.lifeColor = 255*(1 - self.life / gameConfig.asteroid.life )
-        self.color = {255, 255 - self.lifeColor * 0.75, 255 - self.lifeColor}
-
         if self.life <= 0 then
-            --print( self, "will explode" )
             self.space:explodeAsteroid( self )
         end
-
-        self.numberSatHit = 0
     end
 
     self.pos = self.pos + self.speed * dt
@@ -109,7 +102,6 @@ function Class:update(dt)
 end
 
 function Class:draw()
-
     love.graphics.setColor( unpack(self.color) )
     love.graphics.draw(
         self.sprite,

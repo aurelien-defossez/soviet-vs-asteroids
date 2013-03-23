@@ -19,9 +19,12 @@ gameConfig = {
     },
 
     asteroid = {
-        life = 50,
+    	spawnPeriod = 2,
+    	baseRadius = 64,
+        baseLife = 50,
         numberPoint = 100
     },
+    asteroidBeltDistance = 1080,
 
     controls = {
         default = "joystick", -- joystick, keyboard, mouse
@@ -46,18 +49,12 @@ gameConfig = {
     laser = {
         laserWidth =100,
         dpsExp = 0.75,
+        baseDmg = 0.015,
         maxRange = 800
     },
 
     music = {
         music_path="assets/audio/intro_music.ogg",
         music_volume=1
-    },
-
-    asteroidBeltDistance = 1080,
-
-    -- an asteroid will spanwn every X seconds
-    asteroidSpawnPeriod = 2,
-
-    asteroidBaseRadius = 64
+    }
 }

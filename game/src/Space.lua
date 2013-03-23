@@ -103,9 +103,9 @@ function Class:update(dt)
 
     -- spawn asteroids every once in a while
     self.dLastSpawn = self.dLastSpawn + dt
-    if self.dLastSpawn > gameConfig.asteroidSpawnPeriod then
+    if self.dLastSpawn > gameConfig.asteroid.spawnPeriod then
         self:addAsteroid()
-        self.dLastSpawn = self.dLastSpawn - gameConfig.asteroidSpawnPeriod
+        self.dLastSpawn = self.dLastSpawn - gameConfig.asteroid.spawnPeriod
     end
 
     -- kill missiles once they're offscreen
@@ -165,7 +165,7 @@ function Class:splitAsteroid( asteroid )
         dir = asteroid.dir + math.pi / 16,
         speed1d = asteroid.speed1d,
         radius = asteroid.radius / 2,
-        color = {255,255,255}
+        color = { unpack(asteroid.color) }
     })
 
     self:addAsteroid({
@@ -173,7 +173,7 @@ function Class:splitAsteroid( asteroid )
         dir = asteroid.dir - math.pi / 16,
         speed1d = asteroid.speed1d,
         radius = asteroid.radius / 2,
-        color = {255,255,255}
+        color = { unpack(asteroid.color) }
     })
 end
 
