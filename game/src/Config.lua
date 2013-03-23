@@ -18,6 +18,10 @@ gameConfig = {
         deleteDistance = 1080, -- in pixels
     },
 
+    asteroid = {
+        life = 50
+    },
+
     controls = {
         default = "joystick", -- joystick, keyboard, mouse
         force = nil, -- joystick, keyboard, mouse
@@ -39,7 +43,8 @@ gameConfig = {
 
 
     laser = {
-        laserWidth =100
+        laserWidth =100,
+        dpsExp = 0.75
     },
 
     music = {

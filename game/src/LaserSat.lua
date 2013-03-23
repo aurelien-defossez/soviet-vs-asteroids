@@ -50,6 +50,9 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
   --  self.isFiring = false
+    if (self.targetAsteroid) then
+        self.targetAsteroid:hit()
+    end
 end
 
 -- Draw the game

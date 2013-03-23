@@ -26,6 +26,9 @@ function Class.create( options )
     -- direction is toward the center +/- 18 degrees
     self.dir = options.dir or a + math.pi + ( ( math.random() - 0.5 ) * math.pi / 5 )
 
+    self.life = gameConfig.asteroid.life
+    self.numberSatHit = 0
+
     -- speed in 1 dimension is between 180 and 260
     self.speed1d = options.speed1d or math.random() * 50 + 100
 
@@ -54,11 +57,23 @@ function Class:explode()
     self.color = {64, 0, 64}
 end
 
+function Class:hit()
+    self.numberSatHit = self.numberSatHit + 1
+end
+
 -- Update the asteroid
 --
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
+
+    self.life = self.life - math.pow(self.numberSatHit, gameConfig.laser.dpsExp);
+
+    if (self.life <= 0) then
+        self:explode()
+    end
+
+    self.numberSatHit = 0;
     self.pos = self.pos + self.speed * dt
     self.boundingCircle = circle(self.pos, self.radius)
 end
