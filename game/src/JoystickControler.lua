@@ -10,6 +10,7 @@ local Class = JoystickControler
 Class.__index = Class
 local sin = math.sin
 local cos = math.cos
+local debug = false;
 
 -----------------------------------------------------------------------------------------
 -- Imports
@@ -23,7 +24,7 @@ function Class.create(options)
     self = {}
     setmetatable(self, Class)
 
-  
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes  
 
     -- Create debug shape
     self.x = 0
@@ -83,7 +84,7 @@ end
 
 -- Draw the game
 function Class:draw()
-    if (not love.joystick.isOpen(1)) then
+    if (not love.joystick.isOpen(1) or not self.debug) then
         return
     end
 
