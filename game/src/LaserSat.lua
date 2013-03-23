@@ -115,9 +115,15 @@ end
 
 -- Draw the game
 function Class:draw()
-
+    
+    love.graphics.setColor(255,255,255)
+    self.sprite.angle = self.displayAngle
+    self.sprite.pos = self.pos + vec2(-48, -32):rotateRad(-self.displayAngle)
+    self.sprite:draw()
 
     if(self.isFiring and not( self.targetAsteroid == nil)) then
+
+
         
         norm = math.sqrt(math.pow( self.targetAsteroid.pos.x - self.pos.x, 2 ) + math.pow( self.targetAsteroid.pos.y - self.pos.y, 2 ))
         self.laserBeamSprite.scaleX = (norm - self.targetAsteroid.radius * 0.7 - 48) / 256
@@ -125,7 +131,6 @@ function Class:draw()
         self.laserBeamSprite.pos = self.pos + vec2( 32, -16):rotateRad(-self.displayAngle)
         self.laserBeamSprite:draw()
 
-        love.graphics.setColor(255, 255, 255)
         self.laserOriginSprite.angle = self.displayAngle
         self.laserOriginSprite.pos = self.pos + vec2( 16, -16):rotateRad(-self.displayAngle)
         self.laserOriginSprite:draw()
@@ -140,26 +145,21 @@ function Class:draw()
 
 
         if self.debug then
-            local offset = vec2(15, 0):rotateRad(-self.displayAngle)
-            love.graphics.setColor(255, 0, 0)
-            love.graphics.line(self.pos.x + offset.x , self.pos.y + offset. y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y )
+            -- love.graphics.setLineWidth(3);
+           -- local offset = vec2(15, 0):rotateRad(-self.displayAngle)
+          --  love.graphics.setColor(255, 0, 0)
+         --   love.graphics.line(self.pos.x + offset.x , self.pos.y + offset. y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y )
         end
     end
-
-    love.graphics.setColor(255,255,255)
-    self.sprite.angle = self.displayAngle
-    self.sprite.pos = self.pos + vec2(-48, -32):rotateRad(-self.displayAngle)
-    self.sprite:draw()
 
 
    -- love.graphics.setColor(255, 255, 0)
  --   love.graphics.circle('fill', self.pos.x , self.pos.y , 10, 32)
-    love.graphics.setLineWidth(3);
+    
     --love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.displayAngle), self.pos.y + 20 * math.sin( -self.displayAngle) )
 
    
     --love.graphics.print("Debug : " ..self.debugText, 200, 200)
-
 
 end
 

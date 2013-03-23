@@ -20,12 +20,16 @@ function SoundManager.setup()
 	self.soundExplosion4=love.audio.newSource("assets/audio/explosion4.ogg")
 
 	self.soundUpgrade=love.audio.newSource("assets/audio/upgrade.ogg")
+	self.soundLaserPlace=love.audio.newSource("assets/audio/laser_place.ogg")
+	self.soundDronePlace=love.audio.newSource("assets/audio/drone_place.ogg")
 
 	self.voiceShit=love.audio.newSource("assets/audio/shit.ogg")
 	self.voiceFuckyou=love.audio.newSource("assets/audio/fuckyou.ogg")
 	self.voiceForMotherRussia=love.audio.newSource("assets/audio/formotherrussia.ogg")
+	self.voiceFusRoDov=love.audio.newSource("assets/audio/fusrodov.ogg")
+	self.voiceAnneRoumanov=love.audio.newSource("assets/audio/anneroumanov.ogg")
 
-	self.musicAmbiance=love.audio.newSource("assets/audio/intro_music.ogg")
+	self.musicAmbiance=love.audio.newSource("assets/audio/music.ogg")
 	self.musicAmbiance:setLooping(true)
 	self.musicPause=love.audio.newSource("assets/audio/shop.ogg")
 	self.musicPause:setLooping(true)
@@ -104,6 +108,18 @@ function SoundManager.upgrade()
 	end
 end
 
+function SoundManager.laserPlace()
+	if not self.noSound then
+		self.soundLaserPlace:play()
+	end
+end
+
+function SoundManager.dronePlace()
+	if not self.noSound then
+		self.soundDronePlace:play()
+	end
+end
+
 function SoundManager.voice()
 	if not self.noSound then
 		rd=math.floor(math.random(1,3))
@@ -114,6 +130,18 @@ function SoundManager.voice()
 		elseif rd == 3 then
 			self.voiceForMotherRussia:play()
 		end
+	end
+end
+
+function SoundManager.voiceBomb()
+	if not self.noSound then
+		self.voiceFusRoDov:play()
+	end
+end
+
+function SoundManager.voiceDeath()
+	if not self.noSound then
+		self.voiceAnneRoumanov:play()
 	end
 end
 

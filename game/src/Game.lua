@@ -27,6 +27,7 @@ require("src.SoundManager")
 require("src.Asteroid")
 require("src.Space")
 require("src.LaserSat")
+require("src.MenusManager")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -55,6 +56,9 @@ function Class.create(options)
     station = self.station
     }
     self.station.space = self.space
+    self.menus = MenusManager.create{
+        game = self
+    }
 
     -- Create the input controller
     if (
@@ -119,8 +123,12 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
     self.controller:update(dt)
-    self.station:update(dt)
-    self.space:update(dt)
+    if self.mode == "menu" then
+        self.menus:update(dt)
+    else
+        self.station:update(dt)
+        self.space:update(dt)
+    end
 end
 
 -- Draw the game
@@ -145,9 +153,11 @@ function Class:draw()
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
     self.controller:draw()
-    self.space:draw()
-    self.station:draw()
-    
+    if self.mode ~= "menu" then
+        self.space:draw()
+        self.station:draw() 
+    end
+
 
 
     -- Reset camera transform before hud drawing
@@ -160,6 +170,10 @@ function Class:draw()
 
     love.graphics.setColor(255, 255, 255)
     love.graphics.print("Roubles : " ..self.station.coins, 300, 10)
+
+    if self.mode == "menu" then
+        self.menus:draw()
+    end
 
 end
 
@@ -174,12 +188,21 @@ end
 -- Set the current mode of the game
 --
 -- Parameters
---  mode: "game" or "upgrade" mode
+--  mode: "game" or "upgrade" or "menu"
 function Class:setMode(mode)
     self.mode = mode
     self.controller:setMode(mode)
     self.station:setMode(mode)
     self.space:setMode(mode)
+end
+
+-- Set the current menu
+--
+-- Parameters
+--  menu: the menu to show
+function Class:setMenu(menu)
+    self.menus:setMenu(menu)
+    self:setMode("menu")
 end
 
 -----------------------------------------------------------------------------------------

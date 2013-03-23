@@ -17,6 +17,7 @@ Class.__index = Class
 require("src.Missile")
 require("src.LaserSat")
 require("src.SoundManager")
+require("src.utils")
 
 local sin = math.sin
 local cos = math.cos
@@ -35,7 +36,6 @@ function Class.create(options)
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
     self.radius = 100
-
     self.laserSats = {}
     self.missileArmLength = 100
     self.laserStationOrbit = 100
@@ -44,7 +44,9 @@ function Class.create(options)
     self.laserAlreadyFiring = false
     self.score = 0
     self.coins = 0
+    self.life = gameConfig.station.maxLife
     self.shieldRotation = 0
+    self.boundingCircle = circle(vec2(0, 0), self.radius)
 
     self.platform = love.graphics.newImage("assets/graphics/cosmonaute_plateforme.png")
     self.body = love.graphics.newImage("assets/graphics/cosmonaute_corps.png")
@@ -59,9 +61,6 @@ function Class.create(options)
     self.missileCoolDownTime = gameConfig.missiles.cooldown
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
-
-    self.debugText = ""
-
 
     return self
 end
@@ -92,7 +91,7 @@ function Class:launchMissile()
         angle = self.missileAngle,
         speed = 10
     })
-
+    SoundManager.missile()
 end
 
 function Class:fireLaser()
@@ -148,11 +147,14 @@ function Class:update(dt)
             self.isLaserFiring = false
         end
     end
+
+    self.shieldRotation = self.shieldRotation + dt * .05
+
+    self.life = math.min(self.life + gameConfig.station.shieldRegeneration * dt, 100)
 end
 
 -- Draw the game
 function Class:draw()
-
     -- Reset color
     love.graphics.setColor(255, 255, 255)
 
@@ -180,6 +182,12 @@ function Class:draw()
         love.graphics.draw(self.missileArmBack, offset.x, offset.y, -self.missileAngle - math.pi, .35, .35)
     end
 
+    -- Compute shield color
+    local lifePercentage = (self.life / gameConfig.station.maxLife)
+    local shieldColor = interpolateColorScheme(lifePercentage)
+
+    love.graphics.setColor(shieldColor[1], shieldColor[2], shieldColor[3])
+
     -- Draw shield
     local shieldOffset = vec2(-102, -102):rotateRad(self.shieldRotation)
     love.graphics.draw(self.shield, shieldOffset.x, shieldOffset.y, self.shieldRotation, .4, .4)
@@ -189,18 +197,15 @@ function Class:draw()
         laserSat:draw()
     end
 
-    if not self.debug then
-        return
+    if self.debug then
+        love.graphics.setColor(0, 0, 255)
+        love.graphics.circle('line', 0, 0, self.radius, 32)
+
+        love.graphics.setColor(255, 0, 0)
+        love.graphics.circle('fill', self.radius * math.cos( -self.missileAngle), self.radius * math.sin( -self.missileAngle), 10, 32)
+        love.graphics.setColor(0, 255, 0)
+        love.graphics.circle('fill', self.radius * math.cos( -self.laserAngle ), self.radius * math.sin( -self.laserAngle ), 10, 32)
     end
-
-    -- Draw scene
-    love.graphics.setColor(0, 0, 255)
-    love.graphics.circle('line', 0, 0, self.radius, 32)
-
-    love.graphics.setColor(255, 0, 0)
-    love.graphics.circle('fill', self.radius * math.cos( -self.missileAngle), self.radius * math.sin( -self.missileAngle), 10, 32)
-    love.graphics.setColor(0, 255, 0)
-    love.graphics.circle('fill', self.radius * math.cos( -self.laserAngle ), self.radius * math.sin( -self.laserAngle ), 10, 32)
 end
 
 function Class:setMissileLauncherAngle(angle)
@@ -242,6 +247,5 @@ function Class:asteroidKilled(size, distance)
     maxRange = gameConfig.laser.maxRange
     self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * (distance / ( 2 * maxRange )) + 0.5)
     self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * (distance / ( 2 * maxRange )) + 0.5)
-    
 end
 
