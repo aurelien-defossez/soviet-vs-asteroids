@@ -39,6 +39,10 @@ gameConfig = {
         offOrbitRatio = 1.0
     },
 
+    missile = {
+        speed = 6
+    },
+
     controls = {
         default = "joystick", -- joystick, keyboard, mouse
         force = nil, -- joystick, keyboard, mouse

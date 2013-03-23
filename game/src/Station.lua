@@ -56,6 +56,13 @@ function Class.create(options)
     self.laserArmBack = love.graphics.newImage("assets/graphics/cosmonaute_laser_back.png")
     self.shield = love.graphics.newImage("assets/graphics/shield.png")
 
+    self.missileArmFrontOffset = vec2(-3, -15)
+    self.missileArmBackOffset = vec2(73, 15)
+    self.laserArmFrontOffset = vec2(-2, -19)
+    self.laserArmBackOffset = vec2(42, 19)
+    self.missileLauncherFrontOffset = vec2(90, 0)
+    self.missileLauncherBackOffset = vec2(-90, 0)
+
     -- Missiles cooldown
     self.lastSentMissileTime = - gameConfig.missiles.cooldown -- so we can shoot right away
     self.missileCoolDownTime = gameConfig.missiles.cooldown
@@ -85,18 +92,24 @@ function Class:launchMissile()
 
     self.lastSentMissileTime = love.timer.getTime()
 
+    -- Compute missile-launcher position
+    local missileLauncherPosition
+    if math.abs(self.missileAngle) < halfPi then
+        missileLauncherPosition = self.missileLauncherFrontOffset:rotateRad(-self.missileAngle)
+    else
+        missileLauncherPosition = self.missileLauncherBackOffset:rotateRad(-self.missileAngle - math.pi)
+    end
+
     -- Send the missile
     self.space:addMissile(Missile.create{
-        pos = vec2(self.missileArmLength * cos(-self.missileAngle), self.missileArmLength * sin(-self.missileAngle)),
+        pos = missileLauncherPosition,
         angle = self.missileAngle,
-        speed = 10
+        speed = gameConfig.missile.speed
     })
     SoundManager.missile()
 end
 
 function Class:fireLaser()
-
-
     local closestAsteroid = self:findClosestAsteroid(self.laserAngle, gameConfig.laser.laserWidth)
 
     if (closestAsteroid == nil) then
@@ -163,10 +176,10 @@ function Class:draw()
 
     -- Draw laser arm
     if math.abs(self.laserAngle) < halfPi then
-        local offset = vec2(-2, -19):rotateRad(-self.laserAngle) + vec2(16, 0)
+        local offset = self.laserArmFrontOffset:rotateRad(-self.laserAngle) + vec2(16, 0)
         love.graphics.draw(self.laserArmFront, offset.x, offset.y, -self.laserAngle, .35, .35)
     else
-        local offset = vec2(42, 19):rotateRad(-self.laserAngle) + vec2(16, 0)
+        local offset = self.laserArmBackOffset:rotateRad(-self.laserAngle) + vec2(16, 0)
         love.graphics.draw(self.laserArmBack, offset.x, offset.y, -self.laserAngle - math.pi, .35, .35)
     end
 
@@ -175,10 +188,10 @@ function Class:draw()
 
     -- Draw missile arm
     if math.abs(self.missileAngle) < halfPi then
-        local offset = vec2(-3, -15):rotateRad(-self.missileAngle)
+        local offset = self.missileArmFrontOffset:rotateRad(-self.missileAngle)
         love.graphics.draw(self.missileArmFront, offset.x, offset.y, -self.missileAngle, .35, .35)
     else
-        local offset = vec2(73, 15):rotateRad(-self.missileAngle)
+        local offset = self.missileArmBackOffset:rotateRad(-self.missileAngle)
         love.graphics.draw(self.missileArmBack, offset.x, offset.y, -self.missileAngle - math.pi, .35, .35)
     end
 
