@@ -79,7 +79,7 @@ end
 function Class:update(dt)
     self.pos = self.pos + vec2(self.speed * cos(self.angle), self.speed * -sin(self.angle))
     self.boundingCircle = circle(self.pos, self.radius)
-    self.sprite:udpate(dt)
+    self.sprite:update(dt)
 
 end
 

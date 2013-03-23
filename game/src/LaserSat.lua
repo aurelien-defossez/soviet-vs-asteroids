@@ -17,6 +17,7 @@ local Sprite = require("lib.Sprite")
 -----------------------------------------------------------------------------------------
 local spriteSheet = love.graphics.newImage("assets/graphics/lasersat.png")
 local laserSpriteSheet = love.graphics.newImage("assets/graphics/laser_boule.png")
+local laserBeamSpriteSheet = love.graphics.newImage("assets/graphics/laser_jet.png")
 
 -----------------------------------------------------------------------------------------
 -- Imports
@@ -55,8 +56,8 @@ function Class.create(options)
         pos = self.pos,
         angle = self.displayAngle,
         spriteSheet = laserSpriteSheet,
-        frameCount = 1,
-        frameRate = 1,
+        frameCount = 2,
+        frameRate = 0.1,
         scale = 0.25
     }
 
@@ -64,8 +65,17 @@ function Class.create(options)
         pos = self.pos,
         angle = self.displayAngle,
         spriteSheet = laserSpriteSheet,
-        frameCount = 1,
-        frameRate = 1,
+        frameCount = 2,
+        frameRate = 0.1,
+        scale = 0.25
+    }
+
+    self.laserBeamSprite = Sprite.create{
+        pos = self.pos,
+        angle = self.displayAngle,
+        spriteSheet = laserBeamSpriteSheet,
+        frameCount = 2,
+        frameRate = 0.1,
         scale = 0.25
     }
 
@@ -76,6 +86,10 @@ end
 
 -- Destroy the station
 function Class:destroy()
+    self.laserBeamSprite:destroy()
+    self.laserImpactSprite:destroy()
+    self.laserOriginSprite:destroy()
+    self.sprite:destroy()
 end
 
 -----------------------------------------------------------------------------------------
@@ -87,10 +101,16 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
+    self.laserOriginSprite:update(dt)
+    self.laserImpactSprite:update(dt)
+    self.laserBeamSprite:update(dt)
+
   --  self.isFiring = false
     if (self.targetAsteroid) then
         self.targetAsteroid:hit()
     end
+
+
 end
 
 -- Draw the game
@@ -99,6 +119,12 @@ function Class:draw()
 
     if(self.isFiring and not( self.targetAsteroid == nil)) then
         
+        norm = math.sqrt(math.pow( self.targetAsteroid.pos.x - self.pos.x, 2 ) + math.pow( self.targetAsteroid.pos.y - self.pos.y, 2 ))
+        self.laserBeamSprite.scaleX = (norm - self.targetAsteroid.radius * 0.7 - 48) / 256
+        self.laserBeamSprite.angle = self.displayAngle
+        self.laserBeamSprite.pos = self.pos + vec2( 32, -16):rotateRad(-self.displayAngle)
+        self.laserBeamSprite:draw()
+
         love.graphics.setColor(255, 255, 255)
         self.laserOriginSprite.angle = self.displayAngle
         self.laserOriginSprite.pos = self.pos + vec2( 16, -16):rotateRad(-self.displayAngle)
@@ -106,9 +132,9 @@ function Class:draw()
 
         self.laserImpactSprite.angle = self.displayAngle
         self.laserImpactSprite.pos = self.targetAsteroid.pos + vec2( -16, -16):rotateRad(-self.displayAngle)
-        self.laserImpactSprite.pos = self.laserImpactSprite.pos + vec2( self.targetAsteroid.radius * 0.7, self.targetAsteroid.radius * 0.7 ):rotateRad(-self.displayAngle +3.14 - 0.785)
-
+        self.laserImpactSprite.pos = self.laserImpactSprite.pos + vec2( self.targetAsteroid.radius * 0.7, self.targetAsteroid.radius * 0.7 ):rotateRad(-self.displayAngle + 0.75* math.pi)
         self.laserImpactSprite:draw()
+
 
 
 
