@@ -65,7 +65,7 @@ end
 function Class:update(dt)
 
 
-    if (not love.joystick.isOpen) then
+    if (not love.joystick.isOpen(1)) then
         return
     end
     -- Joystick
@@ -87,6 +87,10 @@ end
 
 -- Draw the game
 function Class:draw()
+    if (not love.joystick.isOpen(1)) then
+        return
+    end
+    
     love.graphics.push()
     
     -- Apply virtual resolution before rendering anything

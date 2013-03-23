@@ -54,12 +54,6 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
 
-    -- Joystick
-    -- 1 X et 2 Y, left
-    -- 3  L2, R2
-    -- 4 Y et 5 X
-    self.axis1, self.axis2, self.axis3, self.axis4, self.axis5  = love.joystick.getAxes( 1 )
-
 
 end
 
@@ -86,10 +80,6 @@ function Class:draw()
     -- Draw scene
     love.graphics.setColor(0, 0, 255)
     love.graphics.circle('line', self.x, self.y, self.radius, 32)
-    love.graphics.setColor(255, 0, 0)
-    love.graphics.line(0, 0, 100*self.axis1, 100*self.axis2)
-    love.graphics.setColor(0, 255, 0)
-    love.graphics.line(0, 0, 100*self.axis5, 100*self.axis4)
         
     -- Reset camera transform before hud drawing
     love.graphics.pop()
