@@ -72,12 +72,12 @@ function Class:update(dt)
     norm2 =  math.sqrt( self.axis4 * self.axis4 + self.axis5 * self.axis5 )
     if (norm > 0.5) then
         self.joy1Angle = math.atan2(self.axis2, self.axis1)
-        self.station:setMissileLauncherAngle(self.joy1Angle)
+        self.station:setMissileLauncherAngle( -self.joy1Angle)
     end
 
     if (norm2 > 0.5) then
         self.joy2Angle = math.atan2(self.axis4, self.axis5)
-        self.station:setLaserSatAngle(self.joy2Angle)
+        self.station:setLaserSatAngle( -self.joy2Angle)
     end
 
 end
