@@ -23,8 +23,8 @@ function Class.create( options )
     local a = math.atan2( y, x )
 
     self.pos = options.pos or vec2(
-    	gameConfig.asteroidBeltDistance * math.cos( a ),
-    	gameConfig.asteroidBeltDistance * math.sin( a )
+        gameConfig.asteroidBeltDistance * math.cos( a ),
+        gameConfig.asteroidBeltDistance * math.sin( a )
     )
 
     -- direction is toward the center +/- 18 degrees
@@ -74,14 +74,17 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
 
-    self.life = self.life - math.pow(self.numberSatHit, gameConfig.laser.dpsExp);
+    if not self.exploded then
+        self.life = self.life - math.pow(self.numberSatHit, gameConfig.laser.dpsExp);
 
-    if self.life <= 0 then
-    	--print( self, "will explode" )
-        self.space:explodeAsteroid( self )
+        if self.life <= 0 then
+            --print( self, "will explode" )
+            self.space:explodeAsteroid( self )
+        end
+
+        self.numberSatHit = 0
     end
 
-    self.numberSatHit = 0;
     self.pos = self.pos + self.speed * dt
     self.boundingCircle = circle(self.pos, self.radius)
 end
@@ -91,7 +94,7 @@ function Class:draw()
 end
 
 function Class:isOffscreen()
-	return self.pos:length() > gameConfig.asteroidBeltDistance + 1
+    return self.pos:length() > gameConfig.asteroidBeltDistance + 1
 end
 
 function Class:distanceWithLine(shootAngle)

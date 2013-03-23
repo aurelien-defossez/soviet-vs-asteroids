@@ -3,7 +3,7 @@ gameConfig = {
 
     screen = {
         width = 1024,
-        height = 768
+        height = 700
     },
 
     -- Camera
