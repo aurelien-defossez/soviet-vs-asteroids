@@ -145,8 +145,9 @@ function Class:draw()
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
     self.controller:draw()
-    self.station:draw()
     self.space:draw()
+    self.station:draw()
+    
 
 
     -- Reset camera transform before hud drawing

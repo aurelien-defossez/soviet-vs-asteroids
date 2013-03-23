@@ -16,6 +16,7 @@ local Sprite = require("lib.Sprite")
 -- Class attributes
 -----------------------------------------------------------------------------------------
 local spriteSheet = love.graphics.newImage("assets/graphics/lasersat.png")
+local laserSpriteSheet = love.graphics.newImage("assets/graphics/laser_boule.png")
 
 -----------------------------------------------------------------------------------------
 -- Imports
@@ -46,8 +47,26 @@ function Class.create(options)
         angle = self.displayAngle,
         spriteSheet = spriteSheet,
         frameCount = 1,
-        frameRate = 10000,
+        frameRate = 1,
         scale = 0.5
+    }
+
+    self.laserOriginSprite = Sprite.create{
+        pos = self.pos,
+        angle = self.displayAngle,
+        spriteSheet = laserSpriteSheet,
+        frameCount = 1,
+        frameRate = 1,
+        scale = 0.25
+    }
+
+    self.laserImpactSprite = Sprite.create{
+        pos = self.pos,
+        angle = self.displayAngle,
+        spriteSheet = laserSpriteSheet,
+        frameCount = 1,
+        frameRate = 1,
+        scale = 0.25
     }
 
 
@@ -76,13 +95,37 @@ end
 
 -- Draw the game
 function Class:draw()
-    if not self.debug then
-        return
+
+
+    if(self.isFiring and not( self.targetAsteroid == nil)) then
+        
+        love.graphics.setColor(255, 255, 255)
+        self.laserOriginSprite.angle = self.displayAngle
+        self.laserOriginSprite.pos = self.pos + vec2( 16, -16):rotateRad(-self.displayAngle)
+        self.laserOriginSprite:draw()
+
+        self.laserImpactSprite.angle = self.displayAngle
+        self.laserImpactSprite.pos = self.targetAsteroid.pos + vec2( -16, -16):rotateRad(-self.displayAngle)
+        self.laserImpactSprite.pos = self.laserImpactSprite.pos + vec2( self.targetAsteroid.radius * 0.7, self.targetAsteroid.radius * 0.7 ):rotateRad(-self.displayAngle +3.14 - 0.785)
+
+        self.laserImpactSprite:draw()
+
+
+
+
+        if self.debug then
+            local offset = vec2(15, 0):rotateRad(-self.displayAngle)
+            love.graphics.setColor(255, 0, 0)
+            love.graphics.line(self.pos.x + offset.x , self.pos.y + offset. y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y )
+        end
     end
+
     love.graphics.setColor(255,255,255)
     self.sprite.angle = self.displayAngle
     self.sprite.pos = self.pos + vec2(-48, -32):rotateRad(-self.displayAngle)
     self.sprite:draw()
+
+
    -- love.graphics.setColor(255, 255, 0)
  --   love.graphics.circle('fill', self.pos.x , self.pos.y , 10, 32)
     love.graphics.setLineWidth(3);
@@ -91,12 +134,7 @@ function Class:draw()
    
     --love.graphics.print("Debug : " ..self.debugText, 200, 200)
 
-   
-    if(self.isFiring and not( self.targetAsteroid == nil)) then
-        love.graphics.setColor(255, 0, 0)
-        local offset = vec2(15, 0):rotateRad(-self.displayAngle)
-        love.graphics.line(self.pos.x + offset.x , self.pos.y + offset. y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y )
-    end
+
 end
 
 function Class:inFrontOf(fireAngle)
