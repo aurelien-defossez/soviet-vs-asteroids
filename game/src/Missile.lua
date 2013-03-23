@@ -42,7 +42,7 @@ function Class.create(options)
         angle = self.angle,
         spriteSheet = spriteSheet,
         frameCount = 2,
-        frameRate = 0.25
+        frameRate = 0.1
     }
 
     ctId = ctId + 1
