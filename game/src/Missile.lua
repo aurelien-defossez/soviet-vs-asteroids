@@ -21,7 +21,6 @@ local sin = math.sin
 local ctId = 0
 local spriteSheet = love.graphics.newImage("assets/graphics/missile.png")
 
-
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -41,6 +40,8 @@ function Class.create(options)
     self.radius = 32
     self.color = {42, 42, 255}
     self.boundingCircle = circle(self.pos, self.radius)
+    
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
 
     self.sprite = Sprite.create{
         pos = self.pos,
@@ -80,18 +81,20 @@ function Class:update(dt)
     self.pos = self.pos + vec2(self.speed * cos(self.angle), self.speed * -sin(self.angle))
     self.boundingCircle = circle(self.pos, self.radius)
     self.sprite:udpate(dt)
-
 end
 
 -- Draw the game
 function Class:draw()
-    love.graphics.setColor(255 ,255 ,255 )
+    -- Reset color
+    love.graphics.setColor(255, 255, 255)
+
     -- Position sprite
     self.sprite.pos = self.pos + vec2(-96, -32):rotateRad(-self.angle)
     self.sprite:draw()
 
-    self.pos:draw()
-    self.boundingCircle:draw()
+    if self.debug then
+        self.boundingCircle:draw()
+    end
 end
 
 function Class:isOffscreen()

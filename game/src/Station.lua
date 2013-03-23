@@ -62,9 +62,6 @@ function Class.create(options)
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
-    self.debugText = ""
-
-
     return self
 end
 
@@ -200,18 +197,15 @@ function Class:draw()
         laserSat:draw()
     end
 
-    if not self.debug then
-        return
+    if self.debug then
+        love.graphics.setColor(0, 0, 255)
+        love.graphics.circle('line', 0, 0, self.radius, 32)
+
+        love.graphics.setColor(255, 0, 0)
+        love.graphics.circle('fill', self.radius * math.cos( -self.missileAngle), self.radius * math.sin( -self.missileAngle), 10, 32)
+        love.graphics.setColor(0, 255, 0)
+        love.graphics.circle('fill', self.radius * math.cos( -self.laserAngle ), self.radius * math.sin( -self.laserAngle ), 10, 32)
     end
-
-    -- Draw scene
-    love.graphics.setColor(0, 0, 255)
-    love.graphics.circle('line', 0, 0, self.radius, 32)
-
-    love.graphics.setColor(255, 0, 0)
-    love.graphics.circle('fill', self.radius * math.cos( -self.missileAngle), self.radius * math.sin( -self.missileAngle), 10, 32)
-    love.graphics.setColor(0, 255, 0)
-    love.graphics.circle('fill', self.radius * math.cos( -self.laserAngle ), self.radius * math.sin( -self.laserAngle ), 10, 32)
 end
 
 function Class:setMissileLauncherAngle(angle)
