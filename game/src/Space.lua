@@ -165,12 +165,12 @@ function Class:draw()
         960, 540
     )
 
-    for _, missile in pairs(self.missiles) do
-        missile:draw()
-    end
-
     for _, asteroid in pairs(self.asteroids) do
         asteroid:draw()
+    end
+
+    for _, missile in pairs(self.missiles) do
+        missile:draw()
     end
 end
 
