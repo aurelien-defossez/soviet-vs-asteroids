@@ -134,7 +134,7 @@ end
 function Class:draw()
     if self.targetAsteroid then
 
-        love.graphics.setColor(0,60,255)
+        love.graphics.setColor(27,188,224)
 
         norm = math.sqrt(math.pow( self.targetAsteroid.pos.x - self.pos.x, 2 ) + math.pow( self.targetAsteroid.pos.y - self.pos.y, 2 ))
         self.laserBeamSprite.scaleX = (norm - self.targetAsteroid.radius * 0.7 - 32) / 256
