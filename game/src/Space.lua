@@ -109,7 +109,7 @@ function Class:update(dt)
                     missile:explode()
                     self:splitAsteroid( asteroid )
                     asteroid:explode()
-                    self:removeAsteroid( i )
+                    --self:removeAsteroid( i )
 
                     -- Stop collision detection for this missile
                     break
