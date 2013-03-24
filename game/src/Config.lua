@@ -15,6 +15,12 @@ gameConfig = {
         maxVirtualHeight = 4000,
     },
 
+    difficulty = {
+        baseDifficulty = 1,
+        sinInfluence = .5,
+        sinPeriod = 30
+    },
+
     missiles = {
         cooldown = 1.0, -- in seconds
         cooldownUpgradeRate = 0.8, -- -20% per upgrade
@@ -22,8 +28,9 @@ gameConfig = {
     },
 
     asteroid = {
-        spawnPeriod = 2,
-        baseRadius = 64,
+        speed = 50,
+    	spawnPeriod = 2,
+    	baseRadius = 64,
         minRadius = 16,
         baseLife = 300,
         numberPoint = 100,
