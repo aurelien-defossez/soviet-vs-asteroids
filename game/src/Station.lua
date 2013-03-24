@@ -172,6 +172,10 @@ function Class:update(dt)
 
         -- Hit asteroid
         if nearestAsteroid then
+            local deltaX = nearestAsteroid.pos.x - drone.pos.x
+            local deltaY = nearestAsteroid.pos.y - drone.pos.y
+            asteroidAngle = - math.atan2(deltaY, deltaX)
+            drone.displayAngle = asteroidAngle
             drone:hit(nearestAsteroid)
         end
     end
