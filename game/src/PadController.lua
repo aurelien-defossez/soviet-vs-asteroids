@@ -36,6 +36,9 @@ function Class.create(options)
     self.joy2Angle = 0
     self.buttonPressed = ""
 
+    self.axis1Released = true
+    self.axis2Released = true
+
     return self
 end
 
@@ -71,24 +74,65 @@ function Class:update(dt)
 
     norm =  math.sqrt( self.axis1 * self.axis1 + self.axis2 * self.axis2 )
     norm2 =  math.sqrt( self.axis4 * self.axis4 + self.axis5 * self.axis5 )
-    if (norm > 0.5) then
-        self.joy1Angle = math.atan2(self.axis2, self.axis1)
-        self.station:setMissileLauncherAngle( -self.joy1Angle)
-    end
+    self.joy1Angle = math.atan2(self.axis2, self.axis1)
+    self.joy2Angle = math.atan2(self.axis4, self.axis5)
+    
+    if self.mode == "game" then
+        if (norm > 0.5) then
+            self.station:setMissileLauncherAngle( -self.joy1Angle)
+        end
 
-    if (norm2 > 0.5) then
-        self.joy2Angle = math.atan2(self.axis4, self.axis5)
-        self.station:setLaserSatAngle( -self.joy2Angle)
-    end
+        if (norm2 > 0.5) then
+            self.station:setLaserSatAngle( -self.joy2Angle)
+        end
 
-    if ( love.joystick.isDown( 1, 5 ) ) then
-        self.station:launchMissile()
-    end
+        if ( love.joystick.isDown( 1, 5 ) ) then
+            self.station:launchMissile()
+        end
 
-    if ( love.joystick.isDown( 1, 6 ) or love.joystick.isDown( 1, 7 ) ) then
-        self.station:fireLaser()
-    else
-        self.station:stopLaser()
+        if ( love.joystick.isDown( 1, 6 ) or love.joystick.isDown( 1, 7 ) ) then
+            self.station:fireLaser()
+        else
+            self.station:stopLaser()
+        end
+    elseif self.mode == "menu" then
+        -- Navigate in menus
+        if ((self.axis1 > 0.5 and self.axis1Released) or (self.axis2 > 0.5 and self.axis2Released)) then
+            if self.mode == "menu" then
+                self.axis1Released = false
+                self.axis2Released = false
+                self.game.menus:nextButton()
+            end
+        end
+        if ((self.axis1 < -0.5 and self.axis1Released) or (self.axis2 < -0.5 and self.axis2Released)) then
+            if self.mode == "menu" then
+                self.axis1Released = false
+                self.axis2Released = false
+                self.game.menus:previousButton()
+            end
+        end
+
+        if ( (self.axis1 > -0.5 and self.axis1 < 0.5)) then
+            self.axis1Released = true
+        end
+
+        if ( (self.axis2 > -0.5 and self.axis2 <= 0 ) or (self.axis2 < 0.5 and self.axis2 >= 0) ) then
+            self.axis2Released = true
+        end
+    elseif self.mode == "upgrade" then
+        if norm > 0.5 then
+            if self.game.upgrade == "satellite" then
+                self.station.newSatellite:setAngle( -self.joy1Angle)
+            elseif self.game.upgrade == "drone" then
+                self.station.newDrone:setAngle( -self.joy1Angle)
+            end
+        elseif norm2 > 0.5 then
+            if self.game.upgrade == "satellite" then
+                self.station.newSatellite:setAngle( -self.joy2Angle)
+            elseif self.game.upgrade == "drone" then
+                self.station.newDrone:setAngle( -self.joy2Angle)
+            end
+        end
     end
 
 end
@@ -101,8 +145,7 @@ function Class:draw()
     end
 
     -- Draw scene
-    love.graphics.setColor(255, 0, 0)
---    love.graphics.print(self.joy1Angle, 0, 0)
+
     love.graphics.print(self.buttonPressed, 0, 0)
     love.graphics.line(0 , 0, 100*math.cos(self.joy1Angle), 100*math.sin(self.joy1Angle))
     love.graphics.setColor(0, 255, 0)
@@ -128,7 +171,7 @@ function love.joystickpressed( joystick, button )
     -- A = 1
     -- B = 2
     -- Start = 8
-
+    self.buttonPressed = button
     if button == 4 then
         if self.mode == "game" then
             self.game:setMenu("upgrade")
@@ -137,26 +180,35 @@ function love.joystickpressed( joystick, button )
         elseif self.mode == "menu" and self.game.menu == "upgrade" then
             self.game:setMode("game")
         end
+    end
+
+    -- Go to pause menu and generic escape from menus and modes
+    if button == 8 then
+        if self.mode == "menu" and self.game.menu == "pause" then
+            self.game:setMode("game")
+        elseif self.mode == "game" then
+            self.game:setMenu("pause")
+        elseif self.mode == "upgrade" then
+            self.game:setMenu("upgrade")
+        elseif self.mode == "menu" then
+            self.game:setMode("game")
+        elseif self.mode == "game" then
+            self.game:setMenu("pause")
+        end
+
 
         return
     end
 
-    -- Go to pause menu
-        if button == 8 then
-            if self.mode == "menu" and self.game.menu == "pause" then
-                self.game:setMode("game")
-            elseif self.mode == "game" then
-                self.game:setMenu("pause")
-            elseif self.mode == "upgrade" then
-                self.game:setMenu("upgrade")
-            elseif self.mode == "menu" then
-                self.game:setMode("game")
-            elseif self.mode == "game" then
-                self.game:setMenu("pause")
-            end
-
-
-            return
+    -- Navigate in menus
+    if button == 1 then
+        if self.mode == "menu" then
+            self.game.menus:enterSelected()
+        elseif self.mode == "upgrade" then
+            self.game:putUpgrade()
         end
+    end
+
+    return self
     
 end

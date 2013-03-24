@@ -33,7 +33,8 @@ gameConfig = {
         radius = 90,
         maxLife = 100,
         shieldRegeneration = .5,
-        shieldOffset = vec2(0, 15)
+        shieldOffset = vec2(0, 15),
+        scoreMaxRange = 800
     },
 
     laserSat = {
@@ -71,9 +72,10 @@ gameConfig = {
 
 
     laser = {
-        laserWidth =100,
+        laserWidth =70,
         dpsExp = 0.75,
         baseDmg = 0.015,
-        maxRange = 800
+        maxRange = 500,
+        beamSpeed = 4
     }
 }
