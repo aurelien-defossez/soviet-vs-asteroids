@@ -46,9 +46,12 @@ function Class.create(options)
     self.virtualScaleFactor = love.graphics.getHeight() / self.virtualScreenHeight
     self.screenRatio = love.graphics.getWidth() / love.graphics.getHeight()
     self.camera = vec2(0, 0)
-    self.zoom = 1.25
+    self.zoomDelay = gameConfig.zoom.delay
+    self.dezoomElpased = 0
+    self.zoom = gameConfig.zoom.origin
     self.elapsedTime = 0
     self.difficulty = self.difficultyProgression
+    self.zoomDiff = gameConfig.zoom.origin - gameConfig.zoom.target
 
     -- Set font
     love.graphics.setFont(love.graphics.newFont(20))
@@ -66,12 +69,12 @@ function Class.create(options)
     self.menu = nil
     self.upgrade = nil
 
-    self.station:addLaserSat( LaserSat.create{ angle = -math.pi / 2 } )
-    self.station:addLaserSat( LaserSat.create{ angle = math.pi / 2 } )
-    self.station:addLaserSat( LaserSat.create{ angle = 0 } )
-    self.station:addLaserSat( LaserSat.create{ angle = math.pi } )
+    self.station:addLaserSat( LaserSat.create{ angle = math.pi / 4 } )
+    self.station:addLaserSat( LaserSat.create{ angle = 3 * math.pi / 4 } )
+    self.station:addLaserSat( LaserSat.create{ angle = -math.pi / 4 } )
+    self.station:addLaserSat( LaserSat.create{ angle = -3 * math.pi / 4 } )
 
-    self.station:addDrone( Drone.create{ angle = -math.pi / 2 } )
+    self.station:addDrone( Drone.create{ angle = math.pi / 2 } )
     -- self.station:addDrone( Drone.create{ angle = math.pi / 2 } )
     -- self.station:addDrone( Drone.create{ angle = 0 } )
     -- self.station:addDrone( Drone.create{ angle = math.pi } )
@@ -137,14 +140,41 @@ function Class:update(dt)
     if self.mode == "menu" then
         self.menus:update(dt)
     elseif self.mode ~= "upgrade" and self.mode ~= "end" then
+        -- Update zoom
+        if self.zoomDelay > 0 then
+            self.zoomDelay = self.zoomDelay - dt
+        elseif self.zoom > gameConfig.zoom.target then
+            self.dezoomElpased = self.dezoomElpased + dt
+            local dezoomPercentage = self.dezoomElpased / gameConfig.zoom.duration
+            local dezoomProgress
+
+            if dezoomPercentage < .5 then
+                dezoomProgress = 0.5 - math.sin(-math.pi / 2 + math.pi * dezoomPercentage) / 2
+            else
+                local dezoomPercentage = 2 * (dezoomPercentage - .5)
+                dezoomProgress = 0.5 - math.sin(math.pi - dezoomPercentage * math.pi / 2) / 2
+            end
+
+            self.zoom = gameConfig.zoom.target + dezoomProgress * self.zoomDiff
+
+            if dezoomPercentage >= 1 then
+                self.zoom = gameConfig.zoom.target
+            end
+
+            self:computeTranslateVector()
+        end
+
+        -- Update difficulty
         self.elapsedTime = self.elapsedTime + dt
         local x = self.elapsedTime / gameConfig.difficulty.sinPeriod
         self.difficulty = gameConfig.difficulty.baseDifficulty + x
         self.difficulty = self.difficulty * (1 + math.sin(x * 2 * math.pi) * gameConfig.difficulty.sinInfluence)
 
+        -- Update game
         self.station:update(dt)
         self.space:update(dt)
 
+        -- Anne Roumanov
         if self.station.life < 0 then
             self.mode = "end"
             SoundManager.voiceDeath()
