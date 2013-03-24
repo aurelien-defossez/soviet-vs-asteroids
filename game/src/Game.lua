@@ -194,7 +194,7 @@ function Class:draw()
         self.menus:draw()
     end
 
-    self.controller:draw()
+  --  self.controller:draw()
 
 end
 
