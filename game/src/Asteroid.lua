@@ -75,6 +75,10 @@ function Class.create( options )
     return self
 end
 
+function Class:destroy()
+    
+end
+
 function Class:explode()
     self.exploded = true
     dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)

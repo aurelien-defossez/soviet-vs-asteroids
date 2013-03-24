@@ -17,6 +17,7 @@ require("src.Config")
 require("src.PauseMenu")
 require("src.UpgradeMenu")
 
+
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -35,6 +36,7 @@ end
 
 -- Destroy the MenusManager
 function Class:destroy()
+    self.menu:destroy()
 end
 
 -----------------------------------------------------------------------------------------

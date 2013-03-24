@@ -89,6 +89,10 @@ function Class:destroy()
     for _, laserSat in pairs(self.laserSats) do
         laserSat:destroy()
     end
+
+    for _, drone in pairs(self.drones) do
+        drone:destroy()
+    end
 end
 
 -----------------------------------------------------------------------------------------

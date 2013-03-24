@@ -124,6 +124,11 @@ end
 
 -- Destroy the game
 function Class:destroy()
+    SoundManager.stopMusic()
+    SoundManager.stopShopMusic()
+    self.station:destroy()
+    self.space:destroy()
+    self.controller:destroy()
 end
 
 -- Compute the translate vector for the camera

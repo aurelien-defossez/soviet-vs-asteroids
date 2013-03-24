@@ -90,9 +90,13 @@ end
 -- Destroy the station
 function Class:destroy()
     self.laserBeamSprite:destroy()
+    self.laserBeamSprite = nil
     self.laserImpactSprite:destroy()
+    self.laserImpactSprite = nil
     self.laserOriginSprite:destroy()
+    self.laserOriginSprite = nil
     self.sprite:destroy()
+    self.sprite = nil
 end
 
 -----------------------------------------------------------------------------------------

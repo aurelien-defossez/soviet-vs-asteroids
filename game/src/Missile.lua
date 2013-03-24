@@ -60,6 +60,8 @@ end
 
 -- Destroy the station
 function Class:destroy()
+    self.sprite:destroy()
+    self.sprite = nil
 end
 
 -----------------------------------------------------------------------------------------

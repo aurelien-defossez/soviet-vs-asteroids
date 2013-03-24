@@ -115,7 +115,7 @@ function resumeGame()
 end
 
 function restartGame()
-    print("Restart GAME")
+    restart()
 end
 
 function quitGame()

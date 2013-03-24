@@ -13,3 +13,8 @@ end
 function love.draw()
     game:draw()
 end
+
+function restart()
+    game:destroy()
+    game = Game.create()
+end
