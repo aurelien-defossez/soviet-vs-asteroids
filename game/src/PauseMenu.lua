@@ -29,15 +29,21 @@ function Class.create(options)
 
     self.game = options.game
     self.selected = 1
+    self.scale = gameConfig.screen.scale
+
+    self.background = love.graphics.newImage("assets/graphics/gui/menu_bg.png")
 
     self.buttons = {}
     table.insert(
         self.buttons,
         Button.create{
-            x = gameConfig.screen.width * 0.2, -- 20%
-            y = gameConfig.screen.height * 0.2,
-            width = gameConfig.screen.width * 0.6, -- 60%
-            height = gameConfig.screen.height * 0.2,
+            x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
+            y = gameConfig.screen.height / 2 - 100 * self.scale,
+            width = 444,
+            height = 66,
+            scale = self.scale,
+            background = "btn_off",
+            border = "btn_on",
             text = "Resume",
             callback = self.resumeGame,
         }
@@ -45,10 +51,13 @@ function Class.create(options)
     table.insert(
         self.buttons,
         Button.create{
-            x = gameConfig.screen.width * 0.2, -- 20%
-            y = gameConfig.screen.height * 0.45,
-            width = gameConfig.screen.width * 0.6, -- 60%
-            height = gameConfig.screen.height * 0.2,
+            x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
+            y = gameConfig.screen.height / 2 - 20 * self.scale,
+            width = 444,
+            height = 66,
+            scale = self.scale,
+            background = "btn_off",
+            border = "btn_on",
             text = "Restart",
             callback = self.restartGame,
         }
@@ -56,10 +65,13 @@ function Class.create(options)
     table.insert(
         self.buttons,
         Button.create{
-            x = gameConfig.screen.width * 0.2, -- 20%
-            y = gameConfig.screen.height * 0.7,
-            width = gameConfig.screen.width * 0.6, -- 60%
-            height = gameConfig.screen.height * 0.2,
+            x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
+            y = gameConfig.screen.height / 2 + 60 * self.scale,
+            width = 444,
+            height = 66,
+            scale = self.scale,
+            background = "btn_off",
+            border = "btn_on",
             text = "Quit",
             callback = self.quitGame,
         }
@@ -85,8 +97,25 @@ end
 
 -- Draw the PauseMenu
 function Class:draw()
-    colors.green()
-    love.graphics.printf("Pause menu", 0, gameConfig.screen.height * 0.1, gameConfig.screen.width, "center")
+    -- display the background
+    love.graphics.draw(
+        self.background,
+        (gameConfig.screen.width - 609 * self.scale) / 2,
+        (gameConfig.screen.height - 720 * self.scale) / 2,
+        0,
+        self.scale
+    )
+
+    colors.white()
+    love.graphics.setFont(self.game.fonts["72"])
+    love.graphics.printf(
+        "Pause menu",
+        0,
+        gameConfig.screen.height / 2 - 300 * self.scale,
+        gameConfig.screen.width,
+        "center"
+    )
+    love.graphics.setFont(self.game.fonts["48"])
 
     for key, val in pairs(self.buttons) do
         val:draw()
@@ -98,11 +127,11 @@ function resumeGame()
 end
 
 function restartGame()
-    print("Restart GAME")
+    restart()
 end
 
 function quitGame()
-    print("Quit GAME")
+    love.event.quit()
 end
 
 -----------------------------------------------------------------------------------------

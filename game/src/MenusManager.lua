@@ -17,6 +17,7 @@ require("src.Config")
 require("src.PauseMenu")
 require("src.UpgradeMenu")
 
+
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -35,6 +36,7 @@ end
 
 -- Destroy the MenusManager
 function Class:destroy()
+    self.menu:destroy()
 end
 
 -----------------------------------------------------------------------------------------
@@ -89,7 +91,7 @@ function Class:previousButton()
     self:deselectButton()
     self.menu.selected = (self.menu.selected - 1) % table.getn(self.menu.buttons)
     if self.menu.selected == 0 then
-        self.menu.selected = 3
+        self.menu.selected = table.getn(self.menu.buttons)
     end
     self:selectButton()
 end
@@ -98,7 +100,7 @@ function Class:nextButton()
     self:deselectButton()
     self.menu.selected = (self.menu.selected + 1) % table.getn(self.menu.buttons)
     if self.menu.selected == 0 then
-        self.menu.selected = 3
+        self.menu.selected = table.getn(self.menu.buttons)
     end
     self:selectButton()
 end

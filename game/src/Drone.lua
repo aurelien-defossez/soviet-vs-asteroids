@@ -82,8 +82,16 @@ function Class.create(options)
     return self
 end
 
--- Destroy the station
+-- Destroy the drone
 function Class:destroy()
+    self.laserBeamSprite:destroy()
+    self.laserBeamSprite = nil
+    self.laserImpactSprite:destroy()
+    self.laserImpactSprite = nil
+    self.laserOriginSprite:destroy()
+    self.laserOriginSprite = nil
+    self.sprite:destroy()
+    self.sprite = nil
 end
 
 -----------------------------------------------------------------------------------------

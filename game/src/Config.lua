@@ -6,6 +6,7 @@ gameConfig = {
     screen = {
         width = 1024,
         height = 700,
+        scale = 0.6,
     },
 
     -- Camera
@@ -26,7 +27,14 @@ gameConfig = {
         baseDifficulty = 1,
         sinInfluence = .25,
         sinPeriod = 60,
-        difficultyModifier = .5
+        difficultyModifier = .5,
+
+        demo = {
+            baseDifficulty = 1,
+            sinInfluence = .25,
+            sinPeriod = 30,
+            difficultyModifier = 1,
+        }
     },
 
     missiles = {
@@ -41,7 +49,7 @@ gameConfig = {
     	baseRadius = 64,
         minRadius = 16,
         baseLife = 300,
-        numberPoint = 100,
+        numberPoint = 300,
         beltDistance = 1000,
     },
 

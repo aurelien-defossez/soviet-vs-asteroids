@@ -18,6 +18,7 @@ game = nil
 require("lib.math.vec2")
 require("lib.math.aabb")
 require("lib.json.json")
+require("src.gui.Colors")
 require("src.Config")
 require("src.Station")
 require("src.PadController")
@@ -29,6 +30,7 @@ require("src.Space")
 require("src.LaserSat")
 require("src.MenusManager")
 require("src.Drone")
+require("src.GameOverScreen")
 
 local PI = math.pi
 
@@ -52,11 +54,17 @@ function Class.create(options)
     self.dezoomElpased = 0
     self.zoom = gameConfig.zoom.origin
     self.elapsedTime = 0
+    self.demoMode = false
+    self.difficultyParameters = gameConfig.difficulty
     self.difficulty = self.difficultyProgression
     self.zoomDiff = gameConfig.zoom.origin - gameConfig.zoom.target
 
     -- Set font
-    love.graphics.setFont(love.graphics.newFont(20))
+    self.fonts = {}
+    self.fonts["36"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 36 * gameConfig.screen.scale)
+    self.fonts["48"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 48 * gameConfig.screen.scale)
+    self.fonts["72"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 72 * gameConfig.screen.scale)
+    love.graphics.setFont(self.fonts["48"])
 
     -- Initialize attributes
     self.station = Station.create()
@@ -114,11 +122,18 @@ function Class.create(options)
         end
     end
 
+    GameOverScreen.setup()
+
     return self
 end
 
 -- Destroy the game
 function Class:destroy()
+    SoundManager.stopMusic()
+    SoundManager.stopShopMusic()
+    self.station:destroy()
+    self.space:destroy()
+    self.controller:destroy()
 end
 
 -- Compute the translate vector for the camera
@@ -132,6 +147,17 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
+
+function Class:setDemoMode(demoMode)
+    self.demoMode = demoMode
+    self.difficultyParameters = self.demoMode and gameConfig.difficulty.demo or gameConfig.difficulty
+end
+
+function Class:fusRoDov()
+    if self.space:canFusRoDov() then
+        self.space:fusRoDov()
+    end
+end
 
 -- Update the game
 --
@@ -168,10 +194,10 @@ function Class:update(dt)
 
         -- Update difficulty
         self.elapsedTime = self.elapsedTime + dt
-        local x = self.elapsedTime / gameConfig.difficulty.sinPeriod
-        self.difficulty = gameConfig.difficulty.baseDifficulty + x * gameConfig.difficulty.difficultyModifier
-        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * PI) * gameConfig.difficulty.sinInfluence)
-        self.pairedDifficulty = self.difficulty * (1 + math.sin(PI - x * 2 * PI) * gameConfig.difficulty.sinInfluence)
+        local x = self.elapsedTime / self.difficultyParameters.sinPeriod
+        self.difficulty = self.difficultyParameters.baseDifficulty + x * self.difficultyParameters.difficultyModifier
+        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * PI) * self.difficultyParameters.sinInfluence)
+        self.pairedDifficulty = self.difficulty * (1 + math.sin(PI - x * 2 * PI) * self.difficultyParameters.sinInfluence)
 
         -- Update game
         self.station:update(dt)
@@ -181,13 +207,16 @@ function Class:update(dt)
         if self.station.life < 0 then
             self.mode = "end"
             SoundManager.voiceDeath()
+            SoundManager.laserStop()
+            SoundManager.stopMusic()
         end
+    elseif self.mode == "end" then
+
     end
 end
 
 -- Draw the game
 function Class:draw()
-
     love.graphics.push()
 
     -- Apply virtual resolution before rendering anything
@@ -206,37 +235,48 @@ function Class:draw()
     local screenExtent = vec2(self.virtualScreenHeight * self.screenRatio, self.virtualScreenHeight)
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
-    self.controller:draw()
-    if self.mode ~= "menu" then
+    if self.mode ~= "end" then
+        self.controller:draw()
         self.space:draw()
-        self.station:draw()
+        self.station:draw() 
+
+        if self.mode == "upgrade" then
+            if self.upgrade == "satellite" then
+                self.station.newSatellite:draw()
+            elseif self.upgrade == "drone" then
+                self.station.newDrone:draw()
+            end 
+        end
+    else 
+        self.space:draw()  
     end
 
-    if self.mode == "upgrade" then
-        if self.upgrade == "satellite" then
-            self.station.newSatellite:draw()
-        elseif self.upgrade == "drone" then
-            self.station.newDrone:draw()
-        end
-    end
 
     -- Reset camera transform before hud drawing
     love.graphics.pop()
 
     -- Draw HUD
 
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Score : " ..self.station.score, 10, 10)
+    colors.white()
+    love.graphics.setFont(self.fonts["36"])
+    love.graphics.printf("Score:", 10, 16, 200, "left")
+    love.graphics.setFont(self.fonts["48"])
+    love.graphics.printf(self.station.score, 10, 10, 250, "right")
 
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Roubles : " ..self.station.coins, 300, 10)
+    love.graphics.setFont(self.fonts["36"])
+    love.graphics.printf("Roubles:", 300, 16, 200, "left")
+    love.graphics.setFont(self.fonts["48"])
+    love.graphics.printf(self.station.coins, 300, 10, 300, "right")
 
     if self.mode == "menu" then
         self.menus:draw()
     end
 
-  --  self.controller:draw()
+    if self.mode == "end" then
+        GameOverScreen.draw()
+    end
 
+  --  self.controller:draw()
 end
 
 -- Compute the translate vector for the camera

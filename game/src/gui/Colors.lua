@@ -1,4 +1,8 @@
 colors = {}
+function colors.red()
+    love.graphics.setColor(149, 0, 0, 255)
+end
+
 function colors.grey()
     love.graphics.setColor(100, 100, 100, 255)
 end
@@ -17,4 +21,8 @@ end
 
 function colors.green()
     love.graphics.setColor(0, 255, 0, 255)
+end
+
+function colors.mode(mode)
+    love.graphics.setColorMode(mode)
 end
