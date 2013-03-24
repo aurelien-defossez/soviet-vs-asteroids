@@ -333,7 +333,7 @@ end
 
 function Class:asteroidKilled(radius, distance)
     maxRange = gameConfig.station.scoreMaxRange
-    self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
+    self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)*10
     self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
 end
 
