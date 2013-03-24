@@ -38,7 +38,7 @@ function Class.create(options)
     self.angle = options.angle
     self.speed = options.speed
     self.exploded = false
-    self.radius = 32
+    self.radius = 12
     self.color = {42, 42, 255}
     self.boundingCircle = circle(self.pos, self.radius)
 
@@ -49,7 +49,8 @@ function Class.create(options)
         angle = self.angle,
         spriteSheet = missile,
         frameCount = 2,
-        frameRate = 0.1
+        frameRate = 0.1,
+        scale = 0.35
     }
 
     ctId = ctId + 1
@@ -105,7 +106,7 @@ function Class:draw()
 
     -- Position sprite
     if not self.exploded then
-        self.sprite.pos = self.pos + vec2(-96, -32):rotateRad(-self.angle)
+        self.sprite.pos = self.pos + vec2(-30, -10):rotateRad(-self.angle)
     end
     self.sprite:draw()
 

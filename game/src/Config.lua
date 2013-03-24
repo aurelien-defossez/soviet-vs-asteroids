@@ -16,7 +16,7 @@ gameConfig = {
     },
 
     missiles = {
-        cooldown = 0.3, -- in seconds
+        cooldown = 1, -- in seconds
         deleteDistance = 1080, -- in pixels
     },
 
@@ -37,6 +37,16 @@ gameConfig = {
 
     laserSat = {
         offOrbitRatio = 1.0
+    },
+
+    drone = {
+        offOrbitRatio = 1.4,
+        range = 42,
+        speed = 0.3
+    },
+
+    missile = {
+        speed = 8
     },
 
     controls = {

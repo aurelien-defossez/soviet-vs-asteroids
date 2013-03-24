@@ -28,6 +28,7 @@ require("src.Asteroid")
 require("src.Space")
 require("src.LaserSat")
 require("src.MenusManager")
+require("src.Drone")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -38,7 +39,7 @@ function Class.create(options)
     -- Create object
     self = {}
     setmetatable(self, Class)
-    Game=self
+    game=self
 
     -- Set virtual viewport
     self.virtualScreenHeight = gameConfig.camera.minVirtualHeight
@@ -66,6 +67,8 @@ function Class.create(options)
     self.station:addLaserSat( LaserSat.create{ angle = 0 } )
     self.station:addLaserSat( LaserSat.create{ angle = math.pi } )
 
+    self.station:addDrone( Drone.create{ angle = math.pi / 2 } )
+
     -- Create the input controller
     if (
         gameConfig.controls.default == "joystick" and
@@ -91,6 +94,7 @@ function Class.create(options)
 
     SoundManager.setup()
     SoundManager.startMusic()
+    SoundManager.setNoSound()
 
     return self
 end
