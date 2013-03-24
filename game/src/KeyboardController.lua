@@ -69,6 +69,8 @@ function Class.create(options)
         if key == "return" then
             if self.mode == "menu" then
                 self.game.menus:enterSelected()
+            elseif self.mode == "upgrade" then
+                self.game:putUpgrade()
             end
         end
     end
@@ -91,32 +93,48 @@ end
 function Class:update(dt)
     deltaRad = gameConfig.controls.keyboard.delta
 
-    -- Control the laser command
-    if (love.keyboard.isDown("left")) then
-        self.station:setLaserSatAngle(self.station.laserAngle - deltaRad)
-    end
-
-    if (love.keyboard.isDown("right")) then
-        self.station:setLaserSatAngle(self.station.laserAngle + deltaRad)
-    end
-
-
-    -- Control the missiles launcher
-    if (love.keyboard.isDown("a", "q")) then
-        self.station:setMissileLauncherAngle(self.station.missileAngle - deltaRad)
-    end
-
-    if (love.keyboard.isDown("d")) then
-        self.station:setMissileLauncherAngle(self.station.missileAngle + deltaRad)
-    end
-
     if self.mode == "game" then
+        -- Control the laser command
+        if love.keyboard.isDown("left") then
+            self.station:setLaserSatAngle(self.station.laserAngle - deltaRad)
+        end
+
+        if love.keyboard.isDown("right") then
+            self.station:setLaserSatAngle(self.station.laserAngle + deltaRad)
+        end
+
+
+        -- Control the missiles launcher
+        if love.keyboard.isDown("a", "q") then
+            self.station:setMissileLauncherAngle(self.station.missileAngle - deltaRad)
+        end
+
+        if love.keyboard.isDown("d") then
+            self.station:setMissileLauncherAngle(self.station.missileAngle + deltaRad)
+        end
+
         -- I’M A’ FIRIN’ MAH LAZER!!
         self.station:fireLaser()
 
         -- SHOOP DA WHOOP!!!!
-        if (love.keyboard.isDown(" ")) then
+        if love.keyboard.isDown(" ") then
             self.station:launchMissile()
+        end
+    elseif self.mode == "upgrade" then
+        if love.keyboard.isDown("left", "a", "q") then
+            if self.game.upgrade == "satellite" then
+                self.station.newSatellite:setAngle(self.station.newSatellite.angle - deltaRad)
+            elseif self.game.upgrade == "drone" then
+                self.station.newDrone:setAngle(self.station.newDrone.angle - deltaRad)
+            end
+        end
+
+        if love.keyboard.isDown("right", "d") then
+            if self.game.upgrade == "satellite" then
+                self.station.newSatellite:setAngle(self.station.newSatellite.angle + deltaRad)
+            elseif self.game.upgrade == "drone" then
+                self.station.newDrone:setAngle(self.station.newDrone.angle + deltaRad)
+            end
         end
     end
 end

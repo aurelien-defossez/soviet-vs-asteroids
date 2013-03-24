@@ -132,15 +132,15 @@ function Class:update(dt)
         if self.upgrade == "satellite" then
             self.station.newSatellite:update(dt)
         elseif self.upgrade == "drone" then
-            self.station.newDrone:update(dt)
+            self.station.newDrone:update(0)
         end
     elseif self.mode == "end" then
-       
+
     else
         self.station:update(dt)
         self.space:update(dt)
         if(self.station.life<0) then
-            self.mode ="end" 
+            self.mode ="end"
             SoundManager.voiceDeath()
         end
     end

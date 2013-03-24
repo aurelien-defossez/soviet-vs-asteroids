@@ -20,7 +20,7 @@ local cos = math.cos
 local sin = math.sin
 local ctId = 0
 local missile = love.graphics.newImage("assets/graphics/missile.png")
-local explosion = love.graphics.newImage("assets/graphics/explosion.png")
+local explosion = love.graphics.newImage("assets/graphics/explosion2.png")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -77,8 +77,8 @@ function Class:explode()
         pos = self.pos + vec2( -64, -64 ):rotateRad( -self.angle ),
         angle = self.angle,
         spriteSheet = explosion,
-        frameCount = 2,
-        frameRate = 0.07
+        frameCount = 10,
+        frameRate = 0.01
     }
 
     self.timeSinceExplosion = 0
