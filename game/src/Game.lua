@@ -202,6 +202,7 @@ function Class:update(dt)
         if self.station.life < 0 then
             self.mode = "end"
             SoundManager.voiceDeath()
+            SoundManager.laserStop()
             SoundManager.stopMusic()
         end
     elseif self.mode == "end" then
