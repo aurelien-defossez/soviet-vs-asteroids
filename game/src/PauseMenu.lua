@@ -39,7 +39,11 @@ function Class.create(options)
         Button.create{
             x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
             y = gameConfig.screen.height / 2 - 100 * self.scale,
+            width = 444,
+            height = 66,
             scale = self.scale,
+            background = "btn_off",
+            border = "btn_on",
             text = "Resume",
             callback = self.resumeGame,
         }
@@ -49,7 +53,11 @@ function Class.create(options)
         Button.create{
             x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
             y = gameConfig.screen.height / 2 - 20 * self.scale,
+            width = 444,
+            height = 66,
             scale = self.scale,
+            background = "btn_off",
+            border = "btn_on",
             text = "Restart",
             callback = self.restartGame,
         }
@@ -59,7 +67,11 @@ function Class.create(options)
         Button.create{
             x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
             y = gameConfig.screen.height / 2 + 60 * self.scale,
+            width = 444,
+            height = 66,
             scale = self.scale,
+            background = "btn_off",
+            border = "btn_on",
             text = "Quit",
             callback = self.quitGame,
         }
