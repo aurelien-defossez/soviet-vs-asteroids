@@ -5,6 +5,7 @@ function love.load()
 	love.graphics.setMode(gameConfig.screen.width, gameConfig.screen.height, false)
     game = Game.create()
     game:setDemoMode(false)
+    game:setMenu("title")
 end
 
 function love.update(dt)

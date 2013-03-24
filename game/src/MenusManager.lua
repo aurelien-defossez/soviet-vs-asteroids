@@ -14,6 +14,7 @@ Class.__index = Class
 -----------------------------------------------------------------------------------------
 
 require("src.Config")
+require("src.TitleMenu")
 require("src.PauseMenu")
 require("src.UpgradeMenu")
 
@@ -62,10 +63,11 @@ function Class:setMenu(menu)
         self.menu:destroy()
     end
 
-    if menu == "pause" then
+    if menu == "title" then
+        Menu = TitleMenu
+    elseif menu == "pause" then
         Menu = PauseMenu
-    end
-    if menu == "upgrade" then
+    elseif menu == "upgrade" then
         Menu = UpgradeMenu
     end
     SoundManager.laserStop()

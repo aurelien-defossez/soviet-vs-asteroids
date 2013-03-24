@@ -57,7 +57,8 @@ function Class.create(options)
     self.elapsedTime = 0
     self.demoMode = false
     self.difficultyParameters = gameConfig.difficulty
-    self.difficulty = self.difficultyProgression
+    self.difficulty = 1
+    self.pairedDifficulty = 1
     self.zoomDiff = gameConfig.zoom.origin - gameConfig.zoom.target
 
     -- Set font
@@ -240,7 +241,10 @@ function Class:draw()
     local screenExtent = vec2(self.virtualScreenHeight * self.screenRatio, self.virtualScreenHeight)
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
-    if self.mode ~= "end" then
+    if self.mode == "end" or (self.mode == "menu" and self.menu == "title") then
+        self.space:draw()
+    else
+        self.controller:draw()
         self.space:draw()
         self.station:draw()
 
@@ -251,8 +255,6 @@ function Class:draw()
                 self.station.newDrone:draw()
             end
         end
-    else
-        self.space:draw()
     end
 
     -- Reset camera transform before hud drawing
