@@ -30,6 +30,8 @@ require("src.LaserSat")
 require("src.MenusManager")
 require("src.Drone")
 
+local PI = math.pi
+
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -69,15 +71,15 @@ function Class.create(options)
     self.menu = nil
     self.upgrade = nil
 
-    self.station:addLaserSat( LaserSat.create{ angle = math.pi / 4 } )
-    self.station:addLaserSat( LaserSat.create{ angle = 3 * math.pi / 4 } )
-    self.station:addLaserSat( LaserSat.create{ angle = -math.pi / 4 } )
-    self.station:addLaserSat( LaserSat.create{ angle = -3 * math.pi / 4 } )
+    self.station:addLaserSat( LaserSat.create{ angle = PI / 4 } )
+    self.station:addLaserSat( LaserSat.create{ angle = 3 * PI / 4 } )
+    self.station:addLaserSat( LaserSat.create{ angle = -PI / 4 } )
+    self.station:addLaserSat( LaserSat.create{ angle = -3 * PI / 4 } )
 
-    self.station:addDrone( Drone.create{ angle = math.pi / 2 } )
-    -- self.station:addDrone( Drone.create{ angle = math.pi / 2 } )
+    self.station:addDrone( Drone.create{ angle = PI / 2 } )
+    -- self.station:addDrone( Drone.create{ angle = PI / 2 } )
     -- self.station:addDrone( Drone.create{ angle = 0 } )
-    -- self.station:addDrone( Drone.create{ angle = math.pi } )
+    -- self.station:addDrone( Drone.create{ angle = PI } )
 
     -- Create the input controller
     if (
@@ -149,10 +151,10 @@ function Class:update(dt)
             local dezoomProgress
 
             if dezoomPercentage < .5 then
-                dezoomProgress = 0.5 - math.sin(-math.pi / 2 + math.pi * dezoomPercentage) / 2
+                dezoomProgress = 0.5 - math.sin(-PI / 2 + PI * dezoomPercentage) / 2
             else
                 local dezoomPercentage = 2 * (dezoomPercentage - .5)
-                dezoomProgress = 0.5 - math.sin(math.pi - dezoomPercentage * math.pi / 2) / 2
+                dezoomProgress = 0.5 - math.sin(PI - dezoomPercentage * PI / 2) / 2
             end
 
             self.zoom = gameConfig.zoom.target + dezoomProgress * self.zoomDiff
@@ -167,8 +169,9 @@ function Class:update(dt)
         -- Update difficulty
         self.elapsedTime = self.elapsedTime + dt
         local x = self.elapsedTime / gameConfig.difficulty.sinPeriod
-        self.difficulty = gameConfig.difficulty.baseDifficulty + x
-        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * math.pi) * gameConfig.difficulty.sinInfluence)
+        self.difficulty = gameConfig.difficulty.baseDifficulty + x * gameConfig.difficulty.difficultyModifier
+        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * PI) * gameConfig.difficulty.sinInfluence)
+        self.pairedDifficulty = self.difficulty * (1 + math.sin(PI - x * 2 * PI) * gameConfig.difficulty.sinInfluence)
 
         -- Update game
         self.station:update(dt)
