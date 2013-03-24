@@ -101,12 +101,12 @@ end
 
 function Class:launchMissile()
     -- Verify the cooldown
-    if (self.lastSentMissileTime + self.missileCoolDownTime > love.timer.getTime()) then
+    if (self.lastSentMissileTime > 0) then
         -- don't send the missile
         return
     end
 
-    self.lastSentMissileTime = love.timer.getTime()
+    self.lastSentMissileTime = self.missileCoolDownTime
 
     -- Compute missile-launcher position
     local missileLauncherPosition
@@ -212,6 +212,8 @@ function Class:update(dt)
             self.isLaserFiring = false
         end
     end
+
+    self.lastSentMissileTime = self.lastSentMissileTime - dt
 
     self.shieldRotation = self.shieldRotation + dt * .05
 
