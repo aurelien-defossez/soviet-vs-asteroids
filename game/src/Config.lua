@@ -16,23 +16,26 @@ gameConfig = {
     },
 
     missiles = {
-        cooldown = 1, -- in seconds
+        cooldown = 1.0, -- in seconds
+        cooldownUpgradeRate = 0.8, -- -20% per upgrade
         deleteDistance = 1080, -- in pixels
     },
 
     asteroid = {
-    	spawnPeriod = 2,
-    	baseRadius = 64,
+        spawnPeriod = 2,
+        baseRadius = 64,
+        minRadius = 16,
         baseLife = 50,
-        numberPoint = 100
+        numberPoint = 100,
+        beltDistance = 1000
     },
-    asteroidBeltDistance = 1080,
 
     station = {
         radius = 90,
         maxLife = 100,
         shieldRegeneration = .5,
-        shieldOffset = vec2(0, 15)
+        shieldOffset = vec2(0, 15),
+        scoreMaxRange = 800
     },
 
     laserSat = {
@@ -41,8 +44,9 @@ gameConfig = {
 
     drone = {
         offOrbitRatio = 1.4,
-        range = 42,
-        speed = 0.3
+        range = 80,
+        speed = 0.3,
+        damageModifier = 2
     },
 
     missile = {
@@ -70,9 +74,10 @@ gameConfig = {
 
 
     laser = {
-        laserWidth = 100,
+        laserWidth =70,
         dpsExp = 0.75,
-        baseDmg = 0.01,
-        maxRange = 800
+        baseDmg = 0.015,
+        maxRange = 500,
+        beamSpeed = 4
     }
 }

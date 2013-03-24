@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------------
 --
--- PauseMenu.lua
+-- UpgradeMenu.lua
 --
--- The main PauseMenu class.
+-- The main UpgradeMenu class.
 --
 -----------------------------------------------------------------------------------------
-module("PauseMenu", package.seeall)
-local Class = PauseMenu
+module("UpgradeMenu", package.seeall)
+local Class = UpgradeMenu
 Class.__index = Class
 
 -----------------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ require("src.gui.Colors")
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
--- Create the PauseMenu
+-- Create the UpgradeMenu
 function Class.create(options)
     -- Create object
     self = {}
@@ -38,8 +38,8 @@ function Class.create(options)
             y = gameConfig.screen.height * 0.2,
             width = gameConfig.screen.width * 0.6, -- 60%
             height = gameConfig.screen.height * 0.2,
-            text = "Resume",
-            callback = self.resumeGame,
+            text = "Upgrade missiles",
+            callback = self.upgradeMissiles,
         }
     )
     table.insert(
@@ -49,8 +49,8 @@ function Class.create(options)
             y = gameConfig.screen.height * 0.45,
             width = gameConfig.screen.width * 0.6, -- 60%
             height = gameConfig.screen.height * 0.2,
-            text = "Restart",
-            callback = self.restartGame,
+            text = "Shiny lazer!",
+            callback = self.upgradeLaser,
         }
     )
     table.insert(
@@ -60,15 +60,15 @@ function Class.create(options)
             y = gameConfig.screen.height * 0.7,
             width = gameConfig.screen.width * 0.6, -- 60%
             height = gameConfig.screen.height * 0.2,
-            text = "Quit",
-            callback = self.quitGame,
+            text = "D-D-D-Drone",
+            callback = self.upgradeDrone,
         }
     )
 
     return self
 end
 
--- Destroy the PauseMenu
+-- Destroy the UpgradeMenu
 function Class:destroy()
 end
 
@@ -76,33 +76,37 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
--- Update the PauseMenu
+-- Update the UpgradeMenu
 --
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
 end
 
--- Draw the PauseMenu
+-- Draw the UpgradeMenu
 function Class:draw()
     colors.green()
-    love.graphics.printf("Pause menu", 0, gameConfig.screen.height * 0.1, gameConfig.screen.width, "center")
+    love.graphics.printf("Upgrade your shit!", 0, gameConfig.screen.height * 0.1, gameConfig.screen.width, "center")
 
     for key, val in pairs(self.buttons) do
         val:draw()
     end
 end
 
-function resumeGame()
-    self.game:setMode("game")
+-- Upgrade the missiles by reducing the cooldown between two missiles
+function upgradeMissiles()
+    cooldown = self.game.station.missileCoolDownTime * gameConfig.missiles.cooldownUpgradeRate
+    self.game.station:setMissileCooldown(cooldown)
+
+    -- Add a feedback for the user
 end
 
-function restartGame()
-    print("Restart GAME")
+function upgradeLaser()
+    self.game:setUpgrade("satellite")
 end
 
-function quitGame()
-    print("Quit GAME")
+function upgradeDrone()
+    self.game:setUpgrade("drone")
 end
 
 -----------------------------------------------------------------------------------------

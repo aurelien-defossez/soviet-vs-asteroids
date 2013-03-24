@@ -95,13 +95,15 @@ end
 
 -- Draw the game
 function Class:draw()
+
     if (not love.joystick.isOpen(1) or not self.debug) then
         return
     end
 
     -- Draw scene
     love.graphics.setColor(255, 0, 0)
-    --love.graphics.print(self.joy1Angle, 0, 0)
+--    love.graphics.print(self.joy1Angle, 0, 0)
+    love.graphics.print(self.buttonPressed, 0, 0)
     love.graphics.line(0 , 0, 100*math.cos(self.joy1Angle), 100*math.sin(self.joy1Angle))
     love.graphics.setColor(0, 255, 0)
     --love.graphics.print(self.joy2Angle, 0, 30)
@@ -117,4 +119,44 @@ end
 --  mode: "game" or "upgrade" mode
 function Class:setMode(mode)
     self.mode = mode
+end
+
+
+function love.joystickpressed( joystick, button )
+    -- X = 3
+    -- Y = 4
+    -- A = 1
+    -- B = 2
+    -- Start = 8
+
+    if button == 4 then
+        if self.mode == "game" then
+            self.game:setMenu("upgrade")
+        elseif self.mode == "upgrade" then
+            self.game:setMenu("upgrade")
+        elseif self.mode == "menu" and self.game.menu == "upgrade" then
+            self.game:setMode("game")
+        end
+
+        return
+    end
+
+    -- Go to pause menu
+        if button == 8 then
+            if self.mode == "menu" and self.game.menu == "pause" then
+                self.game:setMode("game")
+            elseif self.mode == "game" then
+                self.game:setMenu("pause")
+            elseif self.mode == "upgrade" then
+                self.game:setMenu("upgrade")
+            elseif self.mode == "menu" then
+                self.game:setMode("game")
+            elseif self.mode == "game" then
+                self.game:setMenu("pause")
+            end
+
+
+            return
+        end
+    
 end

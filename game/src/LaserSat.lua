@@ -37,16 +37,15 @@ function Class.create(options)
     setmetatable(self, Class)
 
     -- Initialize attributes
- 
+
     self.angle = options.angle
     self.displayAngle = options.angle
     self.isFiring = false
+    self.isDoingDamage = false
     self.targetAsteroid = nil
-    self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
-    self.beamScale = 0.1;
-    self.pos = gameConfig.station.shieldOffset
-        + vec2(math.cos(self.displayAngle), math.sin(-self.displayAngle))
-        * gameConfig.station.radius * gameConfig.laserSat.offOrbitRatio
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes
+    self.beamScale = 0.1
+    self:updatePosition()
 
     self.debugText = ""
 
@@ -108,17 +107,14 @@ function Class:update(dt)
     self.laserOriginSprite:update(dt)
     self.laserImpactSprite:update(dt)
     self.laserBeamSprite:update(dt)
-    if self.beamScale < 1  and self.isFiring then
-        self.beamScale = self.beamScale + 0.2
-    else
-        if self.isFiring then
-            self.beamScale = 1
-        end
-    end
 
-  --  self.isFiring = false
-    if (self.targetAsteroid) then
-        self.targetAsteroid:hit()
+    self.isDoingDamage = false
+
+    if self.beamScale < 1  and self.isFiring then
+        self.beamScale = self.beamScale + gameConfig.laser.beamSpeed * dt
+    elseif self.isFiring then
+        self.beamScale = 1
+        self.isDoingDamage = true
     end
 end
 
@@ -159,10 +155,10 @@ function Class:draw()
 
    -- love.graphics.setColor(255, 255, 0)
  --   love.graphics.circle('fill', self.pos.x , self.pos.y , 10, 32)
-    
+
     --love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.displayAngle), self.pos.y + 20 * math.sin( -self.displayAngle) )
 
-   
+
     --love.graphics.print("Debug : " ..self.debugText, 200, 200)
 
 end
@@ -185,20 +181,17 @@ function Class:inFrontOf(fireAngle)
 end
 
 function Class:fire(fireAngle, asteroid)
-
     -- Check if the lasetSat is oriented in the direction of the fireAngle
     if (self:inFrontOf(fireAngle)) then
-
         local deltaX = asteroid.pos.x - self.pos.x
         local deltaY = asteroid.pos.y - self.pos.y
         asteroidAngle = - math.atan2(deltaY, deltaX)
 
         -- Check if the lasetSat can shot the target
-        if (self:inFrontOf(asteroidAngle)) then      
+        if (self:inFrontOf(asteroidAngle)) then
             self.targetAsteroid = asteroid
             self.isFiring = true
             self.displayAngle = asteroidAngle
-
         else
             self.targetAsteroid = nil
             self.isFiring = false
@@ -217,4 +210,16 @@ function Class:stopFire()
     self.targetAsteroid = nil
     self.displayAngle = self.angle
     self.beamScale = 0.1
+end
+
+function Class:updatePosition()
+    self.pos = gameConfig.station.shieldOffset
+        + vec2(math.cos(self.displayAngle), math.sin(-self.displayAngle))
+        * gameConfig.station.radius * gameConfig.laserSat.offOrbitRatio
+end
+
+function Class:setAngle(angle)
+    self.angle = angle
+    self.displayAngle = angle
+    self:updatePosition()
 end

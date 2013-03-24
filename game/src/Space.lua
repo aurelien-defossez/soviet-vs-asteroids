@@ -99,7 +99,7 @@ function Class:update(dt)
         asteroid:update(dt, i)
     end
 
-    -- Check for collisions
+    -- Check for missile collisions
     for _, missile in pairs(self.missiles) do
         -- exclude exploded missiles from collision detection
         if not missile.exploded then
@@ -118,17 +118,17 @@ function Class:update(dt)
         end
     end
 
+    -- Check for station collisions
     for i, asteroid in pairs(self.asteroids) do
-        -- exclude exploded asteroid from collision detection
         if not asteroid.exploded and asteroid.boundingCircle:collideCircle(self.station.boundingCircle) then
             self:removeAsteroid( i )
 
             self.station.life = self.station.life - asteroid.radius
+            if(self.station.life>0) then
+                SoundManager.voice()
+            end
             SoundManager.explosion()
-            SoundManager.voice()
-
             break
-
         end
     end
 
@@ -180,7 +180,7 @@ function Class:splitAsteroid( asteroid )
     end
 
     -- only split asteroids that have not reached minimal width
-    if asteroid.radius <= 16 then
+    if asteroid.radius <= gameConfig.asteroid.minRadius then
         return false
     end
 

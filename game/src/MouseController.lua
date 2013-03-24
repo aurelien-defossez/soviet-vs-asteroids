@@ -33,6 +33,8 @@ function Class.create(options)
         if button == "l" or button == "r" then
             if self.mode == "menu" then
                 self.game.menus:enterSelected()
+            elseif self.mode == "upgrade" then
+                self.game:putUpgrade()
             end
         end
     end
@@ -81,6 +83,17 @@ function Class:update(dt)
             end
         else
             print("MouseController says: I don't know what a " .. gameConfig.controls.mouse.controls .. " is")
+        end
+    elseif self.mode == "upgrade" then
+        mouse = mouse / self.game.virtualScaleFactor / self.game.zoom
+        mouse = mouse - self.game.translateVector
+
+        deltaRad = - math.atan2(mouse.y, mouse.x)
+
+        if self.game.upgrade == "satellite" then
+            self.station.newSatellite:setAngle(deltaRad)
+        elseif self.game.upgrade == "drone" then
+            self.station.newDrone:setAngle(deltaRad)
         end
     end
 

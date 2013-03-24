@@ -57,6 +57,19 @@ function Class:setAngle(angle)
     self.range.center = self.pos
 end
 
+function Class:collideAsteroid(asteroid)
+    return self.range:collideCircle(asteroid.boundingCircle)
+end
+
+function Class:distanceTo(asteroid)
+    return self.range.center:distance(asteroid.boundingCircle.center)
+end
+
+function Class:hit(asteroid)
+    asteroid:hit(1, gameConfig.drone.damageModifier)
+    self.targetAsteroid = asteroid
+end
+
 -- Update the missile
 --
 -- Parameters:
@@ -67,8 +80,15 @@ end
 
 -- Draw the game
 function Class:draw()
+    if self.targetAsteroid then
+        love.graphics.setColor(255, 255, 0)
+        love.graphics.line(self.pos.x, self.pos.y, self.targetAsteroid.pos.x, self.targetAsteroid.pos.y)
+    end
+
     self.pos:draw()
 
     love.graphics.setColor(255, 255, 0)
     love.graphics.circle('line', self.pos.x, self.pos.y, self.range.radius, 32)
+
+    self.targetAsteroid = nil
 end
