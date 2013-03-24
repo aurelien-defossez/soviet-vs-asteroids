@@ -99,7 +99,7 @@ function Class:update(dt)
         asteroid:update(dt, i)
     end
 
-    -- Check for collisions
+    -- Check for missile collisions
     for _, missile in pairs(self.missiles) do
         -- exclude exploded missiles from collision detection
         if not missile.exploded then
@@ -118,8 +118,8 @@ function Class:update(dt)
         end
     end
 
+    -- Check for station collisions
     for i, asteroid in pairs(self.asteroids) do
-        -- exclude exploded asteroid from collision detection
         if not asteroid.exploded and asteroid.boundingCircle:collideCircle(self.station.boundingCircle) then
             self:removeAsteroid( i )
 
@@ -129,7 +129,6 @@ function Class:update(dt)
             end
             SoundManager.explosion()
             break
-
         end
     end
 

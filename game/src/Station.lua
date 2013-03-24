@@ -115,21 +115,21 @@ function Class:launchMissile()
 end
 
 function Class:fireLaser()
-    local closestAsteroid = self:findClosestAsteroid(self.laserAngle, gameConfig.laser.laserWidth)
+    self.closestAsteroid = self:findClosestAsteroid(self.laserAngle, gameConfig.laser.laserWidth)
 
-    if (closestAsteroid == nil) then
+    if (self.closestAsteroid == nil) then
         self:stopLaser()
         return
     end
 
     for _, laserSat in pairs(self.laserSats) do
-        laserSat:fire(self.laserAngle, closestAsteroid)
+        laserSat:fire(self.laserAngle, self.closestAsteroid)
     end
 end
 
 function Class:stopLaser()
     for _, laserSat in pairs(self.laserSats) do
-        laserSat:stopFire(self.laserAngle, closestAsteroid)
+        laserSat:stopFire(self.laserAngle, self.closestAsteroid)
     end
 end
 
@@ -150,16 +150,38 @@ function Class:update(dt)
         return
     end
 
-    local numberLaserFiring = 0
-    for _, laserSat in pairs(self.laserSats) do
-        laserSat:update(dt)
-        if (laserSat.isFiring) then
-            numberLaserFiring = numberLaserFiring + 1
+    for _, drone in pairs(self.drones) do
+        drone:update(dt)
+    end
+
+    -- Check for drone collisions
+    for _, drone in pairs(self.drones) do
+        local nearestAsteroid
+        local smallestDistance
+
+        for i, asteroid in pairs(self.space.asteroids) do
+            if not asteroid.exploded
+                and drone:collideAsteroid(asteroid) then
+                local distance = drone:distanceTo(asteroid)
+                if not smallestDistance or distance < smallestDistance then
+                    smallestDistance = distance
+                    nearestAsteroid = asteroid
+                end
+            end
+        end
+
+        -- Hit asteroid
+        if nearestAsteroid then
+            drone:hit(nearestAsteroid)
         end
     end
 
-    for _, drone in pairs(self.drones) do
-        drone:update(dt)
+    local numberLaserFiring = 0
+    for _, laserSat in pairs(self.laserSats) do
+        laserSat:update(dt)
+        if (laserSat.isDoingDamage) then
+            numberLaserFiring = numberLaserFiring + 1
+        end
     end
 
     if (numberLaserFiring > 0) then
@@ -167,6 +189,8 @@ function Class:update(dt)
             SoundManager.laserStart()
             self.isLaserFiring = true
         end
+
+        self.closestAsteroid:hit(numberLaserFiring)
     else
         if (self.isLaserFiring) then
             SoundManager.laserStop()
@@ -248,7 +272,7 @@ end
 -- Parameters :
 -- angle : the angle of the ray
 function Class:findClosestAsteroid(angle, width)
-    local closestAsteroid = nil
+    self.closestAsteroid = nil
     local minDist = -1
     local minDistchecker = - 1
     for _, asteroid in pairs( self.space.asteroids ) do
@@ -256,11 +280,11 @@ function Class:findClosestAsteroid(angle, width)
         norm = math.sqrt(math.pow( asteroid.pos.x, 2 ) + math.pow( asteroid.pos.y, 2 ))
         if ((minDistchecker < minDist or minDist == -1) and minDistchecker < width and not asteroid.exploded and norm < gameConfig.laser.maxRange ) then
             minDist = minDistchecker
-            closestAsteroid = asteroid
+            self.closestAsteroid = asteroid
         end
     end
 
-    return closestAsteroid
+    return self.closestAsteroid
 end
 
 -- Set the current mode of the game

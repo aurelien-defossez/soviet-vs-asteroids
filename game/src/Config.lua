@@ -44,8 +44,9 @@ gameConfig = {
 
     drone = {
         offOrbitRatio = 1.4,
-        range = 42,
-        speed = 0.3
+        range = 80,
+        speed = 0.3,
+        damageModifier = 2
     },
 
     missile = {

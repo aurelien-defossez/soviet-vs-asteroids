@@ -41,6 +41,7 @@ function Class.create(options)
     self.angle = options.angle
     self.displayAngle = options.angle
     self.isFiring = false
+    self.isDoingDamage = false
     self.targetAsteroid = nil
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
     self.beamScale = 0.1
@@ -106,17 +107,14 @@ function Class:update(dt)
     self.laserOriginSprite:update(dt)
     self.laserImpactSprite:update(dt)
     self.laserBeamSprite:update(dt)
+
+    self.isDoingDamage = false
+
     if self.beamScale < 1  and self.isFiring then
         self.beamScale = self.beamScale + gameConfig.laser.beamSpeed * dt
-    else
-        if self.isFiring then
-            self.beamScale = 1
-        end
-    end
-
-  --  self.isFiring = false
-    if (self.targetAsteroid and self.beamScale >= 1) then
-        self.targetAsteroid:hit()
+    elseif self.isFiring then
+        self.beamScale = 1
+        self.isDoingDamage = true
     end
 end
 
@@ -183,10 +181,8 @@ function Class:inFrontOf(fireAngle)
 end
 
 function Class:fire(fireAngle, asteroid)
-
     -- Check if the lasetSat is oriented in the direction of the fireAngle
     if (self:inFrontOf(fireAngle)) then
-
         local deltaX = asteroid.pos.x - self.pos.x
         local deltaY = asteroid.pos.y - self.pos.y
         asteroidAngle = - math.atan2(deltaY, deltaX)
@@ -196,7 +192,6 @@ function Class:fire(fireAngle, asteroid)
             self.targetAsteroid = asteroid
             self.isFiring = true
             self.displayAngle = asteroidAngle
-
         else
             self.targetAsteroid = nil
             self.isFiring = false

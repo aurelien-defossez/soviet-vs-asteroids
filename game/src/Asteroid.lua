@@ -81,8 +81,10 @@ function Class:explode()
     SoundManager.explosion()
 end
 
-function Class:hit()
-    self.life = self.life - gameConfig.laser.baseDmg
+function Class:hit(nbHits, modifier)
+    modifier = modifier or 1
+
+    self.life = self.life - gameConfig.laser.baseDmg * math.pow(nbHits, gameConfig.laser.dpsExp) * modifier
     self.color = { 255, 128 + ( self.life * 128 ), 128 + ( self.life * 128 ) }
 end
 

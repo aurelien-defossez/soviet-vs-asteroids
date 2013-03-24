@@ -69,7 +69,10 @@ function Class.create(options)
     self.station:addLaserSat( LaserSat.create{ angle = 0 } )
     self.station:addLaserSat( LaserSat.create{ angle = math.pi } )
 
-    self.station:addDrone( Drone.create{ angle = math.pi / 2 } )
+    self.station:addDrone( Drone.create{ angle = -math.pi / 2 } )
+    -- self.station:addDrone( Drone.create{ angle = math.pi / 2 } )
+    -- self.station:addDrone( Drone.create{ angle = 0 } )
+    -- self.station:addDrone( Drone.create{ angle = math.pi } )
 
     -- Create the input controller
     if (
