@@ -262,6 +262,19 @@ function Class:draw()
         laserSat:draw()
     end
 
+    love.graphics.setColor(0, 127, 255, 32)
+    love.graphics.setLine(3, "smooth")
+    love.graphics.line((50 + 20)*math.cos(-self.laserAngle), (50 + 20)*math.sin(-self.laserAngle), 430*math.cos(-self.laserAngle), 430*math.sin(-self.laserAngle))
+    love.graphics.setColor(0, 127, 255, 16)
+    love.graphics.setLine(3 + gameConfig.laser.laserWidth, "smooth")
+    love.graphics.line((50 + 100) *math.cos(-self.laserAngle) , (50 + 100) *math.sin(-self.laserAngle), 430*math.cos(-self.laserAngle), 430*math.sin(-self.laserAngle))
+    love.graphics.arc( "fill",  430.5*math.cos(-self.laserAngle), 430.5*math.sin(-self.laserAngle), gameConfig.laser.laserWidth/2+2, -self.laserAngle - math.pi/2, -self.laserAngle + math.pi/2,  32 )
+    pos1 = vec2(150, gameConfig.laser.laserWidth / 2 ):rotateRad(-self.laserAngle)
+    pos2 = vec2(150, -gameConfig.laser.laserWidth / 2 ):rotateRad(-self.laserAngle)
+    love.graphics.triangle( "fill", (50 + 20)*math.cos(-self.laserAngle), (50 + 20)*math.sin(-self.laserAngle),
+                                    pos1.x, pos1.y,
+                                    pos2.x, pos2.y)
+
     if self.debug then
         self.boundingCircle:draw()
 
@@ -314,10 +327,10 @@ function Class:setMissileCooldown(cooldown)
     self.missileCoolDownTime = cooldown
 end
 
-function Class:asteroidKilled(size, distance)
+function Class:asteroidKilled(radius, distance)
     maxRange = gameConfig.station.scoreMaxRange
-    self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
-    self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
+    self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
+    self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
 end
 
 function Class:hasEnoughCoins(upgrade)

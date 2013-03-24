@@ -78,7 +78,7 @@ end
 function Class:explode()
     self.exploded = true
     dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
-    game.station:asteroidKilled(1, dist)
+    game.station:asteroidKilled(self.radius, dist)
     SoundManager.explosion()
 
     self.xplosion = love.graphics.newParticleSystem( particle, 50 * self.radius / baseRadius )

@@ -15,6 +15,8 @@ Class.__index = Class
 -----------------------------------------------------------------------------------------
 
 require("src.SoundManager")
+require("src.FusRoDov")
+
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -34,6 +36,18 @@ function Class.create(options)
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
+    self.stars = love.graphics.newParticleSystem(
+        love.graphics.newImage("assets/graphics/star.png"), 40
+    )
+    self.stars:setEmissionRate(2)
+    self.stars:setSpread( 2 * math.pi )
+    self.stars:setLifetime(-1)
+    self.stars:setParticleLife(4)
+    self.stars:setSizes(0,0,.1,.2,.3,.4)
+    self.stars:setSpeed(100, 300)
+    self.stars:start()
+    self.fusRoDovInstance = nil
+
     return self
 end
 
@@ -51,6 +65,16 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
+
+function Class:canFusRoDov()
+    return self.fusRoDovInstance == nil
+end
+
+function Class:fusRoDov()
+    if self:canFusRoDov() then
+        self.fusRoDovInstance = FusRoDov.create()
+    end
+end
 
 function Class:addMissile( options )
     table.insert( self.missiles, Missile.create( options ) )
@@ -87,6 +111,17 @@ function Class:update(dt)
         return
     end
 
+    -- Update Fus Ro Dov!
+    if self.fusRoDovInstance then
+        if self.fusRoDovInstance.ended then
+            self.fusRoDovInstance:destroy()
+            self.fusRoDovInstance = nil
+        else
+            self.fusRoDovInstance:update(dt)
+        end
+    end
+
+    -- Update missiles
     for i, missile in pairs(self.missiles) do
         missile:update(dt)
 
@@ -95,8 +130,26 @@ function Class:update(dt)
         end
     end
 
+    -- Update asteroids
     for i, asteroid in pairs(self.asteroids) do
         asteroid:update(dt, i)
+    end
+
+    -- Check for Fus-Ro-Dov collisions to destroy asteroids and missiles
+    if self.fusRoDovInstance then
+        for i, asteroid in pairs(self.asteroids) do
+            -- exclude exploded asteroid from collision detection
+            if not asteroid.exploded and self.fusRoDovInstance.range:collideCircle(asteroid.boundingCircle) then
+                asteroid:explode()
+            end
+        end
+
+        for _, missile in pairs(self.missiles) do
+            -- exclude exploded missiles from collision detection
+            if not missile.exploded and self.fusRoDovInstance.range:collideCircle(missile.boundingCircle) then
+                missile:explode()
+            end
+        end
     end
 
     -- Check for missile collisions
@@ -135,9 +188,9 @@ function Class:update(dt)
     -- spawn asteroids every once in a while
     self.dLastSpawn = self.dLastSpawn + dt
     if self.dLastSpawn > gameConfig.asteroid.spawnPeriod / game.difficulty then
-        local baseSpeed = gameConfig.asteroid.speed * game.difficulty
+        local baseSpeed = gameConfig.asteroid.speed * game.pairedDifficulty
         self:addAsteroid{
-            speed1d = gameConfig.asteroid.speed * game.difficulty * (math.random() + .5)
+            speed1d = gameConfig.asteroid.speed * game.pairedDifficulty * (math.random() + .5)
         }
         self.dLastSpawn = self.dLastSpawn - gameConfig.asteroid.spawnPeriod / game.difficulty
     end
@@ -155,6 +208,8 @@ function Class:update(dt)
             table.remove( self.asteroids, i )
         end
     end
+
+    self.stars:update(dt)
 end
 
 -- Draw the game
@@ -167,6 +222,11 @@ function Class:draw()
         1, 1,
         960, 540
     )
+    love.graphics.setColor({64, 64, 64, 128})
+    love.graphics.draw(
+        self.stars,
+        0, 0
+    )
 
     for _, asteroid in pairs(self.asteroids) do
         asteroid:draw()
@@ -174,6 +234,10 @@ function Class:draw()
 
     for _, missile in pairs(self.missiles) do
         missile:draw()
+    end
+
+    if self.fusRoDovInstance then
+        self.fusRoDovInstance:draw()
     end
 end
 
