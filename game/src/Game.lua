@@ -30,6 +30,7 @@ require("src.Space")
 require("src.LaserSat")
 require("src.MenusManager")
 require("src.Drone")
+require("src.FusRoDov")
 
 local PI = math.pi
 
@@ -55,6 +56,7 @@ function Class.create(options)
     self.elapsedTime = 0
     self.difficulty = self.difficultyProgression
     self.zoomDiff = gameConfig.zoom.origin - gameConfig.zoom.target
+    self.fusRoDovInstance = nil
 
     -- Set font
     self.fonts = {}
@@ -138,6 +140,16 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+function Class:canFusRoDov()
+    return self.fusRoDovInstance == nil
+end
+
+function Class:fusRoDov()
+    if self:canFusRoDov() then
+        self.fusRoDovInstance = FusRoDov.create()
+    end
+end
+
 -- Update the game
 --
 -- Parameters:
@@ -179,6 +191,15 @@ function Class:update(dt)
         self.pairedDifficulty = self.difficulty * (1 + math.sin(PI - x * 2 * PI) * gameConfig.difficulty.sinInfluence)
 
         -- Update game
+        if self.fusRoDovInstance then
+            if self.fusRoDovInstance.ended then
+                self.fusRoDovInstance:destroy()
+                self.fusRoDovInstance = nil
+            else
+                self.fusRoDovInstance:update(dt)
+            end
+        end
+
         self.station:update(dt)
         self.space:update(dt)
 
@@ -192,7 +213,6 @@ end
 
 -- Draw the game
 function Class:draw()
-
     love.graphics.push()
 
     -- Apply virtual resolution before rendering anything
@@ -214,6 +234,10 @@ function Class:draw()
     self.controller:draw()
     self.space:draw()
     self.station:draw()
+
+    if self.fusRoDovInstance then
+        self.fusRoDovInstance:draw()
+    end
 
     if self.mode == "upgrade" then
         if self.upgrade == "satellite" then
@@ -244,7 +268,6 @@ function Class:draw()
     end
 
   --  self.controller:draw()
-
 end
 
 -- Compute the translate vector for the camera

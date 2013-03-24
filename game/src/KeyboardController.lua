@@ -61,16 +61,26 @@ function Class.create(options)
                 self.game.menus:nextButton()
             end
         end
+
         if key == "up" or key == "left" then
             if self.mode == "menu" then
                 self.game.menus:previousButton()
             end
         end
+
         if key == "return" then
             if self.mode == "menu" then
                 self.game.menus:enterSelected()
             elseif self.mode == "upgrade" then
                 self.game:putUpgrade()
+            end
+        end
+
+        if key == "k" then
+            if self.mode == "game" then
+                if self.game:canFusRoDov() then
+                    self.game:fusRoDov()
+                end
             end
         end
     end
