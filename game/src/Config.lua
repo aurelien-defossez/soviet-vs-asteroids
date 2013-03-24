@@ -5,28 +5,29 @@ gameConfig = {
 
     screen = {
         width = 1024,
-        height = 700
+        height = 700,
     },
 
     -- Camera
     camera = {
         -- defined around 1080px
         minVirtualHeight = 1080,
-        maxVirtualHeight = 4000
+        maxVirtualHeight = 4000,
     },
 
     missiles = {
-        cooldown = 1, -- in seconds
+        cooldown = 1.0, -- in seconds
+        cooldownUpgradeRate = 0.8, -- -20% per upgrade
         deleteDistance = 1080, -- in pixels
     },
 
     asteroid = {
-    	spawnPeriod = 2,
-    	baseRadius = 64,
+        spawnPeriod = 2,
+        baseRadius = 64,
         minRadius = 16,
         baseLife = 50,
         numberPoint = 100,
-        beltDistance = 1000
+        beltDistance = 1000,
     },
 
     station = {
@@ -34,21 +35,22 @@ gameConfig = {
         maxLife = 100,
         shieldRegeneration = .5,
         shieldOffset = vec2(0, 15),
-        scoreMaxRange = 800
+        scoreMaxRange = 800,
     },
 
     laserSat = {
-        offOrbitRatio = 1.0
+        offOrbitRatio = 1.0,
     },
 
     drone = {
         offOrbitRatio = 1.4,
-        range = 42,
-        speed = 0.3
+        range = 80,
+        speed = 0.3,
+        damageModifier = 2,
     },
 
     missile = {
-        speed = 8
+        speed = 8,
     },
 
     controls = {
@@ -67,15 +69,15 @@ gameConfig = {
     -- Debug options
     debug = {
         all = false,
-        shapes = false
+        shapes = false,
     },
 
 
     laser = {
-        laserWidth =70,
+        laserWidth = 70,
         dpsExp = 0.75,
         baseDmg = 0.015,
         maxRange = 500,
-        beamSpeed = 4
-    }
+        beamSpeed = 4,
+    },
 }
