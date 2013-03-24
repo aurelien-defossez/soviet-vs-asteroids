@@ -17,8 +17,8 @@ gameConfig = {
 
     difficulty = {
         baseDifficulty = 1,
-        sinInfluence = .5,
-        sinPeriod = 30
+        sinInfluence = .25,
+        sinPeriod = 60
     },
 
     missiles = {
