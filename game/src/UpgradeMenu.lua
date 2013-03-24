@@ -165,8 +165,6 @@ function upgradeMissiles()
     cooldown = self.station.missileCoolDownTime * gameConfig.missiles.cooldownUpgradeRate
     self.station:setMissileCooldown(cooldown)
     SoundManager:upgrade()
-
-    self:updateButtons()
 end
 
 function upgradeLaser()
@@ -192,7 +190,11 @@ function upgradeFusrodov()
         return
     end
 
-    self:updateButtons()
+    if self.game.space:canFusRoDov() then
+        self.station:buyUpgrade("fusrodov")
+        self.game:setMode("game")
+        self.game:fusRoDov()
+    end
 end
 
 function updateButtons()

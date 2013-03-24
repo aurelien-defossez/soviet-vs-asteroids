@@ -270,8 +270,8 @@ function Class:draw()
 
     love.graphics.setColor(0, 127, 255, 32)
     love.graphics.setLine(3, "smooth")
-    love.graphics.line((50 + 20)*math.cos(-self.laserAngle), (50 + 20)*math.sin(-self.laserAngle), 430*math.cos(-self.laserAngle), 430*math.sin(-self.laserAngle))
-    love.graphics.setColor(0, 127, 255, 16)
+    --love.graphics.line((50 + 20)*math.cos(-self.laserAngle), (50 + 20)*math.sin(-self.laserAngle), 430*math.cos(-self.laserAngle), 430*math.sin(-self.laserAngle))
+    love.graphics.setColor(0, 127, 255, 24)
     love.graphics.setLine(3 + gameConfig.laser.laserWidth, "smooth")
     love.graphics.line((50 + 100) *math.cos(-self.laserAngle) , (50 + 100) *math.sin(-self.laserAngle), 430*math.cos(-self.laserAngle), 430*math.sin(-self.laserAngle))
     love.graphics.arc( "fill",  430.5*math.cos(-self.laserAngle), 430.5*math.sin(-self.laserAngle), gameConfig.laser.laserWidth/2+2, -self.laserAngle - math.pi/2, -self.laserAngle + math.pi/2,  32 )
@@ -333,10 +333,13 @@ function Class:setMissileCooldown(cooldown)
     self.missileCoolDownTime = cooldown
 end
 
-function Class:asteroidKilled(radius, distance)
+function Class:asteroidKilled(radius, distance, noPoints)
     maxRange = gameConfig.station.scoreMaxRange
-    self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)*10
-    self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
+
+    if not noPoints then
+        self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)*10
+        self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
+    end
 end
 
 function Class:hasEnoughCoins(upgrade)
