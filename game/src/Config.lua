@@ -73,7 +73,7 @@ gameConfig = {
         laserWidth =100,
         dpsExp = 0.75,
         baseDmg = 0.015,
-        maxRange = 800
+        maxRange = 500
     },
 
     music = {
