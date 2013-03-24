@@ -11,7 +11,7 @@ function Class.create( options )
     self = {}
     setmetatable(self, Class)
 
-    self.radius = 0
+    self.range = circle(vec2(0, 0), 0)
     self.elapsedTime = 0
     self.imageRadius = wave:getWidth()
     self.ended = false
@@ -24,14 +24,14 @@ end
 
 function Class:update(dt)
     self.elapsedTime = self.elapsedTime + dt
-    self.radius = 400 * self.elapsedTime ^ 3
+    self.range.radius = 400 * self.elapsedTime ^ 4
 
-    if self.radius > gameConfig.screen.width then
+    if self.range.radius > gameConfig.screen.width then
         self.ended = true
     end
 end
 
 function Class:draw()
-    local scale = self.radius / self.imageRadius * 2
-    love.graphics.draw(wave, -self.radius, -self.radius, 0, scale, scale)
+    local scale = self.range.radius / self.imageRadius * 2
+    love.graphics.draw(wave, -self.range.radius, -self.range.radius, 0, scale, scale)
 end

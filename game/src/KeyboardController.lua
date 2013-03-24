@@ -78,9 +78,7 @@ function Class.create(options)
 
         if key == "k" then
             if self.mode == "game" then
-                if self.game:canFusRoDov() then
-                    self.game:fusRoDov()
-                end
+                self.game.space:fusRoDov()
             end
         end
     end

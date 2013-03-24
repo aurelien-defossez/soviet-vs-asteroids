@@ -15,6 +15,8 @@ Class.__index = Class
 -----------------------------------------------------------------------------------------
 
 require("src.SoundManager")
+require("src.FusRoDov")
+
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
@@ -44,6 +46,7 @@ function Class.create(options)
     self.stars:setSizes(0,0,.1,.2,.3,.4)
     self.stars:setSpeed(100, 300)
     self.stars:start()
+    self.fusRoDovInstance = nil
 
     return self
 end
@@ -62,6 +65,16 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
+
+function Class:canFusRoDov()
+    return self.fusRoDovInstance == nil
+end
+
+function Class:fusRoDov()
+    if self:canFusRoDov() then
+        self.fusRoDovInstance = FusRoDov.create()
+    end
+end
 
 function Class:addMissile( options )
     table.insert( self.missiles, Missile.create( options ) )
@@ -98,6 +111,17 @@ function Class:update(dt)
         return
     end
 
+    -- Update Fus Ro Dov!
+    if self.fusRoDovInstance then
+        if self.fusRoDovInstance.ended then
+            self.fusRoDovInstance:destroy()
+            self.fusRoDovInstance = nil
+        else
+            self.fusRoDovInstance:update(dt)
+        end
+    end
+
+    -- Update missiles
     for i, missile in pairs(self.missiles) do
         missile:update(dt)
 
@@ -106,6 +130,7 @@ function Class:update(dt)
         end
     end
 
+    -- Update asteroids
     for i, asteroid in pairs(self.asteroids) do
         asteroid:update(dt, i)
     end
@@ -192,6 +217,10 @@ function Class:draw()
 
     for _, missile in pairs(self.missiles) do
         missile:draw()
+    end
+
+    if self.fusRoDovInstance then
+        self.fusRoDovInstance:draw()
     end
 end
 
