@@ -73,6 +73,25 @@ gameConfig = {
         },
     },
 
+    upgrades = {
+        missiles = {
+            cost = 300,
+            upgradeRate = 1.5, -- +50%
+        },
+        lasers = {
+            cost = 200,
+            upgradeRate = 1.5, -- +50%
+        },
+        drones = {
+            cost = 400,
+            upgradeRate = 1.5, -- +50%
+        },
+        fusrodov = {
+            cost = 600,
+            upgradeRate = 1.5, -- +50%
+        },
+    },
+
     -- Debug options
     debug = {
         all = false,
