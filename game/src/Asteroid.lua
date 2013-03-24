@@ -17,7 +17,6 @@ function Class.create( options )
     setmetatable(self, Class)
 
     self.space = options.space
-    self.index = options.index
     self.exploded = false
     self.rotation = math.random() * 2 * math.pi
     self.rotationSpeed = -math.pi / 2 + math.random() * math.pi
@@ -79,7 +78,6 @@ function Class:explode()
     self.exploded = true
     dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
     game.station:asteroidKilled(1, dist)
-
     SoundManager.explosion()
 end
 
@@ -92,11 +90,11 @@ end
 --
 -- Parameters:
 --  dt: The time in seconds since last frame
-function Class:update(dt)
+function Class:update(dt, i)
     if self.life <= 0 then
         self.space:splitAsteroid( self )
         self:explode()
-        self.space:removeAsteroid( self.index )
+        self.space:removeAsteroid( i )
     end
 
     self.pos = self.pos + self.speed * dt

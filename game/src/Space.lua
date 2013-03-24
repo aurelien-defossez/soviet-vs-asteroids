@@ -30,7 +30,7 @@ function Class.create(options)
     self.missiles = {}
     self.asteroids = {}
     self.dLastSpawn = 0
-    
+
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
     return self
@@ -62,18 +62,18 @@ function Class:addAsteroid( options )
     end
 
     options.space = self
-    options.index = #self.asteroids + 1
 
     local asteroid = Asteroid.create( options )
     table.insert( self.asteroids, asteroid )
+
     return asteroid
 end
 
 function Class:removeAsteroid( i )
     local asteroid = self.asteroids[i]
 
-    table.remove( self.asteroids, i )
     asteroid.space = nil;
+    table.remove( self.asteroids, i )
 end
 
 -- Update the station
@@ -90,8 +90,8 @@ function Class:update(dt)
         missile:update(dt)
     end
 
-    for _, asteroid in pairs(self.asteroids) do
-        asteroid:update(dt)
+    for i, asteroid in pairs(self.asteroids) do
+        asteroid:update(dt, i)
     end
 
     -- Check for collisions
@@ -123,6 +123,7 @@ function Class:update(dt)
             -- SoundManager.voice()
 
             break
+
         end
     end
 
