@@ -141,6 +141,7 @@ end
 
 -- Draw the game
 function Class:draw()
+
 end
 
 -- Set the current mode of the game

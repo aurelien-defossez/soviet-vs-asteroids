@@ -33,7 +33,7 @@ gameConfig = {
     	baseRadius = 64,
         minRadius = 16,
         baseLife = 300,
-        numberPoint = 100,
+        numberPoint = 300,
         beltDistance = 1000,
     },
 

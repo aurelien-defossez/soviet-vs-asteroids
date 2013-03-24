@@ -187,6 +187,7 @@ function Class:draw()
         end
     end
 
+
     -- Reset camera transform before hud drawing
     love.graphics.pop()
 
