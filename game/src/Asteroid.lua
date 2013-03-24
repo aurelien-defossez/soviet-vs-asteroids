@@ -9,6 +9,7 @@ local sprites = {
     love.graphics.newImage("assets/graphics/asteroid_2.png"),
     love.graphics.newImage("assets/graphics/asteroid_3.png")
 }
+local particle = love.graphics.newImage("assets/graphics/asteroid_particle.png")
 local baseRadius = gameConfig.asteroid.baseRadius
 
 function Class.create( options )
@@ -79,6 +80,17 @@ function Class:explode()
     dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
     game.station:asteroidKilled(1, dist)
     SoundManager.explosion()
+
+    self.xplosion = love.graphics.newParticleSystem( particle, 50 * self.radius / baseRadius )
+    self.xplosion:setEmissionRate(1E4)
+    self.xplosion:setSpread( 2 * math.pi )
+    self.xplosion:setLifetime(0.06)
+    self.xplosion:setParticleLife(1, 2)
+    self.xplosion:setSizes(1,0)
+    self.xplosion:setSpeed(50, 200)
+    self.xplosion:start()
+
+    self.timeSinceExplosion = 0
 end
 
 function Class:hit(nbHits, modifier)
@@ -93,29 +105,51 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt, i)
-    if self.life <= 0 then
-        self.space:splitAsteroid( self )
-        self:explode()
-        self.space:removeAsteroid( i )
+    if not self.exploded then
+        if self.life <= 0 then
+            self.space:splitAsteroid( self )
+            self:explode()
+        end
+
+        self.pos = self.pos + self.speed * dt
+        self.boundingCircle = circle(self.pos, self.radius)
+
+        self.rotation = self.rotation + self.rotationSpeed * dt
+    else
+        self.timeSinceExplosion = self.timeSinceExplosion + dt
+        if self.timeSinceExplosion > 2 then
+            self.xplosion:stop()
+            self.xplosion:reset()
+            self.space:removeAsteroid( i )
+        else
+            self.xplosion:update(dt)
+        end
     end
-
-    self.pos = self.pos + self.speed * dt
-    self.boundingCircle = circle(self.pos, self.radius)
-
-    self.rotation = self.rotation + self.rotationSpeed * dt
 end
 
 function Class:draw()
+    local drawable
+
     love.graphics.setColor( unpack(self.color) )
-    love.graphics.draw(
-        self.sprite,
-        self.pos.x,
-        self.pos.y,
-        self.rotation,
-        self.radius / baseRadius,
-        self.radius / baseRadius,
-        baseRadius, baseRadius
-    )
+
+    if not self.exploded then
+        love.graphics.draw(
+            self.sprite,
+            self.pos.x,
+            self.pos.y,
+            self.rotation,
+            self.radius / baseRadius,
+            self.radius / baseRadius,
+            baseRadius, baseRadius
+        )
+    else
+        love.graphics.draw(
+            self.xplosion,
+            self.pos.x,
+            self.pos.y,
+            self.rotation
+        )
+    end
 end
 
 function Class:isOffscreen()

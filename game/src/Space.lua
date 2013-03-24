@@ -109,7 +109,7 @@ function Class:update(dt)
                     missile:explode()
                     self:splitAsteroid( asteroid )
                     asteroid:explode()
-                    self:removeAsteroid( i )
+                    --self:removeAsteroid( i )
 
                     -- Stop collision detection for this missile
                     break
@@ -134,9 +134,12 @@ function Class:update(dt)
 
     -- spawn asteroids every once in a while
     self.dLastSpawn = self.dLastSpawn + dt
-    if self.dLastSpawn > gameConfig.asteroid.spawnPeriod then
-        self:addAsteroid()
-        self.dLastSpawn = self.dLastSpawn - gameConfig.asteroid.spawnPeriod
+    if self.dLastSpawn > gameConfig.asteroid.spawnPeriod / game.difficulty then
+        local baseSpeed = gameConfig.asteroid.speed * game.difficulty
+        self:addAsteroid{
+            speed1d = gameConfig.asteroid.speed * game.difficulty * (math.random() + .5)
+        }
+        self.dLastSpawn = self.dLastSpawn - gameConfig.asteroid.spawnPeriod / game.difficulty
     end
 
     -- kill missiles once they're offscreen
