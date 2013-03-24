@@ -120,8 +120,6 @@ function Class:update(dt)
     if (self.targetAsteroid) then
         self.targetAsteroid:hit()
     end
-
-
 end
 
 -- Draw the game
