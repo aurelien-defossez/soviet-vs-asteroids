@@ -27,8 +27,8 @@ function Class.create( options )
     local a = math.atan2( y, x )
 
     self.pos = options.pos or vec2(
-        gameConfig.asteroidBeltDistance * math.cos( a ),
-        gameConfig.asteroidBeltDistance * math.sin( a )
+        gameConfig.asteroid.beltDistance * math.cos( a ),
+        gameConfig.asteroid.beltDistance * math.sin( a )
     )
 
     -- direction is toward the center +/- 18 degrees
@@ -49,15 +49,15 @@ function Class.create( options )
 
         -- 10% chance of big
         if rand < 0.10 then
-            self.radius = 64
+            self.radius = gameConfig.asteroid.baseRadius
 
         -- 60% chance of medium
         elseif rand < 0.70 then
-            self.radius = 32
+            self.radius = gameConfig.asteroid.baseRadius / 2
 
         -- 30% chance of small
         else
-            self.radius = 16
+            self.radius = gameConfig.asteroid.baseRadius / 4
         end
     end
 
@@ -117,7 +117,7 @@ function Class:draw()
 end
 
 function Class:isOffscreen()
-    return self.pos:length() > gameConfig.asteroidBeltDistance + 1
+    return self.pos:length() > gameConfig.asteroid.beltDistance + 1
 end
 
 function Class:distanceWithLine(shootAngle)

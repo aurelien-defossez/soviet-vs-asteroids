@@ -180,7 +180,7 @@ function Class:splitAsteroid( asteroid )
     end
 
     -- only split asteroids that have not reached minimal width
-    if asteroid.radius <= 16 then
+    if asteroid.radius <= gameConfig.asteroid.minRadius then
         return false
     end
 
