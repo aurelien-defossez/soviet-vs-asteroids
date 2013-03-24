@@ -24,8 +24,9 @@ function SoundManager.setup()
 		love.audio.newSource("assets/audio/missileshot1.ogg", "static"),
 		love.audio.newSource("assets/audio/missileshot2.ogg", "static")
 	}	
+	self.soundMissileItter=1
 	for _,a in pairs(self.soundMissiles) do
-		a:setVolume(0.5)
+		a:setVolume(0.4)
 	end 
 
 	self.soundExplosions={
@@ -98,8 +99,11 @@ end
 
 function SoundManager.missile()
 	if not self.noSound then
-		rd=math.floor(math.random(1,4))
-		self.soundMissiles[rd]:play()
+		self.soundMissiles[self.soundMissileItter]:play()
+		self.soundMissileItter=self.soundMissileItter+1
+		if(self.soundMissileItter>4)then
+			self.soundMissileItter=1
+		end
 	end
 end
 
