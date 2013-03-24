@@ -30,13 +30,15 @@ function Class.create(options)
     self.x = options.x
     self.y = options.y
     self.scale = options.scale
-    self.width = 444 * self.scale
-    self.height = 66 * self.scale
+    self.width = options.width * self.scale
+    self.height = options.height * self.scale
     self.text = options.text
     self.callbackFn = options.callback
+    self.valign = options.valign or "middle"
+    self.color = options.color or "white"
 
-    self.background = love.graphics.newImage("assets/graphics/gui/btn_off.png")
-    self.border = love.graphics.newImage("assets/graphics/gui/btn_on.png")
+    self.background = love.graphics.newImage("assets/graphics/gui/" .. options.background .. ".png")
+    self.border = love.graphics.newImage("assets/graphics/gui/" .. options.border .. ".png")
 
     self.rectangle = aabb(vec2(self.x, self.y), vec2(self.width + self.x, self.height + self.y))
 
@@ -74,8 +76,18 @@ function Class:draw()
     colors.mode("modulate")
 
     -- display button text
-    colors.white()
-    love.graphics.printf(self.text, self.x, self.y + ((self.height - 48 * self.scale) / 2), self.width, "center")
+    if self.valign == "middle" then
+        y = self.y + ((self.height - 48 * self.scale) / 2)
+    elseif self.valign == "down" then
+        y = self.y + self.height - (68 * self.scale)
+    end
+
+    if self.color == "red" then
+        colors.red()
+    elseif self.color == "white" then
+        colors.white()
+    end
+    love.graphics.printf(self.text, self.x, y, self.width, "center")
 end
 
 function Class:contains(x, y)
