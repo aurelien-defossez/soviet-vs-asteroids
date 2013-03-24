@@ -24,6 +24,9 @@ function SoundManager.setup()
 		love.audio.newSource("assets/audio/missileshot1.ogg", "static"),
 		love.audio.newSource("assets/audio/missileshot2.ogg", "static")
 	}	
+	for _,a in pairs(self.soundMissiles) do
+		a:setVolume(0.5)
+	end 
 
 	self.soundExplosions={
 		love.audio.newSource("assets/audio/explosion1.ogg", "static"),
@@ -35,6 +38,9 @@ function SoundManager.setup()
 		love.audio.newSource("assets/audio/explosion4.ogg", "static"),
 		love.audio.newSource("assets/audio/explosion2.ogg", "static")
 	}
+	for _,a in pairs(self.soundExplosions) do
+		a:setVolume(0.4)
+	end
 
 	self.soundVoices={
 		love.audio.newSource("assets/audio/shit.ogg", "static"),
