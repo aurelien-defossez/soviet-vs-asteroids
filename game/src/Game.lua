@@ -250,10 +250,14 @@ function Class:putUpgrade()
         self.station:addLaserSat(self.station.newSatellite)
         self.station.newSatellite = nil
         self:setMenu("upgrade")
+        SoundManager:upgrade()
+        SoundManager:laserPlace()
     elseif self.upgrade == "drone" and self.station.newDrone ~= nil then
         self.station:addDrone(self.station.newDrone)
         self.station.newDrone = nil
         self:setMenu("upgrade")
+        SoundManager:upgrade()
+        SoundManager:dronePlace()
     end
 end
 
