@@ -30,20 +30,17 @@ function Class.setup()
     self.explosionimage = love.graphics.newImage("assets/graphics/game_over_explosion.png")
 end
 
-
-
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
 
 function Class.draw()
-    
     love.graphics.draw(
         self.explosionimage,
         (gameConfig.screen.width/2)-(self.explosionimage:getWidth()/2),
         (gameConfig.screen.height/2)-(self.explosionimage:getHeight()/2)
         )
-    
+
     love.graphics.draw(
         self.gameoverimage,
         (gameConfig.screen.width/2)-(self.gameoverimage:getWidth()/2),
