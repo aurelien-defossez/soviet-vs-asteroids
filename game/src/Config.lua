@@ -23,10 +23,11 @@ gameConfig = {
     asteroid = {
     	spawnPeriod = 2,
     	baseRadius = 64,
+        minRadius = 16,
         baseLife = 50,
-        numberPoint = 100
+        numberPoint = 100,
+        beltDistance = 1000
     },
-    asteroidBeltDistance = 1080,
 
     station = {
         radius = 90,
