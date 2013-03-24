@@ -68,6 +68,10 @@ function Class.create(options)
     self.lastSentMissileTime = - gameConfig.missiles.cooldown -- so we can shoot right away
     self.missileCoolDownTime = gameConfig.missiles.cooldown
 
+    -- Upgrades
+    self.newSatellite = nil
+    self.newDrone = nil
+
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
     return self
@@ -259,13 +263,20 @@ function Class:findClosestAsteroid(angle, width)
     return closestAsteroid
 end
 
-
 -- Set the current mode of the game
 --
 -- Parameters
 --  mode: "game" or "upgrade" mode
 function Class:setMode(mode)
     self.mode = mode
+end
+
+-- Set the cooldown time between 2 missiles
+--
+-- Parameters
+--  cooldown: int
+function Class:setMissileCooldown(cooldown)
+    self.missileCoolDownTime = cooldown
 end
 
 function Class:asteroidKilled(size, distance)

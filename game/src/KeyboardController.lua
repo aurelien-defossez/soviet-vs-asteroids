@@ -27,23 +27,38 @@ function Class.create(options)
         -- Go to upgrade mode
         if key == "backspace" or key == "tab" then
             if self.mode == "game" then
-                self.game:setMode("upgrade")
+                self.game:setMenu("upgrade")
             elseif self.mode == "upgrade" then
+                self.game:setMenu("upgrade")
+            elseif self.mode == "menu" and self.game.menu == "upgrade" then
                 self.game:setMode("game")
             end
-        end
 
-        if key == "escape" and self.mode == "upgrade" then
-            self.game:setMenu("upgrade")
+            return
         end
 
         -- Go to pause menu
-        if key == "p" or key == "escape" then
-            if self.mode == "menu" then
+        if key == "p" then
+            if self.mode == "menu" and self.game.menu == "pause" then
                 self.game:setMode("game")
             elseif self.mode == "game" then
                 self.game:setMenu("pause")
             end
+
+            return
+        end
+
+        -- Generic escape from menus and modes
+        if key == "escape" then
+            if self.mode == "upgrade" then
+                self.game:setMenu("upgrade")
+            elseif self.mode == "menu" then
+                self.game:setMode("game")
+            elseif self.mode == "game" then
+                self.game:setMenu("pause")
+            end
+
+            return
         end
     end
 

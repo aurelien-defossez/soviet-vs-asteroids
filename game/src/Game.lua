@@ -61,6 +61,8 @@ function Class.create(options)
     self.menus = MenusManager.create{
         game = self
     }
+    self.menu = nil
+    self.upgrade = nil
 
     self.station:addLaserSat( LaserSat.create{ angle = -math.pi / 2 } )
     self.station:addLaserSat( LaserSat.create{ angle = math.pi / 2 } )
@@ -123,6 +125,12 @@ function Class:update(dt)
     self.controller:update(dt)
     if self.mode == "menu" then
         self.menus:update(dt)
+    elseif self.mode == "upgrade" then
+        if self.upgrade == "satellite" then
+            self.station.newSatellite:update(dt)
+        elseif self.upgrade == "drone" then
+            self.station.newDrone:update(dt)
+        end
     else
         self.station:update(dt)
         self.space:update(dt)
@@ -156,7 +164,13 @@ function Class:draw()
         self.station:draw()
     end
 
-
+    if self.mode == "upgrade" then
+        if self.upgrade == "satellite" then
+            self.station.newSatellite:draw()
+        elseif self.upgrade == "drone" then
+            self.station.newDrone:draw()
+        end
+    end
 
     -- Reset camera transform before hud drawing
     love.graphics.pop()
@@ -199,8 +213,41 @@ end
 -- Parameters
 --  menu: the menu to show
 function Class:setMenu(menu)
+    self.menu = menu
     self.menus:setMenu(menu)
     self:setMode("menu")
+end
+
+-- Set the current upgrade
+--
+-- Parameters
+--  upgrade: the item to upgrade, "satellite" or "drone"
+function Class:setUpgrade(upgrade)
+    self.upgrade = upgrade
+    self:setMode("upgrade")
+
+    if upgrade == "satellite" then
+        self.station.newSatellite = LaserSat.create{
+            position = 0,
+            angle = 0,
+        }
+    elseif upgrade == "drone" then
+        self.station.newDrone = Drone.create{
+            angle = 0,
+        }
+    end
+end
+
+function Class:putUpgrade()
+    if self.upgrade == "satellite" and self.station.newSatellite ~= nil then
+        self.station:addLaserSat(self.station.newSatellite)
+        self.station.newSatellite = nil
+        self:setMenu("upgrade")
+    elseif self.upgrade == "drone" and self.station.newDrone ~= nil then
+        self.station:addDrone(self.station.newDrone)
+        self.station.newDrone = nil
+        self:setMenu("upgrade")
+    end
 end
 
 -----------------------------------------------------------------------------------------
