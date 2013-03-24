@@ -16,8 +16,7 @@ gameConfig = {
     },
 
     missiles = {
-        cooldown = 1.0, -- in seconds
-        cooldownUpgradeRate = 0.8, -- -20% per upgrade
+        cooldown = 1, -- in seconds
         deleteDistance = 1080, -- in pixels
     },
 
@@ -33,8 +32,7 @@ gameConfig = {
         radius = 90,
         maxLife = 100,
         shieldRegeneration = .5,
-        shieldOffset = vec2(0, 15),
-        scoreMaxRange = 800
+        shieldOffset = vec2(0, 15)
     },
 
     laserSat = {
@@ -72,10 +70,9 @@ gameConfig = {
 
 
     laser = {
-        laserWidth =70,
+        laserWidth =100,
         dpsExp = 0.75,
         baseDmg = 0.015,
-        maxRange = 500,
-        beamSpeed = 4
+        maxRange = 800
     }
 }
