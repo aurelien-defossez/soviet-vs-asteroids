@@ -73,6 +73,7 @@ end
 
 function Class:fusRoDov()
     if self:canFusRoDov() then
+        SoundManager.voiceBomb()
         self.fusRoDovInstance = FusRoDov.create()
     end
 end
