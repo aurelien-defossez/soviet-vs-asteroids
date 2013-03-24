@@ -109,7 +109,7 @@ function Class:update(dt)
     self.laserImpactSprite:update(dt)
     self.laserBeamSprite:update(dt)
     if self.beamScale < 1  and self.isFiring then
-        self.beamScale = self.beamScale + 0.2
+        self.beamScale = self.beamScale + 0.1
     else
         if self.isFiring then
             self.beamScale = 1
@@ -117,7 +117,7 @@ function Class:update(dt)
     end
 
   --  self.isFiring = false
-    if (self.targetAsteroid) then
+    if (self.targetAsteroid and self.beamScale >= 1) then
         self.targetAsteroid:hit()
     end
 

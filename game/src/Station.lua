@@ -269,7 +269,7 @@ function Class:setMode(mode)
 end
 
 function Class:asteroidKilled(size, distance)
-    maxRange = gameConfig.laser.maxRange
+    maxRange = gameConfig.station.scoreMaxRange
     self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * (distance / ( 2 * maxRange )) + 0.5)
     self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * (distance / ( 2 * maxRange )) + 0.5)
 end
