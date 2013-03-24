@@ -28,7 +28,7 @@ function Class.create(options)
     setmetatable(self, Class)
 
     self.game = options.game
-    self.selected = nil
+    self.selected = 1
 
     self.buttons = {}
     table.insert(
@@ -90,27 +90,6 @@ function Class:draw()
 
     for key, val in pairs(self.buttons) do
         val:draw()
-    end
-end
-
-function Class:selectButtonIn(x, y)
-    if self.selected ~= nil then
-        self.selected.selected = false
-        self.selected = nil
-    end
-
-    for key, val in pairs(self.buttons) do
-        if val:contains(x, y) then
-            self.selected = val
-            val.selected = true
-            break
-        end
-    end
-end
-
-function Class:enterSelected()
-    if self.selected ~= nil then
-        self.selected:callback()
     end
 end
 

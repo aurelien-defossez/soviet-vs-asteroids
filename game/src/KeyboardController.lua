@@ -33,8 +33,6 @@ function Class.create(options)
             elseif self.mode == "menu" and self.game.menu == "upgrade" then
                 self.game:setMode("game")
             end
-
-            return
         end
 
         -- Go to pause menu
@@ -44,8 +42,6 @@ function Class.create(options)
             elseif self.mode == "game" then
                 self.game:setMenu("pause")
             end
-
-            return
         end
 
         -- Generic escape from menus and modes
@@ -57,8 +53,23 @@ function Class.create(options)
             elseif self.mode == "game" then
                 self.game:setMenu("pause")
             end
+        end
 
-            return
+        -- Navigate in menus
+        if key == "down" or key == "right" then
+            if self.mode == "menu" then
+                self.game.menus:nextButton()
+            end
+        end
+        if key == "up" or key == "left" then
+            if self.mode == "menu" then
+                self.game.menus:previousButton()
+            end
+        end
+        if key == "return" then
+            if self.mode == "menu" then
+                self.game.menus:enterSelected()
+            end
         end
     end
 
