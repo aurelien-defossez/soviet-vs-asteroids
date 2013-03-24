@@ -54,7 +54,7 @@ gameConfig = {
     },
 
     controls = {
-        default = "joystick", -- joystick, keyboard, mouse
+        default = "keyboard", -- joystick, keyboard, mouse
         force = nil, -- joystick, keyboard, mouse
 
         mouse = {
