@@ -18,6 +18,7 @@ game = nil
 require("lib.math.vec2")
 require("lib.math.aabb")
 require("lib.json.json")
+require("src.gui.Colors")
 require("src.Config")
 require("src.Station")
 require("src.PadController")
@@ -56,7 +57,11 @@ function Class.create(options)
     self.zoomDiff = gameConfig.zoom.origin - gameConfig.zoom.target
 
     -- Set font
-    love.graphics.setFont(love.graphics.newFont(20))
+    self.fonts = {}
+    self.fonts["36"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 36 * gameConfig.screen.scale)
+    self.fonts["48"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 48 * gameConfig.screen.scale)
+    self.fonts["72"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 72 * gameConfig.screen.scale)
+    love.graphics.setFont(self.fonts["48"])
 
     -- Initialize attributes
     self.station = Station.create()
@@ -207,10 +212,8 @@ function Class:draw()
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
     self.controller:draw()
-    if self.mode ~= "menu" then
-        self.space:draw()
-        self.station:draw()
-    end
+    self.space:draw()
+    self.station:draw()
 
     if self.mode == "upgrade" then
         if self.upgrade == "satellite" then
@@ -225,11 +228,16 @@ function Class:draw()
 
     -- Draw HUD
 
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Score : " ..self.station.score, 10, 10)
+    colors.white()
+    love.graphics.setFont(self.fonts["36"])
+    love.graphics.printf("Score:", 10, 16, 200, "left")
+    love.graphics.setFont(self.fonts["48"])
+    love.graphics.printf(self.station.score, 10, 10, 250, "right")
 
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Roubles : " ..self.station.coins, 300, 10)
+    love.graphics.setFont(self.fonts["36"])
+    love.graphics.printf("Roubles:", 300, 16, 200, "left")
+    love.graphics.setFont(self.fonts["48"])
+    love.graphics.printf(self.station.coins, 300, 10, 300, "right")
 
     if self.mode == "menu" then
         self.menus:draw()

@@ -6,6 +6,7 @@ gameConfig = {
     screen = {
         width = 1024,
         height = 700,
+        scale = 0.6,
     },
 
     -- Camera

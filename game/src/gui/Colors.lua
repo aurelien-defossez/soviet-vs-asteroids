@@ -18,3 +18,7 @@ end
 function colors.green()
     love.graphics.setColor(0, 255, 0, 255)
 end
+
+function colors.mode(mode)
+    love.graphics.setColorMode(mode)
+end

@@ -37,8 +37,7 @@ function Class.create(options)
         Button.create{
             x = gameConfig.screen.width * 0.2, -- 20%
             y = gameConfig.screen.height * 0.2,
-            width = gameConfig.screen.width * 0.6, -- 60%
-            height = gameConfig.screen.height * 0.2,
+            scale = gameConfig.screen.scale,
             text = "Upgrade missiles",
             callback = self.upgradeMissiles,
         }
@@ -48,8 +47,7 @@ function Class.create(options)
         Button.create{
             x = gameConfig.screen.width * 0.2, -- 20%
             y = gameConfig.screen.height * 0.45,
-            width = gameConfig.screen.width * 0.6, -- 60%
-            height = gameConfig.screen.height * 0.2,
+            scale = gameConfig.screen.scale,
             text = "Shiny lazer!",
             callback = self.upgradeLaser,
         }
@@ -59,8 +57,7 @@ function Class.create(options)
         Button.create{
             x = gameConfig.screen.width * 0.2, -- 20%
             y = gameConfig.screen.height * 0.7,
-            width = gameConfig.screen.width * 0.6, -- 60%
-            height = gameConfig.screen.height * 0.2,
+            scale = gameConfig.screen.scale,
             text = "D-D-D-Drone",
             callback = self.upgradeDrone,
         }

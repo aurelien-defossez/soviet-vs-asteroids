@@ -29,10 +29,14 @@ function Class.create(options)
 
     self.x = options.x
     self.y = options.y
-    self.width = options.width
-    self.height = options.height
+    self.scale = options.scale
+    self.width = 444 * self.scale
+    self.height = 66 * self.scale
     self.text = options.text
     self.callbackFn = options.callback
+
+    self.background = love.graphics.newImage("assets/graphics/gui/btn_off.png")
+    self.border = love.graphics.newImage("assets/graphics/gui/btn_on.png")
 
     self.rectangle = aabb(vec2(self.x, self.y), vec2(self.width + self.x, self.height + self.y))
 
@@ -58,29 +62,20 @@ end
 
 -- Draw the Button
 function Class:draw()
+    colors.mode("replace")
     -- display button background
-    if self.selected then
-        colors.white()
-    else
-        colors.grey()
-    end
-    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    love.graphics.draw(self.background, self.x, self.y, 0, self.scale)
 
     -- display button border
     if self.selected then
-        colors.grey()
-    else
-        colors.darkgrey()
+        love.graphics.draw(self.border, self.x, self.y, 0, self.scale)
     end
-    love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+
+    colors.mode("modulate")
 
     -- display button text
-    if self.selected then
-        colors.black()
-    else
-        colors.white()
-    end
-    love.graphics.printf(self.text, self.x, self.y - 12 + self.height / 2, self.width, "center")
+    colors.white()
+    love.graphics.printf(self.text, self.x, self.y + ((self.height - 48 * self.scale) / 2), self.width, "center")
 end
 
 function Class:contains(x, y)
