@@ -39,7 +39,7 @@ function Class.create(options)
     -- Create object
     self = {}
     setmetatable(self, Class)
-    game=self
+    game = self
 
     -- Set virtual viewport
     self.virtualScreenHeight = gameConfig.camera.minVirtualHeight
@@ -47,6 +47,8 @@ function Class.create(options)
     self.screenRatio = love.graphics.getWidth() / love.graphics.getHeight()
     self.camera = vec2(0, 0)
     self.zoom = 1.25
+    self.elapsedTime = 0
+    self.difficulty = self.difficultyProgression
 
     -- Set font
     love.graphics.setFont(love.graphics.newFont(20))
@@ -135,8 +137,14 @@ function Class:update(dt)
     if self.mode == "menu" then
         self.menus:update(dt)
     elseif self.mode ~= "upgrade" and self.mode ~= "end" then
+        self.elapsedTime = self.elapsedTime + dt
+        local x = self.elapsedTime / gameConfig.difficulty.sinPeriod
+        self.difficulty = gameConfig.difficulty.baseDifficulty + x
+        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * math.pi) * gameConfig.difficulty.sinInfluence)
+
         self.station:update(dt)
         self.space:update(dt)
+
         if self.station.life < 0 then
             self.mode = "end"
             SoundManager.voiceDeath()
@@ -194,7 +202,7 @@ function Class:draw()
         self.menus:draw()
     end
 
-    self.controller:draw()
+  --  self.controller:draw()
 
 end
 
@@ -211,6 +219,12 @@ end
 -- Parameters
 --  mode: "game" or "upgrade" or "menu"
 function Class:setMode(mode)
+    if mode == "menu" then
+        SoundManager.startShopMusic()
+        SoundManager.laserStop()
+    elseif self.mode == "menu" and mode ~= "menu" and mode ~= "upgrade" then
+        SoundManager.stopShopMusic()
+    end
     self.mode = mode
     self.controller:setMode(mode)
     self.station:setMode(mode)
@@ -252,10 +266,14 @@ function Class:putUpgrade()
         self.station:addLaserSat(self.station.newSatellite)
         self.station.newSatellite = nil
         self:setMenu("upgrade")
+        SoundManager:upgrade()
+        SoundManager:laserPlace()
     elseif self.upgrade == "drone" and self.station.newDrone ~= nil then
         self.station:addDrone(self.station.newDrone)
         self.station.newDrone = nil
         self:setMenu("upgrade")
+        SoundManager:upgrade()
+        SoundManager:dronePlace()
     end
 end
 

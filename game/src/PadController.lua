@@ -146,7 +146,7 @@ function Class:draw()
 
     -- Draw scene
 
-    love.graphics.print(self.buttonPressed, 0, 0)
+    --love.graphics.print(self.buttonPressed, 0, 0)
     love.graphics.line(0 , 0, 100*math.cos(self.joy1Angle), 100*math.sin(self.joy1Angle))
     love.graphics.setColor(0, 255, 0)
     --love.graphics.print(self.joy2Angle, 0, 30)
@@ -171,7 +171,7 @@ function love.joystickpressed( joystick, button )
     -- A = 1
     -- B = 2
     -- Start = 8
-    self.buttonPressed = button
+    --self.buttonPressed = button
     if button == 4 then
         if self.mode == "game" then
             self.game:setMenu("upgrade")

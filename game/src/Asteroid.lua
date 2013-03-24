@@ -63,7 +63,7 @@ function Class.create( options )
     end
 
     -- life of the asteroid depends of its radius
-    self.life = self.radius / baseRadius
+    self.life = self.radius / baseRadius / 5
     self.numberSatHit = 0
 
     self.color = options.color or { 255, 255, 255 }
