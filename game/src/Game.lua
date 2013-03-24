@@ -196,6 +196,8 @@ function Class:draw()
         self.menus:draw()
     end
 
+    self.controller:draw()
+
 end
 
 -- Compute the translate vector for the camera
