@@ -8,26 +8,26 @@ Class.__index = Class
 
 function SoundManager.setup()
 	self={}
-   	self.soundMissile1=love.audio.newSource("assets/audio/missileshot1.ogg")
-	self.soundMissile2=love.audio.newSource("assets/audio/missileshot2.ogg")
+   	self.soundMissile1=love.audio.newSource("assets/audio/missileshot1.ogg", "static")
+	self.soundMissile2=love.audio.newSource("assets/audio/missileshot2.ogg", "static")
 
-	self.soundLaser1=love.audio.newSource("assets/audio/lasershot2.ogg")
+	self.soundLaser1=love.audio.newSource("assets/audio/lasershot2.ogg", "static")
 	self.soundLaser1:setLooping(true)
 
-	self.soundExplosion1=love.audio.newSource("assets/audio/explosion1.ogg")
-	self.soundExplosion2=love.audio.newSource("assets/audio/explosion2.ogg")
-	self.soundExplosion3=love.audio.newSource("assets/audio/explosion3.ogg")
-	self.soundExplosion4=love.audio.newSource("assets/audio/explosion4.ogg")
+	self.soundExplosion1=love.audio.newSource("assets/audio/explosion1.ogg", "static")
+	self.soundExplosion2=love.audio.newSource("assets/audio/explosion2.ogg", "static")
+	self.soundExplosion3=love.audio.newSource("assets/audio/explosion3.ogg", "static")
+	self.soundExplosion4=love.audio.newSource("assets/audio/explosion4.ogg", "static")
 
-	self.soundUpgrade=love.audio.newSource("assets/audio/upgrade.ogg")
-	self.soundLaserPlace=love.audio.newSource("assets/audio/laser_place.ogg")
-	self.soundDronePlace=love.audio.newSource("assets/audio/drone_place.ogg")
+	self.soundUpgrade=love.audio.newSource("assets/audio/upgrade.ogg", "static")
+	self.soundLaserPlace=love.audio.newSource("assets/audio/laser_place.ogg", "static")
+	self.soundDronePlace=love.audio.newSource("assets/audio/drone_place.ogg", "static")
 
-	self.voiceShit=love.audio.newSource("assets/audio/shit.ogg")
-	self.voiceFuckyou=love.audio.newSource("assets/audio/fuckyou.ogg")
-	self.voiceForMotherRussia=love.audio.newSource("assets/audio/formotherrussia.ogg")
-	self.voiceFusRoDov=love.audio.newSource("assets/audio/fusrodov.ogg")
-	self.voiceAnneRoumanov=love.audio.newSource("assets/audio/anneroumanov.ogg")
+	self.voiceShit=love.audio.newSource("assets/audio/shit.ogg", "static")
+	self.voiceFuckyou=love.audio.newSource("assets/audio/fuckyou.ogg", "static")
+	self.voiceForMotherRussia=love.audio.newSource("assets/audio/formotherrussia.ogg", "static")
+	self.voiceFusRoDov=love.audio.newSource("assets/audio/fusrodov.ogg", "static")
+	self.voiceAnneRoumanov=love.audio.newSource("assets/audio/anneroumanov.ogg", "static")
 
 	self.musicAmbiance=love.audio.newSource("assets/audio/music.ogg")
 	self.musicAmbiance:setLooping(true)
