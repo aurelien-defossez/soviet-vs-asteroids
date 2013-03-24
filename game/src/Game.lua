@@ -207,6 +207,7 @@ function Class:update(dt)
         if self.station.life < 0 then
             self.mode = "end"
             SoundManager.voiceDeath()
+            SoundManager.laserStop()
             SoundManager.stopMusic()
         end
     elseif self.mode == "end" then
@@ -234,16 +235,20 @@ function Class:draw()
     local screenExtent = vec2(self.virtualScreenHeight * self.screenRatio, self.virtualScreenHeight)
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
-    self.controller:draw()
-    self.space:draw()
-    self.station:draw()
+    if self.mode ~= "end" then
+        self.controller:draw()
+        self.space:draw()
+        self.station:draw() 
 
-    if self.mode == "upgrade" then
-        if self.upgrade == "satellite" then
-            self.station.newSatellite:draw()
-        elseif self.upgrade == "drone" then
-            self.station.newDrone:draw()
+        if self.mode == "upgrade" then
+            if self.upgrade == "satellite" then
+                self.station.newSatellite:draw()
+            elseif self.upgrade == "drone" then
+                self.station.newDrone:draw()
+            end 
         end
+    else 
+        self.space:draw()  
     end
 
 
