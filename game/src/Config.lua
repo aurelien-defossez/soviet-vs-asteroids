@@ -25,7 +25,7 @@ gameConfig = {
         spawnPeriod = 2,
         baseRadius = 64,
         minRadius = 16,
-        baseLife = 50,
+        baseLife = 300,
         numberPoint = 100,
         beltDistance = 1000,
     },
@@ -76,7 +76,7 @@ gameConfig = {
     laser = {
         laserWidth = 70,
         dpsExp = 0.75,
-        baseDmg = 0.015,
+        baseDmg = 0.0015,
         maxRange = 500,
         beamSpeed = 4,
     },
