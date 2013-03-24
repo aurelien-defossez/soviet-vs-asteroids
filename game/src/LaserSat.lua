@@ -109,7 +109,7 @@ function Class:update(dt)
     self.laserImpactSprite:update(dt)
     self.laserBeamSprite:update(dt)
     if self.beamScale < 1  and self.isFiring then
-        self.beamScale = self.beamScale + 0.1
+        self.beamScale = self.beamScale + gameConfig.laser.beamSpeed * dt
     else
         if self.isFiring then
             self.beamScale = 1

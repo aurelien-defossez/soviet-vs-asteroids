@@ -74,6 +74,7 @@ gameConfig = {
         laserWidth =70,
         dpsExp = 0.75,
         baseDmg = 0.015,
-        maxRange = 500
+        maxRange = 500,
+        beamSpeed = 4
     }
 }
