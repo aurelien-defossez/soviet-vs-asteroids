@@ -18,6 +18,7 @@ game = nil
 require("lib.math.vec2")
 require("lib.math.aabb")
 require("lib.json.json")
+require("src.gui.Colors")
 require("src.Config")
 require("src.Station")
 require("src.PadController")
@@ -29,6 +30,8 @@ require("src.Space")
 require("src.LaserSat")
 require("src.MenusManager")
 require("src.Drone")
+
+local PI = math.pi
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -46,12 +49,19 @@ function Class.create(options)
     self.virtualScaleFactor = love.graphics.getHeight() / self.virtualScreenHeight
     self.screenRatio = love.graphics.getWidth() / love.graphics.getHeight()
     self.camera = vec2(0, 0)
-    self.zoom = 1.25
+    self.zoomDelay = gameConfig.zoom.delay
+    self.dezoomElpased = 0
+    self.zoom = gameConfig.zoom.origin
     self.elapsedTime = 0
     self.difficulty = self.difficultyProgression
+    self.zoomDiff = gameConfig.zoom.origin - gameConfig.zoom.target
 
     -- Set font
-    love.graphics.setFont(love.graphics.newFont(20))
+    self.fonts = {}
+    self.fonts["36"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 36 * gameConfig.screen.scale)
+    self.fonts["48"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 48 * gameConfig.screen.scale)
+    self.fonts["72"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 72 * gameConfig.screen.scale)
+    love.graphics.setFont(self.fonts["48"])
 
     -- Initialize attributes
     self.station = Station.create()
@@ -66,15 +76,15 @@ function Class.create(options)
     self.menu = nil
     self.upgrade = nil
 
-    self.station:addLaserSat( LaserSat.create{ angle = -math.pi / 2 } )
-    self.station:addLaserSat( LaserSat.create{ angle = math.pi / 2 } )
-    self.station:addLaserSat( LaserSat.create{ angle = 0 } )
-    self.station:addLaserSat( LaserSat.create{ angle = math.pi } )
+    self.station:addLaserSat( LaserSat.create{ angle = PI / 4 } )
+    self.station:addLaserSat( LaserSat.create{ angle = 3 * PI / 4 } )
+    self.station:addLaserSat( LaserSat.create{ angle = -PI / 4 } )
+    self.station:addLaserSat( LaserSat.create{ angle = -3 * PI / 4 } )
 
-    self.station:addDrone( Drone.create{ angle = -math.pi / 2 } )
-    -- self.station:addDrone( Drone.create{ angle = math.pi / 2 } )
+    self.station:addDrone( Drone.create{ angle = PI / 2 } )
+    -- self.station:addDrone( Drone.create{ angle = PI / 2 } )
     -- self.station:addDrone( Drone.create{ angle = 0 } )
-    -- self.station:addDrone( Drone.create{ angle = math.pi } )
+    -- self.station:addDrone( Drone.create{ angle = PI } )
 
     -- Create the input controller
     if (
@@ -137,14 +147,42 @@ function Class:update(dt)
     if self.mode == "menu" then
         self.menus:update(dt)
     elseif self.mode ~= "upgrade" and self.mode ~= "end" then
+        -- Update zoom
+        if self.zoomDelay > 0 then
+            self.zoomDelay = self.zoomDelay - dt
+        elseif self.zoom > gameConfig.zoom.target then
+            self.dezoomElpased = self.dezoomElpased + dt
+            local dezoomPercentage = self.dezoomElpased / gameConfig.zoom.duration
+            local dezoomProgress
+
+            if dezoomPercentage < .5 then
+                dezoomProgress = 0.5 - math.sin(-PI / 2 + PI * dezoomPercentage) / 2
+            else
+                local dezoomPercentage = 2 * (dezoomPercentage - .5)
+                dezoomProgress = 0.5 - math.sin(PI - dezoomPercentage * PI / 2) / 2
+            end
+
+            self.zoom = gameConfig.zoom.target + dezoomProgress * self.zoomDiff
+
+            if dezoomPercentage >= 1 then
+                self.zoom = gameConfig.zoom.target
+            end
+
+            self:computeTranslateVector()
+        end
+
+        -- Update difficulty
         self.elapsedTime = self.elapsedTime + dt
         local x = self.elapsedTime / gameConfig.difficulty.sinPeriod
-        self.difficulty = gameConfig.difficulty.baseDifficulty + x
-        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * math.pi) * gameConfig.difficulty.sinInfluence)
+        self.difficulty = gameConfig.difficulty.baseDifficulty + x * gameConfig.difficulty.difficultyModifier
+        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * PI) * gameConfig.difficulty.sinInfluence)
+        self.pairedDifficulty = self.difficulty * (1 + math.sin(PI - x * 2 * PI) * gameConfig.difficulty.sinInfluence)
 
+        -- Update game
         self.station:update(dt)
         self.space:update(dt)
 
+        -- Anne Roumanov
         if self.station.life < 0 then
             self.mode = "end"
             SoundManager.voiceDeath()
@@ -174,10 +212,8 @@ function Class:draw()
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
     self.controller:draw()
-    if self.mode ~= "menu" then
-        self.space:draw()
-        self.station:draw()
-    end
+    self.space:draw()
+    self.station:draw()
 
     if self.mode == "upgrade" then
         if self.upgrade == "satellite" then
@@ -193,11 +229,16 @@ function Class:draw()
 
     -- Draw HUD
 
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Score : " ..self.station.score, 10, 10)
+    colors.white()
+    love.graphics.setFont(self.fonts["36"])
+    love.graphics.printf("Score:", 10, 16, 200, "left")
+    love.graphics.setFont(self.fonts["48"])
+    love.graphics.printf(self.station.score, 10, 10, 250, "right")
 
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Roubles : " ..self.station.coins, 300, 10)
+    love.graphics.setFont(self.fonts["36"])
+    love.graphics.printf("Roubles:", 300, 16, 200, "left")
+    love.graphics.setFont(self.fonts["48"])
+    love.graphics.printf(self.station.coins, 300, 10, 300, "right")
 
     if self.mode == "menu" then
         self.menus:draw()

@@ -67,16 +67,16 @@ function Class:update(dt)
     -- 4 Y et 5 X
     self.axis1, self.axis2, self.axis3, self.axis4, self.axis5  = love.joystick.getAxes( 1 )
 
-    if (not self.axis5) then
-        self.axis5 = self.axis4
-        self.axis4 = self.axis3
+    if love.joystick.getName(1) == "Mega World Thrustmaster dual analog 3.2" then
+        self.axis5 = self.axis3
+        self.axis4 = self.axis4
     end
 
     norm =  math.sqrt( self.axis1 * self.axis1 + self.axis2 * self.axis2 )
     norm2 =  math.sqrt( self.axis4 * self.axis4 + self.axis5 * self.axis5 )
     self.joy1Angle = math.atan2(self.axis2, self.axis1)
     self.joy2Angle = math.atan2(self.axis4, self.axis5)
-    
+
     if self.mode == "game" then
         if (norm > 0.5) then
             self.station:setMissileLauncherAngle( -self.joy1Angle)
