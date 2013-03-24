@@ -75,11 +75,9 @@ function Class:setMenu(menu)
 end
 
 function Class:selectButtonIn(x, y)
-    self:deselectButton()
-    self.menu.selected = nil
-
     for key, val in pairs(self.menu.buttons) do
         if val:contains(x, y) then
+            self:deselectButton()
             self.menu.selected = key
             val.selected = true
             break
