@@ -119,7 +119,7 @@ function restartGame()
 end
 
 function quitGame()
-    print("Quit GAME")
+    love.event.quit()
 end
 
 -----------------------------------------------------------------------------------------
