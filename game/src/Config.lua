@@ -74,10 +74,5 @@ gameConfig = {
         dpsExp = 0.75,
         baseDmg = 0.015,
         maxRange = 800
-    },
-
-    music = {
-        music_path="assets/audio/intro_music.ogg",
-        music_volume=1
     }
 }
