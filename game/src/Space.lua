@@ -32,6 +32,7 @@ function Class.create(options)
     self.missiles = {}
     self.asteroids = {}
     self.dLastSpawn = 0
+    self.elapsedTime = 0
     self.background = love.graphics.newImage("assets/graphics/background.png")
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
@@ -110,6 +111,8 @@ function Class:update(dt)
     if self.mode == "upgrade" then
         return
     end
+
+    self.elapsedTime = self.elapsedTime + dt
 
     -- Update Fus Ro Dov!
     if self.fusRoDovInstance then
@@ -214,7 +217,9 @@ end
 
 -- Draw the game
 function Class:draw()
-    love.graphics.setColor({255, 255, 255})
+    local brightness = 255 - 32 + 32 * math.sin(self.elapsedTime * 3)
+    love.graphics.setColor(brightness, brightness, brightness)
+
     love.graphics.draw(
         self.background,
         0, 0,
@@ -222,6 +227,7 @@ function Class:draw()
         1, 1,
         960, 540
     )
+
     love.graphics.setColor({64, 64, 64, 128})
     love.graphics.draw(
         self.stars,
