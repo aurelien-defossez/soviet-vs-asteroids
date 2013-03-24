@@ -15,10 +15,18 @@ gameConfig = {
         maxVirtualHeight = 4000,
     },
 
+    zoom = {
+        origin = 4.5,
+        target = 1,
+        duration = 3,
+        delay = 2
+    },
+
     difficulty = {
         baseDifficulty = 1,
         sinInfluence = .25,
-        sinPeriod = 60
+        sinPeriod = 60,
+        difficultyModifier = .5
     },
 
     missiles = {
