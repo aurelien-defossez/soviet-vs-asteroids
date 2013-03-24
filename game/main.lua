@@ -2,7 +2,7 @@ require("src.Config")
 require("src.Game")
 
 function love.load()
-	love.graphics.setMode(gameConfig.screen.width, gameConfig.screen.height, false)
+	love.graphics.setMode(gameConfig.screen.width, gameConfig.screen.height, true)
     game = Game.create()
     game:setDemoMode(false)
 end

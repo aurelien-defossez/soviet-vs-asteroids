@@ -101,12 +101,12 @@ end
 
 function Class:launchMissile()
     -- Verify the cooldown
-    if (self.lastSentMissileTime + self.missileCoolDownTime > love.timer.getTime()) then
+    if (self.lastSentMissileTime > 0) then
         -- don't send the missile
         return
     end
 
-    self.lastSentMissileTime = love.timer.getTime()
+    self.lastSentMissileTime = self.missileCoolDownTime
 
     -- Compute missile-launcher position
     local missileLauncherPosition
@@ -213,6 +213,8 @@ function Class:update(dt)
         end
     end
 
+    self.lastSentMissileTime = self.lastSentMissileTime - dt
+
     self.shieldRotation = self.shieldRotation + dt * .05
 
     self.life = math.min(self.life + gameConfig.station.shieldRegeneration * dt, 100)
@@ -268,8 +270,8 @@ function Class:draw()
 
     love.graphics.setColor(0, 127, 255, 32)
     love.graphics.setLine(3, "smooth")
-    love.graphics.line((50 + 20)*math.cos(-self.laserAngle), (50 + 20)*math.sin(-self.laserAngle), 430*math.cos(-self.laserAngle), 430*math.sin(-self.laserAngle))
-    love.graphics.setColor(0, 127, 255, 16)
+    --love.graphics.line((50 + 20)*math.cos(-self.laserAngle), (50 + 20)*math.sin(-self.laserAngle), 430*math.cos(-self.laserAngle), 430*math.sin(-self.laserAngle))
+    love.graphics.setColor(0, 127, 255, 24)
     love.graphics.setLine(3 + gameConfig.laser.laserWidth, "smooth")
     love.graphics.line((50 + 100) *math.cos(-self.laserAngle) , (50 + 100) *math.sin(-self.laserAngle), 430*math.cos(-self.laserAngle), 430*math.sin(-self.laserAngle))
     love.graphics.arc( "fill",  430.5*math.cos(-self.laserAngle), 430.5*math.sin(-self.laserAngle), gameConfig.laser.laserWidth/2+2, -self.laserAngle - math.pi/2, -self.laserAngle + math.pi/2,  32 )

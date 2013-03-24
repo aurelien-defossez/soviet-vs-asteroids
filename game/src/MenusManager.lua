@@ -68,7 +68,7 @@ function Class:setMenu(menu)
     if menu == "upgrade" then
         Menu = UpgradeMenu
     end
-
+    SoundManager.laserStop()
     self.menu = Menu.create{
         game = self.game
     }
