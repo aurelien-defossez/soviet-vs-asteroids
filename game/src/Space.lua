@@ -34,6 +34,17 @@ function Class.create(options)
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
+    self.stars = love.graphics.newParticleSystem(
+        love.graphics.newImage("assets/graphics/star.png"), 40
+    )
+    self.stars:setEmissionRate(2)
+    self.stars:setSpread( 2 * math.pi )
+    self.stars:setLifetime(-1)
+    self.stars:setParticleLife(4)
+    self.stars:setSizes(0,0,.1,.2,.3,.4)
+    self.stars:setSpeed(100, 300)
+    self.stars:start()
+
     return self
 end
 
@@ -155,6 +166,8 @@ function Class:update(dt)
             table.remove( self.asteroids, i )
         end
     end
+
+    self.stars:update(dt)
 end
 
 -- Draw the game
@@ -166,6 +179,11 @@ function Class:draw()
         0,
         1, 1,
         960, 540
+    )
+    love.graphics.setColor({64, 64, 64, 128})
+    love.graphics.draw(
+        self.stars,
+        0, 0
     )
 
     for _, asteroid in pairs(self.asteroids) do
