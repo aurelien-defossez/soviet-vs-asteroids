@@ -27,7 +27,14 @@ gameConfig = {
         baseDifficulty = 1,
         sinInfluence = .25,
         sinPeriod = 60,
-        difficultyModifier = .5
+        difficultyModifier = .5,
+
+        demo = {
+            baseDifficulty = 1,
+            sinInfluence = .25,
+            sinPeriod = 30,
+            difficultyModifier = 1,
+        }
     },
 
     missiles = {

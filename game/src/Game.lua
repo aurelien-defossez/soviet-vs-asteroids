@@ -30,6 +30,7 @@ require("src.Space")
 require("src.LaserSat")
 require("src.MenusManager")
 require("src.Drone")
+require("src.GameOverScreen")
 
 local PI = math.pi
 
@@ -53,6 +54,8 @@ function Class.create(options)
     self.dezoomElpased = 0
     self.zoom = gameConfig.zoom.origin
     self.elapsedTime = 0
+    self.demoMode = false
+    self.difficultyParameters = gameConfig.difficulty
     self.difficulty = self.difficultyProgression
     self.zoomDiff = gameConfig.zoom.origin - gameConfig.zoom.target
 
@@ -119,6 +122,8 @@ function Class.create(options)
         end
     end
 
+    GameOverScreen.setup()
+
     return self
 end
 
@@ -142,6 +147,17 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
+
+function Class:setDemoMode(demoMode)
+    self.demoMode = demoMode
+    self.difficultyParameters = self.demoMode and gameConfig.difficulty.demo or gameConfig.difficulty
+end
+
+function Class:fusRoDov()
+    if self.space:canFusRoDov() then
+        self.space:fusRoDov()
+    end
+end
 
 -- Update the game
 --
@@ -178,10 +194,10 @@ function Class:update(dt)
 
         -- Update difficulty
         self.elapsedTime = self.elapsedTime + dt
-        local x = self.elapsedTime / gameConfig.difficulty.sinPeriod
-        self.difficulty = gameConfig.difficulty.baseDifficulty + x * gameConfig.difficulty.difficultyModifier
-        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * PI) * gameConfig.difficulty.sinInfluence)
-        self.pairedDifficulty = self.difficulty * (1 + math.sin(PI - x * 2 * PI) * gameConfig.difficulty.sinInfluence)
+        local x = self.elapsedTime / self.difficultyParameters.sinPeriod
+        self.difficulty = self.difficultyParameters.baseDifficulty + x * self.difficultyParameters.difficultyModifier
+        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * PI) * self.difficultyParameters.sinInfluence)
+        self.pairedDifficulty = self.difficulty * (1 + math.sin(PI - x * 2 * PI) * self.difficultyParameters.sinInfluence)
 
         -- Update game
         self.station:update(dt)
@@ -191,13 +207,15 @@ function Class:update(dt)
         if self.station.life < 0 then
             self.mode = "end"
             SoundManager.voiceDeath()
+            SoundManager.stopMusic()
         end
+    elseif self.mode == "end" then
+
     end
 end
 
 -- Draw the game
 function Class:draw()
-
     love.graphics.push()
 
     -- Apply virtual resolution before rendering anything
@@ -249,8 +267,11 @@ function Class:draw()
         self.menus:draw()
     end
 
-  --  self.controller:draw()
+    if self.mode == "end" then
+        GameOverScreen.draw()
+    end
 
+  --  self.controller:draw()
 end
 
 -- Compute the translate vector for the camera
