@@ -333,10 +333,13 @@ function Class:setMissileCooldown(cooldown)
     self.missileCoolDownTime = cooldown
 end
 
-function Class:asteroidKilled(radius, distance)
+function Class:asteroidKilled(radius, distance, noPoints)
     maxRange = gameConfig.station.scoreMaxRange
-    self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)*10
-    self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
+
+    if not noPoints then
+        self.score = self.score + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)*10
+        self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * radius / gameConfig.asteroid.baseRadius * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
+    end
 end
 
 function Class:hasEnoughCoins(upgrade)

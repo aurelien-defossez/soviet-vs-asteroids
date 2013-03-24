@@ -144,7 +144,9 @@ function Class:update(dt)
         for i, asteroid in pairs(self.asteroids) do
             -- exclude exploded asteroid from collision detection
             if not asteroid.exploded and self.fusRoDovInstance.range:collideCircle(asteroid.boundingCircle) then
-                asteroid:explode()
+                asteroid:explode{
+                    noPoints = true
+                }
             end
         end
 

@@ -79,10 +79,12 @@ function Class:destroy()
     
 end
 
-function Class:explode()
+function Class:explode(options)
+    options = options or {}
+
     self.exploded = true
     dist = math.sqrt(self.pos.x * self.pos.x + self.pos.y * self.pos.y)
-    game.station:asteroidKilled(self.radius, dist)
+    game.station:asteroidKilled(self.radius, dist, options.noPoints)
     SoundManager.explosion()
 
     self.xplosion = love.graphics.newParticleSystem( particle, 50 * self.radius / baseRadius )

@@ -32,8 +32,8 @@ gameConfig = {
         demo = {
             baseDifficulty = 1,
             sinInfluence = .25,
-            sinPeriod = 30,
-            difficultyModifier = 1,
+            sinPeriod = 60,
+            difficultyModifier = .5,
         }
     },
 
@@ -103,8 +103,8 @@ gameConfig = {
             upgradeRate = 1.5, -- +50%
         },
         fusrodov = {
-            cost = 0,
-            upgradeRate = 1.5, -- +50%
+            cost = 600,
+            upgradeRate = 1.1, -- +10%
         },
     },
 
