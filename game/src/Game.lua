@@ -29,6 +29,7 @@ require("src.Space")
 require("src.LaserSat")
 require("src.MenusManager")
 require("src.Drone")
+require("src.GameOverScreen")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -112,6 +113,8 @@ function Class.create(options)
         end
     end
 
+    GameOverScreen.setup()
+
     return self
 end
 
@@ -178,7 +181,10 @@ function Class:update(dt)
         if self.station.life < 0 then
             self.mode = "end"
             SoundManager.voiceDeath()
+            SoundManager.stopMusic()
         end
+    elseif self.mode == "end" then
+
     end
 end
 
@@ -230,6 +236,10 @@ function Class:draw()
 
     if self.mode == "menu" then
         self.menus:draw()
+    end
+
+    if self.mode == "end" then
+        GameOverScreen.draw()
     end
 
   --  self.controller:draw()
