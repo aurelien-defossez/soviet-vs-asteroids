@@ -153,7 +153,7 @@ function Class:draw()
     self.controller:draw()
     if self.mode ~= "menu" then
         self.space:draw()
-        self.station:draw() 
+        self.station:draw()
     end
 
 

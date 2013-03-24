@@ -30,6 +30,7 @@ function Class.create(options)
     self.missiles = {}
     self.asteroids = {}
     self.dLastSpawn = 0
+    self.background = love.graphics.newImage("assets/graphics/background.png")
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
@@ -155,6 +156,15 @@ end
 
 -- Draw the game
 function Class:draw()
+    love.graphics.setColor({255, 255, 255})
+    love.graphics.draw(
+        self.background,
+        0, 0,
+        0,
+        1, 1,
+        960, 540
+    )
+
     for _, missile in pairs(self.missiles) do
         missile:draw()
     end
