@@ -138,6 +138,12 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+function Class:fusRoDov()
+    if self.space:canFusRoDov() then
+        self.space:fusRoDov()
+    end
+end
+
 -- Update the game
 --
 -- Parameters:
@@ -192,7 +198,6 @@ end
 
 -- Draw the game
 function Class:draw()
-
     love.graphics.push()
 
     -- Apply virtual resolution before rendering anything
@@ -245,7 +250,6 @@ function Class:draw()
     end
 
   --  self.controller:draw()
-
 end
 
 -- Compute the translate vector for the camera
