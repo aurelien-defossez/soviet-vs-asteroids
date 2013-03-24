@@ -55,6 +55,22 @@ function Class.create(options)
             end
         end
 
+        -- Navigate in menus
+        if key == "down" or key == "right" then
+            if self.mode == "menu" then
+                self.game.menus:nextButton()
+            end
+        end
+        if key == "up" or key == "left" then
+            if self.mode == "menu" then
+                self.game.menus:previousButton()
+            end
+        end
+        if key == "return" then
+            if self.mode == "menu" then
+                self.game.menus:enterSelected()
+            end
+        end
     end
 
     return self
