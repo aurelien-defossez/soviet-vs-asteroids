@@ -26,7 +26,7 @@ function Class.create(options)
     function love.keypressed(key)
         -- Go to upgrade mode
         if key == "backspace" or key == "tab" then
-            if self.mode == "game" then
+            if self.mode == "game" and game.mode ~= "end" then
                 self.game:setMenu("upgrade")
             elseif self.mode == "upgrade" then
                 self.game:setMenu("upgrade")

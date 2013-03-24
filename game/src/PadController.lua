@@ -139,14 +139,16 @@ end
 
 -- Draw the game
 function Class:draw()
-
+ 
     if (not love.joystick.isOpen(1) or not self.debug) then
         return
     end
 
+    love.graphics.setColor(0, 255, 0)
+    love.graphics.print(game.mode, 0, 0)
+
     -- Draw scene
 
-    --love.graphics.print(self.buttonPressed, 0, 0)
    -- love.graphics.line(0 , 0, 100*math.cos(self.joy1Angle), 100*math.sin(self.joy1Angle))
     --love.graphics.setColor(0, 255, 0)
     --love.graphics.print(self.joy2Angle, 0, 30)
@@ -173,9 +175,9 @@ function love.joystickpressed( joystick, button )
     -- Start = 8
     --self.buttonPressed = button
     if button == 4 then
-        if self.mode == "game" then
+        if self.mode == "game" and game.mode ~= "end" then
             self.game:setMenu("upgrade")
-        elseif self.mode == "upgrade" then
+        elseif self.mode == "upgrade"  then
             self.game:setMenu("upgrade")
         elseif self.mode == "menu" and self.game.menu == "upgrade" then
             self.game:setMode("game")

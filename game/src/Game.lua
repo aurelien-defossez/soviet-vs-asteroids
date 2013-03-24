@@ -240,7 +240,6 @@ function Class:draw()
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
     if self.mode ~= "end" then
-        self.controller:draw()
         self.space:draw()
         self.station:draw()
 
@@ -255,10 +254,8 @@ function Class:draw()
         self.space:draw()
     end
 
-
     -- Reset camera transform before hud drawing
     love.graphics.pop()
-
     -- Draw HUD
 
     colors.grey()
@@ -281,6 +278,7 @@ function Class:draw()
     if self.mode == "end" then
         GameOverScreen.draw()
     end
+
 
   --  self.controller:draw()
 end
