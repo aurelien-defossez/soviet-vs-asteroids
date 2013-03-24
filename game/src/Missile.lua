@@ -76,9 +76,9 @@ end
 function Class:explode()
     self.exploded = true
 
-    self.xplosion = love.graphics.newParticleSystem( fire, 10 )
+    self.xplosion = love.graphics.newParticleSystem( fire, 20 )
     self.xplosion:setLifetime(0.15)
-    self.xplosion:setEmissionRate(100)
+    self.xplosion:setEmissionRate(200)
     self.xplosion:setSpread( 2 * math.pi )
     self.xplosion:setDirection( 0, math.pi )
     self.xplosion:setParticleLife(0.15,0.25)
@@ -87,7 +87,7 @@ function Class:explode()
         255, 255, 255, 255,
         255, 64, 64, 64
     )
-    self.xplosion:setSpeed(50, 75)
+    self.xplosion:setSpeed(75, 150)
     self.xplosion:start()
 
     self.timeSinceExplosion = 0
