@@ -37,16 +37,14 @@ function Class.create(options)
     setmetatable(self, Class)
 
     -- Initialize attributes
- 
+
     self.angle = options.angle
     self.displayAngle = options.angle
     self.isFiring = false
     self.targetAsteroid = nil
-    self.debug = gameConfig.debug.all or gameConfig.debug.shapes 
-    self.beamScale = 0.1;
-    self.pos = gameConfig.station.shieldOffset
-        + vec2(math.cos(self.displayAngle), math.sin(-self.displayAngle))
-        * gameConfig.station.radius * gameConfig.laserSat.offOrbitRatio
+    self.debug = gameConfig.debug.all or gameConfig.debug.shapes
+    self.beamScale = 0.1
+    self:updatePosition()
 
     self.debugText = ""
 
@@ -120,8 +118,6 @@ function Class:update(dt)
     if (self.targetAsteroid and self.beamScale >= 1) then
         self.targetAsteroid:hit()
     end
-
-
 end
 
 -- Draw the game
@@ -161,10 +157,10 @@ function Class:draw()
 
    -- love.graphics.setColor(255, 255, 0)
  --   love.graphics.circle('fill', self.pos.x , self.pos.y , 10, 32)
-    
+
     --love.graphics.line(self.pos.x, self.pos.y, self.pos.x + 20 * math.cos( -self.displayAngle), self.pos.y + 20 * math.sin( -self.displayAngle) )
 
-   
+
     --love.graphics.print("Debug : " ..self.debugText, 200, 200)
 
 end
@@ -196,7 +192,7 @@ function Class:fire(fireAngle, asteroid)
         asteroidAngle = - math.atan2(deltaY, deltaX)
 
         -- Check if the lasetSat can shot the target
-        if (self:inFrontOf(asteroidAngle)) then      
+        if (self:inFrontOf(asteroidAngle)) then
             self.targetAsteroid = asteroid
             self.isFiring = true
             self.displayAngle = asteroidAngle
@@ -219,4 +215,16 @@ function Class:stopFire()
     self.targetAsteroid = nil
     self.displayAngle = self.angle
     self.beamScale = 0.1
+end
+
+function Class:updatePosition()
+    self.pos = gameConfig.station.shieldOffset
+        + vec2(math.cos(self.displayAngle), math.sin(-self.displayAngle))
+        * gameConfig.station.radius * gameConfig.laserSat.offOrbitRatio
+end
+
+function Class:setAngle(angle)
+    self.angle = angle
+    self.displayAngle = angle
+    self:updatePosition()
 end

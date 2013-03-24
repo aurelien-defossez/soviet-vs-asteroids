@@ -15,6 +15,7 @@ Class.__index = Class
 
 require("src.Config")
 require("src.PauseMenu")
+require("src.UpgradeMenu")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
