@@ -31,6 +31,7 @@ function Class.create(options)
     self.station = options.station
     self.missiles = {}
     self.asteroids = {}
+    self.leds = {}
     self.dLastSpawn = 0
     self.elapsedTime = 0
     self.background = love.graphics.newImage("assets/graphics/background.png")
@@ -48,6 +49,13 @@ function Class.create(options)
     self.stars:setSpeed(100, 300)
     self.stars:start()
     self.fusRoDovInstance = nil
+
+    -- spawn background stars
+    local i = 30
+    while i > 0 do
+        table.insert( self.leds, Star.create() )
+        i = i - 1
+    end
 
     return self
 end
@@ -137,6 +145,11 @@ function Class:update(dt)
     -- Update asteroids
     for i, asteroid in pairs(self.asteroids) do
         asteroid:update(dt, i)
+    end
+
+    -- Update leds
+    for _, led in pairs(self.leds) do
+        led:update(dt)
     end
 
     -- Check for Fus-Ro-Dov collisions to destroy asteroids and missiles
@@ -236,6 +249,10 @@ function Class:draw()
         self.stars,
         0, 0
     )
+
+    for _, led in pairs(self.leds) do
+        led:draw(dt)
+    end
 
     for _, asteroid in pairs(self.asteroids) do
         asteroid:draw()
