@@ -20,7 +20,8 @@ local cos = math.cos
 local sin = math.sin
 local ctId = 0
 local missile = love.graphics.newImage("assets/graphics/missile.png")
-local explosion = love.graphics.newImage("assets/graphics/explosion2.png")
+--local explosion = love.graphics.newImage("assets/graphics/explosion2.png")
+local fire = love.graphics.newImage("assets/graphics/fire.png")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -73,13 +74,19 @@ end
 function Class:explode()
     self.exploded = true
 
-    self.sprite = Sprite.create{
-        pos = self.pos + vec2( -64, -64 ):rotateRad( -self.angle ),
-        angle = self.angle,
-        spriteSheet = explosion,
-        frameCount = 10,
-        frameRate = 0.01
-    }
+    self.xplosion = love.graphics.newParticleSystem( fire, 10 )
+    self.xplosion:setLifetime(0.15)
+    self.xplosion:setEmissionRate(100)
+    self.xplosion:setSpread( 2 * math.pi )
+    self.xplosion:setDirection( 0, math.pi )
+    self.xplosion:setParticleLife(0.15,0.25)
+    self.xplosion:setSizes(.3,1)
+    self.xplosion:setColors(
+        255, 255, 255, 255,
+        255, 64, 64, 64
+    )
+    self.xplosion:setSpeed(50, 75)
+    self.xplosion:start()
 
     self.timeSinceExplosion = 0
 end
@@ -92,11 +99,13 @@ function Class:update(dt)
     if not self.exploded then
         self.pos = self.pos + vec2(self.speed * cos(self.angle), self.speed * -sin(self.angle))
         self.boundingCircle = circle(self.pos, self.radius)
+
+        self.sprite:update(dt)
     else
         self.timeSinceExplosion = self.timeSinceExplosion + dt
-    end
 
-    self.sprite:update(dt)
+        self.xplosion:update(dt)
+    end
 end
 
 -- Draw the game
@@ -107,8 +116,15 @@ function Class:draw()
     -- Position sprite
     if not self.exploded then
         self.sprite.pos = self.pos + vec2(-30, -10):rotateRad(-self.angle)
+        self.sprite:draw()
+    else
+        love.graphics.draw(
+            self.xplosion,
+            self.pos.x,
+            self.pos.y,
+            self.rotation
+        )
     end
-    self.sprite:draw()
 
     if self.debug then
         self.boundingCircle:draw()

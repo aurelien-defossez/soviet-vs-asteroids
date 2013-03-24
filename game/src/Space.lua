@@ -37,11 +37,11 @@ function Class.create(options)
     self.stars = love.graphics.newParticleSystem(
         love.graphics.newImage("assets/graphics/star.png"), 40
     )
-    self.stars:setEmissionRate(2)
+    self.stars:setEmissionRate(3)
     self.stars:setSpread( 2 * math.pi )
     self.stars:setLifetime(-1)
     self.stars:setParticleLife(4)
-    self.stars:setSizes(0,0,.1,.2,.3,.4)
+    self.stars:setSizes(0,0,.1,.3,.45,.6)
     self.stars:setSpeed(100, 300)
     self.stars:start()
 
@@ -101,7 +101,7 @@ function Class:update(dt)
     for i, missile in pairs(self.missiles) do
         missile:update(dt)
 
-        if missile.exploded and missile.timeSinceExplosion > 0.2 then
+        if missile.exploded and missile.timeSinceExplosion > 0.4 then
             table.remove( self.missiles, i )
         end
     end
