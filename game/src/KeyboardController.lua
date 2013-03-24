@@ -86,11 +86,7 @@ function Class:update(dt)
 
     if self.mode == "game" then
         -- I’M A’ FIRIN’ MAH LAZER!!
-        if (love.keyboard.isDown("rctrl")) then
-             self.station:fireLaser()
-        else
-            self.station:stopLaser()
-        end
+        self.station:fireLaser()
 
         -- SHOOP DA WHOOP!!!!
         if (love.keyboard.isDown(" ")) then

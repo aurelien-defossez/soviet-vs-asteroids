@@ -70,14 +70,9 @@ gameConfig = {
 
 
     laser = {
-        laserWidth =100,
+        laserWidth = 100,
         dpsExp = 0.75,
         baseDmg = 0.01,
         maxRange = 800
-    },
-
-    music = {
-        music_path="assets/audio/intro_music.ogg",
-        music_volume=1
     }
 }
