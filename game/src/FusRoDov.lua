@@ -11,9 +11,9 @@ function Class.create( options )
     self = {}
     setmetatable(self, Class)
 
+    self.imageRadius = wave:getWidth()
     self.range = circle(vec2(0, 0), 0)
     self.elapsedTime = 0
-    self.imageRadius = wave:getWidth()
     self.ended = false
 
     return self
@@ -24,7 +24,7 @@ end
 
 function Class:update(dt)
     self.elapsedTime = self.elapsedTime + dt
-    self.range.radius = 400 * self.elapsedTime ^ 4
+    self.range.radius = 50 * (1 + self.elapsedTime) ^ 4
 
     if self.range.radius > gameConfig.screen.width then
         self.ended = true

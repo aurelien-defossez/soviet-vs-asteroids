@@ -135,6 +135,23 @@ function Class:update(dt)
         asteroid:update(dt, i)
     end
 
+    -- Check for Fus-Ro-Dov collisions to destroy asteroids and missiles
+    if self.fusRoDovInstance then
+        for i, asteroid in pairs(self.asteroids) do
+            -- exclude exploded asteroid from collision detection
+            if not asteroid.exploded and self.fusRoDovInstance.range:collideCircle(asteroid.boundingCircle) then
+                asteroid:explode()
+            end
+        end
+
+        for _, missile in pairs(self.missiles) do
+            -- exclude exploded missiles from collision detection
+            if not missile.exploded and self.fusRoDovInstance.range:collideCircle(missile.boundingCircle) then
+                missile:explode()
+            end
+        end
+    end
+
     -- Check for missile collisions
     for _, missile in pairs(self.missiles) do
         -- exclude exploded missiles from collision detection
