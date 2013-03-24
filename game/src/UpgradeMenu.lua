@@ -28,6 +28,7 @@ function Class.create(options)
     setmetatable(self, Class)
 
     self.game = options.game
+    self.station = self.game.station
     self.selected = 1
 
     self.buttons = {}
@@ -95,17 +96,33 @@ end
 
 -- Upgrade the missiles by reducing the cooldown between two missiles
 function upgradeMissiles()
-    cooldown = self.game.station.missileCoolDownTime * gameConfig.missiles.cooldownUpgradeRate
-    self.game.station:setMissileCooldown(cooldown)
+    if not self.station:hasEnoughCoins("missiles") then
+        return
+    end
+
+    self.station:buyUpgrade("missiles")
+
+    -- Upgrade the cooldown
+    cooldown = self.station.missileCoolDownTime * gameConfig.missiles.cooldownUpgradeRate
+    self.station:setMissileCooldown(cooldown)
     SoundManager:upgrade()
-    -- Add a feedback for the user
 end
 
 function upgradeLaser()
+    if not self.station:hasEnoughCoins("lasers") then
+        return
+    end
+
+    -- Upgrade the cooldown
     self.game:setUpgrade("satellite")
 end
 
 function upgradeDrone()
+    if not self.station:hasEnoughCoins("drones") then
+        return
+    end
+
+    -- Upgrade the cooldown
     self.game:setUpgrade("drone")
 end
 

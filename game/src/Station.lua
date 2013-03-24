@@ -72,6 +72,13 @@ function Class.create(options)
     self.newSatellite = nil
     self.newDrone = nil
 
+    self.costs = {
+        missiles = gameConfig.upgrades.missiles.cost,
+        lasers = gameConfig.upgrades.lasers.cost,
+        drones = gameConfig.upgrades.drones.cost,
+        fusrodov = gameConfig.upgrades.fusrodov.cost,
+    }
+
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
 
     return self
@@ -172,6 +179,10 @@ function Class:update(dt)
 
         -- Hit asteroid
         if nearestAsteroid then
+            local deltaX = nearestAsteroid.pos.x - drone.pos.x
+            local deltaY = nearestAsteroid.pos.y - drone.pos.y
+            asteroidAngle = - math.atan2(deltaY, deltaX)
+            drone.displayAngle = asteroidAngle
             drone:hit(nearestAsteroid)
         end
     end
@@ -309,3 +320,17 @@ function Class:asteroidKilled(size, distance)
     self.coins = self.coins + math.ceil(gameConfig.asteroid.numberPoint * (distance / ( 2 * maxRange )) + 0.5 * game.difficulty)
 end
 
+function Class:hasEnoughCoins(upgrade)
+    return self.coins > self.costs[upgrade]
+end
+
+function Class:buyUpgrade(upgrade)
+    -- Check the player has enough coins
+    if not self:hasEnoughCoins(upgrade) then
+        return
+    end
+
+    -- Take the players coins
+    self.coins = self.coins - self.costs[upgrade]
+    self.costs[upgrade] = math.floor(self.costs[upgrade] * gameConfig.upgrades[upgrade].upgradeRate)
+end

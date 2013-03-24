@@ -17,8 +17,8 @@ gameConfig = {
 
     difficulty = {
         baseDifficulty = 1,
-        sinInfluence = .5,
-        sinPeriod = 30
+        sinInfluence = .25,
+        sinPeriod = 60
     },
 
     missiles = {
@@ -70,6 +70,25 @@ gameConfig = {
 
         keyboard = {
             delta = math.pi / 36, -- in radian
+        },
+    },
+
+    upgrades = {
+        missiles = {
+            cost = 300,
+            upgradeRate = 1.5, -- +50%
+        },
+        lasers = {
+            cost = 200,
+            upgradeRate = 1.5, -- +50%
+        },
+        drones = {
+            cost = 400,
+            upgradeRate = 1.5, -- +50%
+        },
+        fusrodov = {
+            cost = 600,
+            upgradeRate = 1.5, -- +50%
         },
     },
 
