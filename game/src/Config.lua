@@ -103,7 +103,7 @@ gameConfig = {
             upgradeRate = 1.5, -- +50%
         },
         fusrodov = {
-            cost = 600,
+            cost = 0,
             upgradeRate = 1.5, -- +50%
         },
     },

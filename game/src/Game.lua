@@ -131,6 +131,7 @@ end
 function Class:destroy()
     SoundManager.stopMusic()
     SoundManager.stopShopMusic()
+    SoundManager.laserStop()
     self.station:destroy()
     self.space:destroy()
     self.controller:destroy()
