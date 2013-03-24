@@ -101,6 +101,12 @@ function Class.create(options)
     SoundManager.startMusic()
     SoundManager.setNoSound()
 
+    function love.focus(f)
+        if not f then
+            self:setMenu("pause")
+        end
+    end
+
     return self
 end
 
