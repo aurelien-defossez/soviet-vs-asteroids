@@ -66,6 +66,9 @@ function Class.create(options)
     self.fonts["72"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 72 * gameConfig.screen.scale)
     love.graphics.setFont(self.fonts["48"])
 
+    -- Coins HUD icon
+    self.coinImg = love.graphics.newImage("assets/graphics/gui/money.png")
+
     -- Initialize attributes
     self.station = Station.create()
     self.space = Space.create{
@@ -238,17 +241,17 @@ function Class:draw()
     if self.mode ~= "end" then
         self.controller:draw()
         self.space:draw()
-        self.station:draw() 
+        self.station:draw()
 
         if self.mode == "upgrade" then
             if self.upgrade == "satellite" then
                 self.station.newSatellite:draw()
             elseif self.upgrade == "drone" then
                 self.station.newDrone:draw()
-            end 
+            end
         end
-    else 
-        self.space:draw()  
+    else
+        self.space:draw()
     end
 
 
@@ -257,16 +260,18 @@ function Class:draw()
 
     -- Draw HUD
 
-    colors.white()
+    colors.grey()
     love.graphics.setFont(self.fonts["36"])
-    love.graphics.printf("Score:", 10, 16, 200, "left")
+    love.graphics.printf("Score", gameConfig.screen.width / 2 - 60, 17, 200, "left")
+
+    colors.white()
     love.graphics.setFont(self.fonts["48"])
-    love.graphics.printf(self.station.score, 10, 10, 250, "right")
+    love.graphics.printf(self.station.score, gameConfig.screen.width / 2, 10, 200, "left")
 
     love.graphics.setFont(self.fonts["36"])
-    love.graphics.printf("Roubles:", 300, 16, 200, "left")
+    love.graphics.draw(self.coinImg, gameConfig.screen.width - 300, 6, 0, gameConfig.screen.scale)
     love.graphics.setFont(self.fonts["48"])
-    love.graphics.printf(self.station.coins, 300, 10, 300, "right")
+    love.graphics.printf(self.station.coins, gameConfig.screen.width - 250, 10, 300, "left")
 
     if self.mode == "menu" then
         self.menus:draw()
