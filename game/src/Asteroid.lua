@@ -64,6 +64,7 @@ function Class.create( options )
 
     -- life of the asteroid depends of its radius
     self.life = self.radius / baseRadius / 5
+    self.maxLife = self.life
     self.numberSatHit = 0
 
     self.color = options.color or { 255, 255, 255 }
@@ -101,9 +102,11 @@ end
 
 function Class:hit(nbHits, modifier)
     modifier = modifier or 1
-
     self.life = self.life - gameConfig.laser.baseDmg * math.pow(nbHits, gameConfig.laser.dpsExp) * modifier
-    self.color = { 255, 128 + ( self.life * 128 ), 128 + ( self.life * 128 ) }
+
+    local percent = self.life / self.maxLife
+
+    self.color = { 255, 128 + ( percent * 128 ), 128 + ( percent * 128 ) }
 end
 
 -- Update the asteroid
