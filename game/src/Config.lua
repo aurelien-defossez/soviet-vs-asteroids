@@ -104,7 +104,7 @@ gameConfig = {
         },
         fusrodov = {
             cost = 600,
-            upgradeRate = 1.1, -- +10%
+            upgradeRate = 1.25, -- +25%
         },
     },
 
