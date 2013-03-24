@@ -54,6 +54,8 @@ function Class.create(options)
     self.dezoomElpased = 0
     self.zoom = gameConfig.zoom.origin
     self.elapsedTime = 0
+    self.demoMode = false
+    self.difficultyParameters = gameConfig.difficulty
     self.difficulty = self.difficultyProgression
     self.zoomDiff = gameConfig.zoom.origin - gameConfig.zoom.target
 
@@ -141,6 +143,11 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+function Class:setDemoMode(demoMode)
+    self.demoMode = demoMode
+    self.difficultyParameters = self.demoMode and gameConfig.difficulty.demo or gameConfig.difficulty
+end
+
 function Class:fusRoDov()
     if self.space:canFusRoDov() then
         self.space:fusRoDov()
@@ -182,10 +189,10 @@ function Class:update(dt)
 
         -- Update difficulty
         self.elapsedTime = self.elapsedTime + dt
-        local x = self.elapsedTime / gameConfig.difficulty.sinPeriod
-        self.difficulty = gameConfig.difficulty.baseDifficulty + x * gameConfig.difficulty.difficultyModifier
-        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * PI) * gameConfig.difficulty.sinInfluence)
-        self.pairedDifficulty = self.difficulty * (1 + math.sin(PI - x * 2 * PI) * gameConfig.difficulty.sinInfluence)
+        local x = self.elapsedTime / self.difficultyParameters.sinPeriod
+        self.difficulty = self.difficultyParameters.baseDifficulty + x * self.difficultyParameters.difficultyModifier
+        self.difficulty = self.difficulty * (1 + math.sin(x * 2 * PI) * self.difficultyParameters.sinInfluence)
+        self.pairedDifficulty = self.difficulty * (1 + math.sin(PI - x * 2 * PI) * self.difficultyParameters.sinInfluence)
 
         -- Update game
         self.station:update(dt)
