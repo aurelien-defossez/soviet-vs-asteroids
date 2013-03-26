@@ -89,40 +89,33 @@ function Class:selectButtonIn(x, y)
     end
 end
 
-function Class:previousButton()
-    self:deselectButton()
-    self.menu.selected = (self.menu.selected - 1) % table.getn(self.menu.buttons)
-    if self.menu.selected == 0 then
-        self.menu.selected = table.getn(self.menu.buttons)
+function Class:navigate(direction)
+    local nextButtonId = self:getSelected().navigation[direction]
+
+    if nextButtonId then
+        self:deselectButton()
+        self.menu.selected = nextButtonId
+        self:selectButton()
     end
-    self:selectButton()
 end
 
-function Class:nextButton()
-    self:deselectButton()
-    self.menu.selected = (self.menu.selected + 1) % table.getn(self.menu.buttons)
-    if self.menu.selected == 0 then
-        self.menu.selected = table.getn(self.menu.buttons)
-    end
-    self:selectButton()
+function Class:getSelected()
+    return self.menu.buttons[self.menu.selected]
 end
 
 function Class:enterSelected()
     if self.menu.selected ~= nil then
-        btn = self.menu.buttons[self.menu.selected]
-        btn:callback()
+        self:getSelected():callback()
     end
 end
 
 function Class:selectButton()
-    btn = self.menu.buttons[self.menu.selected]
-    btn.selected = true
+    self:getSelected().selected = true
 end
 
 function Class:deselectButton()
     if self.menu.selected ~= nil then
-        btn = self.menu.buttons[self.menu.selected]
-        btn.selected = false
+        self:getSelected().selected = false
     end
 end
 

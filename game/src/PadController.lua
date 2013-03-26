@@ -97,27 +97,35 @@ function Class:update(dt)
         end
     elseif self.mode == "menu" then
         -- Navigate in menus
-        if ((self.axis1 > 0.5 and self.axis1Released) or (self.axis2 > 0.5 and self.axis2Released)) then
-            if self.mode == "menu" then
-                self.axis1Released = false
-                self.axis2Released = false
-                self.game.menus:nextButton()
-            end
-        end
-        if ((self.axis1 < -0.5 and self.axis1Released) or (self.axis2 < -0.5 and self.axis2Released)) then
-            if self.mode == "menu" then
-                self.axis1Released = false
-                self.axis2Released = false
-                self.game.menus:previousButton()
-            end
-        end
+        local direction
 
-        if ( (self.axis1 > -0.5 and self.axis1 < 0.5)) then
+        if self.axis1Released then
+            if self.axis1 > .5 then
+                direction = "right"
+                self.axis1Released = false
+            elseif self.axis1 < -.5 then
+                direction = "left"
+                self.axis1Released = false
+            end
+        elseif self.axis1 > -0.5 and self.axis1 < 0.5 then
             self.axis1Released = true
         end
 
-        if ( (self.axis2 > -0.5 and self.axis2 <= 0 ) or (self.axis2 < 0.5 and self.axis2 >= 0) ) then
+        if self.axis2Released then
+            if self.axis2 > .5 then
+                direction = "down"
+                self.axis2Released = false
+            elseif self.axis2 < -.5 then
+                direction = "up"
+                self.axis2Released = false
+            end
+        elseif self.axis2 > -0.5 and self.axis2 < 0.5 then
             self.axis2Released = true
+        end
+
+        -- Navigate in menus
+        if direction then
+            self.game.menus:navigate(direction)
         end
     elseif self.mode == "upgrade" then
         if norm > 0.5 then
@@ -134,7 +142,6 @@ function Class:update(dt)
             end
         end
     end
-
 end
 
 -- Draw the game

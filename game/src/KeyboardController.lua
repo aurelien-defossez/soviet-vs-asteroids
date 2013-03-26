@@ -56,15 +56,9 @@ function Class.create(options)
         end
 
         -- Navigate in menus
-        if key == "down" or key == "right" then
+        if key == "up" or key == "down" or key == "left" or key == "right" then
             if self.mode == "menu" then
-                self.game.menus:nextButton()
-            end
-        end
-
-        if key == "up" or key == "left" then
-            if self.mode == "menu" then
-                self.game.menus:previousButton()
+                self.game.menus:navigate(key)
             end
         end
 
@@ -73,12 +67,6 @@ function Class.create(options)
                 self.game.menus:enterSelected()
             elseif self.mode == "upgrade" then
                 self.game:putUpgrade()
-            end
-        end
-
-        if key == "k" then
-            if self.mode == "game" then
-                self.game.space:fusRoDov()
             end
         end
     end

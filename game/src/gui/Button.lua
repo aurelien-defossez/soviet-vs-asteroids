@@ -36,6 +36,7 @@ function Class.create(options)
     self.callbackFn = options.callback
     self.valign = options.valign or "middle"
     self.color = options.color or "white"
+    self.navigation = options.navigation
 
     self.background = love.graphics.newImage("assets/graphics/gui/" .. options.background .. ".png")
     self.border = love.graphics.newImage("assets/graphics/gui/" .. options.border .. ".png")

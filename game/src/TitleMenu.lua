@@ -28,15 +28,13 @@ function Class.create(options)
     setmetatable(self, Class)
 
     self.game = options.game
-    self.selected = 1
+    self.selected = "start"
     self.scale = gameConfig.screen.scale - 0.09
 
     self.background = love.graphics.newImage("assets/graphics/intro_screen.png")
 
-    self.buttons = {}
-    table.insert(
-        self.buttons,
-        Button.create{
+    self.buttons = {
+        start = Button.create{
             x = (gameConfig.screen.width - 444 * gameConfig.screen.scale) / 2, -- center
             y = gameConfig.screen.height / 2 + 300 * gameConfig.screen.scale,
             width = 444,
@@ -46,11 +44,12 @@ function Class.create(options)
             border = "btn_on",
             text = "Start Game",
             callback = self.playGame,
-        }
-    )
-    table.insert(
-        self.buttons,
-        Button.create{
+            navigation = {
+                up = "quit",
+                down = "quit"
+            }
+        },
+        quit = Button.create{
             x = (gameConfig.screen.width - 444 * gameConfig.screen.scale) / 2, -- center
             y = gameConfig.screen.height / 2 + 400 * gameConfig.screen.scale,
             width = 444,
@@ -60,8 +59,12 @@ function Class.create(options)
             border = "btn_on",
             text = "Quit",
             callback = self.quitGame,
+            navigation = {
+                up = "start",
+                down = "start"
+            }
         }
-    )
+    }
 
     return self
 end
