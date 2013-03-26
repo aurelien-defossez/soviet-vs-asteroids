@@ -36,7 +36,7 @@ function Class.create(options)
     self.buttons = {
         start = Button.create{
             x = (gameConfig.screen.width - 444 * gameConfig.screen.scale) / 2, -- center
-            y = gameConfig.screen.height / 2 + 300 * gameConfig.screen.scale,
+            y = gameConfig.screen.height / 2 + 150 * gameConfig.screen.scale,
             width = 444,
             height = 66,
             scale = gameConfig.screen.scale,
@@ -51,7 +51,7 @@ function Class.create(options)
         },
         quit = Button.create{
             x = (gameConfig.screen.width - 444 * gameConfig.screen.scale) / 2, -- center
-            y = gameConfig.screen.height / 2 + 400 * gameConfig.screen.scale,
+            y = gameConfig.screen.height / 2 + 250 * gameConfig.screen.scale,
             width = 444,
             height = 66,
             scale = gameConfig.screen.scale,
