@@ -28,15 +28,13 @@ function Class.create(options)
     setmetatable(self, Class)
 
     self.game = options.game
-    self.selected = 1
+    self.selected = "resume"
     self.scale = gameConfig.screen.scale
 
     self.background = love.graphics.newImage("assets/graphics/gui/menu_bg.png")
 
-    self.buttons = {}
-    table.insert(
-        self.buttons,
-        Button.create{
+    self.buttons = {
+        resume = Button.create{
             x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
             y = gameConfig.screen.height / 2 - 100 * self.scale,
             width = 444,
@@ -46,11 +44,12 @@ function Class.create(options)
             border = "btn_on",
             text = "Resume",
             callback = self.resumeGame,
-        }
-    )
-    table.insert(
-        self.buttons,
-        Button.create{
+            navigation = {
+                up = "quit",
+                down = "restart"
+            }
+        },
+        restart = Button.create{
             x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
             y = gameConfig.screen.height / 2 - 20 * self.scale,
             width = 444,
@@ -60,11 +59,12 @@ function Class.create(options)
             border = "btn_on",
             text = "Restart",
             callback = self.restartGame,
-        }
-    )
-    table.insert(
-        self.buttons,
-        Button.create{
+            navigation = {
+                up = "resume",
+                down = "quit"
+            }
+        },
+        quit = Button.create{
             x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
             y = gameConfig.screen.height / 2 + 60 * self.scale,
             width = 444,
@@ -74,8 +74,12 @@ function Class.create(options)
             border = "btn_on",
             text = "Quit",
             callback = self.quitGame,
+            navigation = {
+                up = "restart",
+                down = "resume"
+            }
         }
-    )
+    }
 
     return self
 end
