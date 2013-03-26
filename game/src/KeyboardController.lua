@@ -91,25 +91,15 @@ function Class:update(dt)
  
     if self.mode == "game" then
         -- Control the laser command
-        if love.keyboard.isDown("left") then
-            self.station:setLaserSatAngle((self.station.laserAngle - deltaRad + math.pi ) % ( 2 * math.pi ) - math.pi )
+        if love.keyboard.isDown("left", "a", "q") then
+            self.station:setLaserSatAngle((self.station.laserAngle + deltaRad + math.pi ) % ( 2 * math.pi ) - math.pi )
         end
 
-        if love.keyboard.isDown("right") then
-            self.station:setLaserSatAngle((self.station.laserAngle + deltaRad + math.pi ) % ( 2 * math.pi) - math.pi )
+        if love.keyboard.isDown("right", "d") then
+            self.station:setLaserSatAngle((self.station.laserAngle - deltaRad + math.pi ) % ( 2 * math.pi) - math.pi )
         end
 
-
-        -- Control the missiles launcher
-        if love.keyboard.isDown("a", "q") then
-            self.station:setMissileLauncherAngle((self.station.missileAngle - deltaRad + math.pi ) % ( 2 * math.pi ) - math.pi )
-        end
-
-        if love.keyboard.isDown("d") then
-            self.station:setMissileLauncherAngle((self.station.missileAngle + deltaRad + math.pi ) % ( 2 * math.pi ) - math.pi )
-        end
-
-      -- I’M A’ FIRIN’ MAH LAZER!!
+        -- I’M A’ FIRIN’ MAH LAZER!!
         self.station:fireLaser()
        
         -- SHOOP DA WHOOP!!!!
