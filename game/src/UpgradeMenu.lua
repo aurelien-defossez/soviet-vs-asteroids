@@ -51,7 +51,11 @@ function Class.create(options)
             navigation = {
                 up = "missiles",
                 down = "missiles"
-            }
+            },
+            onSelected = function(previousButtonId)
+                self.buttons.resume.navigation.up = previousButtonId
+                self.buttons.resume.navigation.down = previousButtonId
+            end
         },
         missiles = Button.create{
             x = self.offsetX + (52 * self.scale),
@@ -179,8 +183,7 @@ function upgradeMissiles()
     self.station:buyUpgrade("missiles")
 
     -- Upgrade the cooldown
-    cooldown = self.station.missileCoolDownTime * gameConfig.missiles.cooldownUpgradeRate
-    self.station:setMissileCooldown(cooldown)
+    self.station:setMissileCooldown(self.station.missileCoolDownTime * gameConfig.missiles.cooldownUpgradeRate)
     SoundManager:upgrade()
 end
 

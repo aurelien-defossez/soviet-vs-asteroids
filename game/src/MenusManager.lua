@@ -90,12 +90,13 @@ function Class:selectButtonIn(x, y)
 end
 
 function Class:navigate(direction)
+    local currentButtonId = self.menu.selected
     local nextButtonId = self:getSelected().navigation[direction]
 
     if nextButtonId then
         self:deselectButton()
         self.menu.selected = nextButtonId
-        self:selectButton()
+        self:selectButton(currentButtonId)
     end
 end
 
@@ -109,8 +110,13 @@ function Class:enterSelected()
     end
 end
 
-function Class:selectButton()
-    self:getSelected().selected = true
+function Class:selectButton(previousButtonId)
+    local selectedButton = self:getSelected()
+    selectedButton.selected = true
+
+    if selectedButton.onSelected then
+        selectedButton.onSelected(previousButtonId)
+    end
 end
 
 function Class:deselectButton()
