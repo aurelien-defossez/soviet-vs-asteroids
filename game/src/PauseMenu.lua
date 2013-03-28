@@ -28,13 +28,15 @@ function Class.create(options)
     setmetatable(self, Class)
 
     self.game = options.game
-    self.selected = "resume"
+    self.selected = options.gameover and "restart" or "resume"
     self.scale = gameConfig.screen.scale
 
     self.background = love.graphics.newImage("assets/graphics/gui/menu_bg.png")
 
-    self.buttons = {
-        resume = Button.create{
+    self.buttons = {}
+
+    if not options.gameover then
+        self.buttons.resume = Button.create{
             x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
             y = gameConfig.screen.height / 2 - 100 * self.scale,
             width = 444,
@@ -48,36 +50,38 @@ function Class.create(options)
                 up = "quit",
                 down = "restart"
             }
-        },
-        restart = Button.create{
-            x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
-            y = gameConfig.screen.height / 2 - 20 * self.scale,
-            width = 444,
-            height = 66,
-            scale = self.scale,
-            background = "btn_off",
-            border = "btn_on",
-            text = "Restart",
-            callback = self.restartGame,
-            navigation = {
-                up = "resume",
-                down = "quit"
-            }
-        },
-        quit = Button.create{
-            x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
-            y = gameConfig.screen.height / 2 + 60 * self.scale,
-            width = 444,
-            height = 66,
-            scale = self.scale,
-            background = "btn_off",
-            border = "btn_on",
-            text = "Quit",
-            callback = self.quitGame,
-            navigation = {
-                up = "restart",
-                down = "resume"
-            }
+        }
+    end
+
+    self.buttons.restart = Button.create{
+        x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
+        y = gameConfig.screen.height / 2 - 20 * self.scale,
+        width = 444,
+        height = 66,
+        scale = self.scale,
+        background = "btn_off",
+        border = "btn_on",
+        text = "Restart",
+        callback = self.restartGame,
+        navigation = {
+            up = options.gameover and "quit" or "resume",
+            down = "quit"
+        }
+    }
+
+    self.buttons.quit = Button.create{
+        x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
+        y = gameConfig.screen.height / 2 + 60 * self.scale,
+        width = 444,
+        height = 66,
+        scale = self.scale,
+        background = "btn_off",
+        border = "btn_on",
+        text = "Quit",
+        callback = self.quitGame,
+        navigation = {
+            up = "restart",
+            down = options.gameover and "restart" or "resume"
         }
     }
 

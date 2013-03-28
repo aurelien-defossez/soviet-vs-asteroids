@@ -25,7 +25,7 @@ function Class.create(options)
 
     function love.keypressed(key)
         if self.mode == "end" then
-            self.game:setMenu("pause")
+            self.game:setMenu("gameover")
         else
             -- Go to upgrade mode
             if key == "backspace" or key == "tab" then
