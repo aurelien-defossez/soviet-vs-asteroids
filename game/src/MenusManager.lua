@@ -65,14 +65,16 @@ function Class:setMenu(menu)
 
     if menu == "title" then
         Menu = TitleMenu
-    elseif menu == "pause" then
+    elseif menu == "pause" or menu == "gameover" then
         Menu = PauseMenu
     elseif menu == "upgrade" then
         Menu = UpgradeMenu
     end
+
     SoundManager.laserStop()
     self.menu = Menu.create{
-        game = self.game
+        game = self.game,
+        gameover = (menu == "gameover")
     }
 
     self:selectButton()

@@ -211,7 +211,7 @@ function Class:update(dt)
 
         -- Anne Roumanov
         if self.station.life < 0 then
-            self.mode = "end"
+            self:setMode("end")
             SoundManager.voiceDeath()
             SoundManager.laserStop()
             SoundManager.stopMusic()
@@ -299,12 +299,13 @@ end
 -- Parameters
 --  mode: "game" or "upgrade" or "menu"
 function Class:setMode(mode)
-    if mode == "menu" then
+    if mode == "menu" and self.mode ~= "end" then
         SoundManager.startShopMusic()
         SoundManager.laserStop()
     elseif self.mode == "menu" and mode ~= "menu" and mode ~= "upgrade" then
         SoundManager.stopShopMusic()
     end
+
     self.mode = mode
     self.controller:setMode(mode)
     self.station:setMode(mode)
