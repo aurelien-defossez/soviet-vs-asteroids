@@ -189,12 +189,9 @@ function love.joystickpressed( joystick, button )
                 self.game:setMenu("pause")
             elseif self.mode == "upgrade" then
                 self.game:setMenu("upgrade")
-            elseif self.mode == "menu" then
-                self.game:setMode("game")
             elseif self.mode == "game" then
                 self.game:setMenu("pause")
             end
-
 
             return
         end

@@ -30,6 +30,7 @@ function Class.create(options)
     self.game = options.game
     self.selected = options.gameover and "restart" or "resume"
     self.scale = gameConfig.screen.scale
+    self.gameover = options.gameover
 
     self.background = love.graphics.newImage("assets/graphics/gui/menu_bg.png")
 
