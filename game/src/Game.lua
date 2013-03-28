@@ -122,7 +122,7 @@ function Class.create(options)
     SoundManager.setNoSound()
 
     function love.focus(f)
-        if not f then
+        if not f and self.mode == "game" then
             self:setMenu("pause")
         end
     end
