@@ -28,5 +28,5 @@ end
 function Class:draw()
     love.graphics.setColor(255, 255, 255, self.opacity )
 
-    love.graphics.circle( 'fill', self.pos.x, self.pos.y, self.radius, 5 )
+    love.graphics.circle( 'fill', self.pos.x, self.pos.y, self.radius, 9)
 end

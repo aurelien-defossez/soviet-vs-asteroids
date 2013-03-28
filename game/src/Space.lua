@@ -16,6 +16,7 @@ Class.__index = Class
 
 require("src.SoundManager")
 require("src.FusRoDov")
+require("src.StarField")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -31,31 +32,14 @@ function Class.create(options)
     self.station = options.station
     self.missiles = {}
     self.asteroids = {}
-    self.leds = {}
     self.dLastSpawn = 0
     self.elapsedTime = 0
     self.background = love.graphics.newImage("assets/graphics/background.png")
+    self.starField = StarField.create{
+        starCount = 30
+    }
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
-
-    self.stars = love.graphics.newParticleSystem(
-        love.graphics.newImage("assets/graphics/star.png"), 40
-    )
-    self.stars:setEmissionRate(3)
-    self.stars:setSpread( 2 * math.pi )
-    self.stars:setLifetime(-1)
-    self.stars:setParticleLife(4)
-    self.stars:setSizes(0,0,.1,.3,.45,.6)
-    self.stars:setSpeed(100, 300)
-    self.stars:start()
-    self.fusRoDovInstance = nil
-
-    -- spawn background stars
-    local i = 30
-    while i > 0 do
-        table.insert( self.leds, Star.create() )
-        i = i - 1
-    end
 
     return self
 end
@@ -147,10 +131,8 @@ function Class:update(dt)
         asteroid:update(dt, i)
     end
 
-    -- Update leds
-    for _, led in pairs(self.leds) do
-        led:update(dt)
-    end
+    -- Update stars
+    self.starField:update(dt)
 
     -- Check for Fus-Ro-Dov collisions to destroy asteroids and missiles
     if self.fusRoDovInstance then
@@ -227,8 +209,6 @@ function Class:update(dt)
             table.remove( self.asteroids, i )
         end
     end
-
-    self.stars:update(dt)
 end
 
 -- Draw the game
@@ -244,15 +224,7 @@ function Class:draw()
         960, 540
     )
 
-    love.graphics.setColor({64, 64, 64, 128})
-    love.graphics.draw(
-        self.stars,
-        0, 0
-    )
-
-    for _, led in pairs(self.leds) do
-        led:draw(dt)
-    end
+    self.starField:draw()
 
     for _, asteroid in pairs(self.asteroids) do
         asteroid:draw()
