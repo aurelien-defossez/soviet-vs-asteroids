@@ -274,16 +274,13 @@ function Class:draw()
     love.graphics.setFont(self.fonts["48"])
     love.graphics.printf(self.station.coins, gameConfig.screen.width - 250, 10, 300, "left")
 
-    if self.mode == "menu" then
-        self.menus:draw()
-    end
-
-    if self.mode == "end" then
+    if self.mode == "end" or self.menu == "gameover" then
         GameOverScreen.draw()
     end
 
-
-  --  self.controller:draw()
+    if self.mode == "menu" then
+        self.menus:draw()
+    end
 end
 
 -- Compute the translate vector for the camera
