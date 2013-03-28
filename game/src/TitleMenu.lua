@@ -16,6 +16,7 @@ Class.__index = Class
 require("src.Config")
 require("src.gui.Button")
 require("src.gui.Colors")
+require("src.StarField")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -32,6 +33,13 @@ function Class.create(options)
     self.scale = gameConfig.screen.scale - 0.09
 
     self.background = love.graphics.newImage("assets/graphics/intro_screen.png")
+    self.starField = StarField.create{
+        starCount = 30,
+        boundaries = aabb(
+            vec2(0, 0),
+            vec2(gameConfig.screen.width, gameConfig.screen.height)
+        )
+    }
 
     self.buttons = {
         start = Button.create{
@@ -82,11 +90,14 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
+    self.starField:update(dt)
 end
 
 -- Draw the TitleMenu
 function Class:draw()
-    -- display the background
+    self.starField:draw()
+
+    love.graphics.setColor(255, 255, 255)
     love.graphics.draw(
         self.background,
         (gameConfig.screen.width - 1920 * self.scale) / 2,

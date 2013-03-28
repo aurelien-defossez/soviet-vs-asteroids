@@ -2,17 +2,14 @@ module("Star", package.seeall)
 local Class = Star
 Class.__index = Class
 
-function Class.create()
+function Class.create(options)
     -- Create object
     self = {}
     setmetatable(self, Class)
 
     self.duration = math.random()
 
-    self.pos = vec2(
-        ( math.random() - 0.5 ) * gameConfig.screen.width,
-        ( math.random() - 0.5 ) * gameConfig.screen.height
-    )
+    self.pos = options.pos
     self.radius = math.random() * 2 + 2
 
     self.dtFactor = 3 + math.random() * 3
@@ -28,5 +25,5 @@ end
 function Class:draw()
     love.graphics.setColor(255, 255, 255, self.opacity )
 
-    love.graphics.circle( 'fill', self.pos.x, self.pos.y, self.radius, 5 )
+    love.graphics.circle( 'fill', self.pos.x, self.pos.y, self.radius, 9)
 end
