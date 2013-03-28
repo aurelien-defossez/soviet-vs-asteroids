@@ -216,8 +216,8 @@ function Class:update(dt)
             SoundManager.laserStop()
             SoundManager.stopMusic()
         end
-    elseif self.mode == "end" then
-
+    elseif self.mode == "end" or self.menu == "gameover" then
+        GameOverScreen.update(dt)
     end
 end
 
@@ -233,8 +233,8 @@ function Class:draw()
 
     -- Move to camera position
     love.graphics.translate(
-        self.translateVector.x,
-        self.translateVector.y
+        self.translateVector.x + self.camera.x,
+        self.translateVector.y + self.camera.y
     )
 
     -- Draw background
