@@ -14,6 +14,7 @@ Class.__index = Class
 -- Imports
 -----------------------------------------------------------------------------------------
 
+require("lib.math.aabb")
 require("src.SoundManager")
 require("src.FusRoDov")
 require("src.StarField")
@@ -36,7 +37,11 @@ function Class.create(options)
     self.elapsedTime = 0
     self.background = love.graphics.newImage("assets/graphics/background.png")
     self.starField = StarField.create{
-        starCount = 30
+        starCount = 30,
+        boundaries = aabb(
+            vec2(-gameConfig.screen.width / 2, -gameConfig.screen.height / 2),
+            vec2(gameConfig.screen.width / 2, gameConfig.screen.height / 2)
+        )
     }
 
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes

@@ -36,7 +36,12 @@ function Class.create(options)
 
     -- spawn background stars
     for i = 1, options.starCount or 30 do
-        self.leds[i] = Star.create()
+        self.leds[i] = Star.create{
+            pos = vec2(
+                math.random(options.boundaries.min.x, options.boundaries.max.x),
+                math.random(options.boundaries.min.y, options.boundaries.max.y)
+            )
+        }
     end
 
     return self
