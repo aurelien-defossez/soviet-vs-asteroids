@@ -211,7 +211,7 @@ function Class:update(dt)
 
         -- Anne Roumanov
         if self.station.life < 0 then
-            self.mode = "end"
+            self:setMode("end")
             SoundManager.voiceDeath()
             SoundManager.laserStop()
             SoundManager.stopMusic()

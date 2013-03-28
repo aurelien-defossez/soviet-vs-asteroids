@@ -24,49 +24,53 @@ function Class.create(options)
     self.game = options.game
 
     function love.keypressed(key)
-        -- Go to upgrade mode
-        if key == "backspace" or key == "tab" then
-            if self.mode == "game" and game.mode ~= "end" then
-                self.game:setMenu("upgrade")
-            elseif self.mode == "upgrade" then
-                self.game:setMenu("upgrade")
-            elseif self.mode == "menu" and self.game.menu == "upgrade" then
-                self.game:setMode("game")
+        if self.mode == "end" then
+            self.game:setMenu("pause")
+        else
+            -- Go to upgrade mode
+            if key == "backspace" or key == "tab" then
+                if self.mode == "game" and game.mode ~= "end" then
+                    self.game:setMenu("upgrade")
+                elseif self.mode == "upgrade" then
+                    self.game:setMenu("upgrade")
+                elseif self.mode == "menu" and self.game.menu == "upgrade" then
+                    self.game:setMode("game")
+                end
             end
-        end
 
-        -- Go to pause menu
-        if key == "p" then
-            if self.mode == "menu" and self.game.menu == "pause" then
-                self.game:setMode("game")
-            elseif self.mode == "game" then
-                self.game:setMenu("pause")
+            -- Go to pause menu
+            if key == "p" then
+                if self.mode == "menu" and self.game.menu == "pause" then
+                    self.game:setMode("game")
+                elseif self.mode == "game" then
+                    self.game:setMenu("pause")
+                end
             end
-        end
 
-        -- Generic escape from menus and modes
-        if key == "escape" then
-            if self.mode == "upgrade" then
-                self.game:setMenu("upgrade")
-            elseif self.mode == "menu" then
-                self.game:setMode("game")
-            elseif self.mode == "game" then
-                self.game:setMenu("pause")
+            -- Generic escape from menus and modes
+            if key == "escape" then
+                if self.mode == "upgrade" then
+                    self.game:setMenu("upgrade")
+                elseif self.mode == "menu" then
+                    self.game:setMode("game")
+                elseif self.mode == "game" then
+                    self.game:setMenu("pause")
+                end
             end
-        end
 
-        -- Navigate in menus
-        if key == "up" or key == "down" or key == "left" or key == "right" then
-            if self.mode == "menu" then
-                self.game.menus:navigate(key)
+            -- Navigate in menus
+            if key == "up" or key == "down" or key == "left" or key == "right" then
+                if self.mode == "menu" then
+                    self.game.menus:navigate(key)
+                end
             end
-        end
 
-        if key == "return" then
-            if self.mode == "menu" then
-                self.game.menus:enterSelected()
-            elseif self.mode == "upgrade" then
-                self.game:putUpgrade()
+            if key == "return" then
+                if self.mode == "menu" then
+                    self.game.menus:enterSelected()
+                elseif self.mode == "upgrade" then
+                    self.game:putUpgrade()
+                end
             end
         end
     end
