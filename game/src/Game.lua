@@ -216,7 +216,9 @@ function Class:update(dt)
             SoundManager.laserStop()
             SoundManager.stopMusic()
         end
-    elseif self.mode == "end" or self.menu == "gameover" then
+    end
+
+    if self.mode == "end" or self.menu == "gameover" then
         GameOverScreen.update(dt)
     end
 end
