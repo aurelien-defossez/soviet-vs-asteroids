@@ -40,8 +40,8 @@ function Class.create(options)
     self.drones = {}
     self.missileArmLength = 100
     self.laserStationOrbit = 100
-    self.missileAngle = 0
-    self.laserAngle = 0
+    self.missileAngle = -math.pi / 5
+    self.laserAngle = math.pi / 8
     self.laserAlreadyFiring = false
     self.score = 0
     self.coins = 0
