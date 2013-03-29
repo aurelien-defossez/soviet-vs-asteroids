@@ -37,14 +37,14 @@ function Class.create(options)
         starCount = 30,
         boundaries = aabb(
             vec2(0, 0),
-            vec2(gameConfig.screen.width, gameConfig.screen.height)
+            vec2(gameConfig.screen.real.width, gameConfig.screen.real.height)
         )
     }
 
     self.buttons = {
         start = Button.create{
-            x = (gameConfig.screen.width - 444 * gameConfig.screen.scale) / 2, -- center
-            y = gameConfig.screen.height / 2 + 150 * gameConfig.screen.scale,
+            x = (gameConfig.screen.real.width - 444 * gameConfig.screen.scale) / 2, -- center
+            y = gameConfig.screen.real.height / 2 + 150 * gameConfig.screen.scale,
             width = 444,
             height = 66,
             scale = gameConfig.screen.scale,
@@ -58,8 +58,8 @@ function Class.create(options)
             }
         },
         quit = Button.create{
-            x = (gameConfig.screen.width - 444 * gameConfig.screen.scale) / 2, -- center
-            y = gameConfig.screen.height / 2 + 250 * gameConfig.screen.scale,
+            x = (gameConfig.screen.real.width - 444 * gameConfig.screen.scale) / 2, -- center
+            y = gameConfig.screen.real.height / 2 + 250 * gameConfig.screen.scale,
             width = 444,
             height = 66,
             scale = gameConfig.screen.scale,
@@ -100,8 +100,8 @@ function Class:draw()
     love.graphics.setColor(255, 255, 255)
     love.graphics.draw(
         self.background,
-        (gameConfig.screen.width - 1920 * self.scale) / 2,
-        (gameConfig.screen.height - 1080 * self.scale) / 2,
+        (gameConfig.screen.real.width - 1920 * self.scale) / 2,
+        (gameConfig.screen.real.height - 1080 * self.scale) / 2,
         0,
         self.scale
     )

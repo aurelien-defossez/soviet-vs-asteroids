@@ -39,8 +39,8 @@ function Class.create(options)
     self.starField = StarField.create{
         starCount = 30,
         boundaries = aabb(
-            vec2(-gameConfig.screen.width / 2, -gameConfig.screen.height / 2),
-            vec2(gameConfig.screen.width / 2, gameConfig.screen.height / 2)
+            vec2(-gameConfig.screen.virtual.width / 2, -gameConfig.screen.virtual.height / 2),
+            vec2(gameConfig.screen.virtual.width / 2, gameConfig.screen.virtual.height / 2)
         )
     }
 

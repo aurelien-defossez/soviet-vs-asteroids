@@ -2,10 +2,14 @@ require("lib.math.vec2")
 
 gameConfig = {
     virtualScreenHeight = 1080,
+    fullScreen = true,
 
     screen = {
-        width = 1024,
-        height = 700,
+        virtual = {
+            width = 1024,
+            height = 700
+        },
+        real = {},
         scale = 0.6,
     },
 
@@ -50,7 +54,7 @@ gameConfig = {
         minRadius = 16,
         baseLife = 300,
         numberPoint = 300,
-        beltDistance = 1000,
+        beltDistance = 1200,
     },
 
     station = {
