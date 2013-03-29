@@ -343,7 +343,7 @@ function Class:asteroidKilled(radius, distance, noPoints)
 end
 
 function Class:hasEnoughCoins(upgrade)
-    return self.coins > self.costs[upgrade]
+    return self.coins >= self.costs[upgrade]
 end
 
 function Class:buyUpgrade(upgrade)
