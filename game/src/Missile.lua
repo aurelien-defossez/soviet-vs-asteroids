@@ -82,7 +82,7 @@ function Class:collideAsteroid(asteroid)
     return self.boundingCircle:collideCircle(asteroid.boundingCircle)
 end
 
-function Class:explode()
+function Class:explode(asteroid)
     self.exploded = true
 
     self.xplosion = love.graphics.newParticleSystem( fire, 20 )
@@ -100,7 +100,10 @@ function Class:explode()
     self.xplosion:setSpeed(75, 150)
     self.xplosion:start()
 
-    self.explosionSprite.pos = self.boundingCircle.center - vec2(64, 64) * .35
+    local explosionSize = asteroid and asteroid.radius / gameConfig.asteroid.baseRadius * .8 or .5
+    self.explosionSprite.scaleX = explosionSize
+    self.explosionSprite.scaleY = explosionSize
+    self.explosionSprite.pos = self.boundingCircle.center - vec2(64, 64) * explosionSize
 
     self.timeSinceExplosion = 0
 end

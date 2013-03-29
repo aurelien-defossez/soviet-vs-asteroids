@@ -165,7 +165,7 @@ function Class:update(dt)
             for i, asteroid in pairs(self.asteroids) do
                 -- exclude exploded asteroid from collision detection
                 if not asteroid.exploded and missile:collideAsteroid(asteroid) then
-                    missile:explode()
+                    missile:explode(asteroid)
                     self:splitAsteroid( asteroid )
                     asteroid:explode()
                     --self:removeAsteroid( i )
