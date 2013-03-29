@@ -9,8 +9,9 @@ gameConfig = {
             width = 1024,
             height = 700
         },
+        -- These values are set programatically in main.lua
         real = {},
-        scale = 0.6,
+        scale = 1
     },
 
     -- Camera
@@ -117,7 +118,6 @@ gameConfig = {
         all = false,
         shapes = false,
     },
-
 
     laser = {
         laserWidth = 70,

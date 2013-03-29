@@ -43,7 +43,7 @@ end
 
 function Class.draw()
     -- Text size
-    local size = math.max(1, 10 - 10 * self.elapsedTime / .5)
+    local size = math.max(1, 10 - 10 * self.elapsedTime / .5) * gameConfig.screen.scale * 2
 
     -- Shake screen
     if self.elapsedTime > .5 and self.elapsedTime < .8 then

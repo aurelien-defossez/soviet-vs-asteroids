@@ -265,16 +265,16 @@ function Class:draw()
 
     colors.grey()
     love.graphics.setFont(self.fonts["36"])
-    love.graphics.printf("Score", gameConfig.screen.real.width / 2 - 60, 17, 200, "left")
+    love.graphics.printf("Score", gameConfig.screen.real.width - 650 * gameConfig.screen.scale, 17, 200, "left")
 
     colors.white()
     love.graphics.setFont(self.fonts["48"])
-    love.graphics.printf(self.station.score, gameConfig.screen.real.width / 2, 10, 200, "left")
+    love.graphics.printf(self.station.score, gameConfig.screen.real.width - 550 * gameConfig.screen.scale, 10, 200, "left")
 
     love.graphics.setFont(self.fonts["36"])
     love.graphics.draw(self.coinImg, gameConfig.screen.real.width - 300, 6, 0, gameConfig.screen.scale)
     love.graphics.setFont(self.fonts["48"])
-    love.graphics.printf(self.station.coins, gameConfig.screen.real.width - 250, 10, 300, "left")
+    love.graphics.printf(self.station.coins, gameConfig.screen.real.width - 250 * gameConfig.screen.scale, 10, 300, "left")
 
     if self.mode == "end" or self.menu == "gameover" then
         GameOverScreen.draw()
