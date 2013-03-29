@@ -20,7 +20,7 @@ local cos = math.cos
 local sin = math.sin
 local ctId = 0
 local missile = love.graphics.newImage("assets/graphics/missile.png")
---local explosion = love.graphics.newImage("assets/graphics/explosion2.png")
+local explosion = love.graphics.newImage("assets/graphics/explosion2.png")
 local fire = love.graphics.newImage("assets/graphics/fire.png")
 
 -----------------------------------------------------------------------------------------
@@ -54,6 +54,15 @@ function Class.create(options)
         scale = 0.35
     }
 
+    self.explosionSprite = Sprite.create{
+        pos = self.pos,
+        spriteSheet = explosion,
+        angle = 0,
+        frameCount = 10,
+        frameRate = 0.04,
+        scale = 0.35
+    }
+
     ctId = ctId + 1
 
     return self
@@ -83,12 +92,15 @@ function Class:explode()
     self.xplosion:setDirection( 0, math.pi )
     self.xplosion:setParticleLife(0.15,0.25)
     self.xplosion:setSizes(.3,1)
+    self.xplosion:setRotation(0, 2 * math.pi)
     self.xplosion:setColors(
         255, 255, 255, 255,
         255, 64, 64, 64
     )
     self.xplosion:setSpeed(75, 150)
     self.xplosion:start()
+
+    self.explosionSprite.pos = self.boundingCircle.center - vec2(64, 64) * .35
 
     self.timeSinceExplosion = 0
 end
@@ -107,6 +119,8 @@ function Class:update(dt)
         self.timeSinceExplosion = self.timeSinceExplosion + dt
 
         self.xplosion:update(dt)
+
+        self.explosionSprite:update(dt)
     end
 end
 
@@ -120,6 +134,8 @@ function Class:draw()
         self.sprite.pos = self.pos + vec2(-30, -10):rotateRad(-self.angle)
         self.sprite:draw()
     else
+        self.explosionSprite:draw()
+
         love.graphics.draw(
             self.xplosion,
             self.pos.x,
