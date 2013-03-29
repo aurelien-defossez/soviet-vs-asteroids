@@ -34,13 +34,13 @@ function Class.create(options)
 
     self.background = love.graphics.newImage("assets/graphics/gui/shop_bg.png")
 
-    self.offsetX = (gameConfig.screen.width - 1280 * self.scale) / 2
-    self.offsetY = (gameConfig.screen.height - 720 * self.scale) / 2
+    self.offsetX = (gameConfig.screen.real.width - 1280 * self.scale) / 2
+    self.offsetY = (gameConfig.screen.real.height - 720 * self.scale) / 2
 
     self.buttons = {
         resume = Button.create{
-            x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
-            y = gameConfig.screen.height / 2 + 250 * self.scale,
+            x = (gameConfig.screen.real.width - 444 * self.scale) / 2, -- center
+            y = gameConfig.screen.real.height / 2 + 250 * self.scale,
             width = 444,
             height = 66,
             scale = gameConfig.screen.scale,

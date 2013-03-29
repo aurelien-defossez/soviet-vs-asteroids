@@ -43,7 +43,7 @@ end
 
 function Class.draw()
     -- Text size
-    local size = math.max(1, 10 - 10 * self.elapsedTime / .5)
+    local size = math.max(1, 10 - 10 * self.elapsedTime / .5) * gameConfig.screen.scale * 2
 
     -- Shake screen
     if self.elapsedTime > .5 and self.elapsedTime < .8 then
@@ -54,14 +54,14 @@ function Class.draw()
 
     love.graphics.draw(
         self.explosionimage,
-        (gameConfig.screen.width/2)-(self.explosionimage:getWidth()/2),
-        (gameConfig.screen.height/2)-(self.explosionimage:getHeight()/2)
+        (gameConfig.screen.real.width/2)-(self.explosionimage:getWidth()/2),
+        (gameConfig.screen.real.height/2)-(self.explosionimage:getHeight()/2)
     )
 
     love.graphics.draw(
         self.gameoverimage,
-        (gameConfig.screen.width/2)-(self.gameoverimage:getWidth() * size /2),
-        (gameConfig.screen.height/2)-(self.gameoverimage:getHeight() * size /2),
+        (gameConfig.screen.real.width/2)-(self.gameoverimage:getWidth() * size /2),
+        (gameConfig.screen.real.height/2)-(self.gameoverimage:getHeight() * size /2),
         0,
         size,
         size

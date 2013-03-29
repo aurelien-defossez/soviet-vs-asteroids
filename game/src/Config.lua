@@ -2,11 +2,16 @@ require("lib.math.vec2")
 
 gameConfig = {
     virtualScreenHeight = 1080,
+    fullScreen = true,
 
     screen = {
-        width = 1024,
-        height = 700,
-        scale = 0.6,
+        virtual = {
+            width = 1024,
+            height = 700
+        },
+        -- These values are set programatically in main.lua
+        real = {},
+        scale = 1
     },
 
     -- Camera
@@ -50,7 +55,7 @@ gameConfig = {
         minRadius = 16,
         baseLife = 300,
         numberPoint = 300,
-        beltDistance = 1000,
+        beltDistance = 1200,
     },
 
     station = {
@@ -113,7 +118,6 @@ gameConfig = {
         all = false,
         shapes = false,
     },
-
 
     laser = {
         laserWidth = 70,

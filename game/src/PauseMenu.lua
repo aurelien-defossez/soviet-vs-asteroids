@@ -38,8 +38,8 @@ function Class.create(options)
 
     if not options.gameover then
         self.buttons.resume = Button.create{
-            x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
-            y = gameConfig.screen.height / 2 - 100 * self.scale,
+            x = (gameConfig.screen.real.width - 444 * self.scale) / 2, -- center
+            y = gameConfig.screen.real.height / 2 - 100 * self.scale,
             width = 444,
             height = 66,
             scale = self.scale,
@@ -55,8 +55,8 @@ function Class.create(options)
     end
 
     self.buttons.restart = Button.create{
-        x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
-        y = gameConfig.screen.height / 2 - 20 * self.scale,
+        x = (gameConfig.screen.real.width - 444 * self.scale) / 2, -- center
+        y = gameConfig.screen.real.height / 2 - 20 * self.scale,
         width = 444,
         height = 66,
         scale = self.scale,
@@ -71,8 +71,8 @@ function Class.create(options)
     }
 
     self.buttons.quit = Button.create{
-        x = (gameConfig.screen.width - 444 * self.scale) / 2, -- center
-        y = gameConfig.screen.height / 2 + 60 * self.scale,
+        x = (gameConfig.screen.real.width - 444 * self.scale) / 2, -- center
+        y = gameConfig.screen.real.height / 2 + 60 * self.scale,
         width = 444,
         height = 66,
         scale = self.scale,
@@ -109,8 +109,8 @@ function Class:draw()
     -- display the background
     love.graphics.draw(
         self.background,
-        (gameConfig.screen.width - 609 * self.scale) / 2,
-        (gameConfig.screen.height - 720 * self.scale) / 2,
+        (gameConfig.screen.real.width - 609 * self.scale) / 2,
+        (gameConfig.screen.real.height - 720 * self.scale) / 2,
         0,
         self.scale
     )
@@ -120,8 +120,8 @@ function Class:draw()
     love.graphics.printf(
         "Pause menu",
         0,
-        gameConfig.screen.height / 2 - 300 * self.scale,
-        gameConfig.screen.width,
+        gameConfig.screen.real.height / 2 - 300 * self.scale,
+        gameConfig.screen.real.width,
         "center"
     )
     love.graphics.setFont(self.game.fonts["48"])

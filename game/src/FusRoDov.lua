@@ -26,7 +26,7 @@ function Class:update(dt)
     self.elapsedTime = self.elapsedTime + dt
     self.range.radius = 50 * (1 + self.elapsedTime) ^ 4
 
-    if self.range.radius > gameConfig.screen.width then
+    if self.range.radius > gameConfig.screen.virtual.width then
         self.ended = true
     end
 end
