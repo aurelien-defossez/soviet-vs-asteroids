@@ -63,7 +63,8 @@ function Class.create(options)
             background = "btn_off",
             border = "btn_on",
             text = "Skip",
-            callback = self.playGame
+            callback = self.playGame,
+            navigation = {}
         }
     }
 
