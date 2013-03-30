@@ -65,7 +65,7 @@ function Class:draw()
 end
 
 -- Change the current menu
-function Class:setMenu(menu)
+function Class:setMenu(menu, defautButton)
     if self.menu ~= nil then
         self.menu:destroy()
     end
@@ -77,6 +77,10 @@ function Class:setMenu(menu)
         game = self.game,
         gameover = (menu == "gameover")
     }
+
+    if defautButton then
+        self.menu.selected = defautButton
+    end
 
     self:selectButton()
 end

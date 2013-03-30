@@ -323,9 +323,9 @@ end
 --
 -- Parameters
 --  menu: the menu to show
-function Class:setMenu(menu)
+function Class:setMenu(menu, defautButton)
     self.menu = menu
-    self.menus:setMenu(menu)
+    self.menus:setMenu(menu, defautButton)
     self:setMode("menu")
 end
 
@@ -353,15 +353,15 @@ function Class:putUpgrade()
     if self.upgrade == "satellite" and self.station.newSatellite ~= nil then
         self.station:addLaserSat(self.station.newSatellite)
         self.station.newSatellite = nil
-        self:setMenu("upgrade")
         self.station:buyUpgrade("lasers")
+        self:setMenu("upgrade", "lasers")
         SoundManager:upgrade()
         SoundManager:laserPlace()
     elseif self.upgrade == "drone" and self.station.newDrone ~= nil then
         self.station:addDrone(self.station.newDrone)
         self.station.newDrone = nil
-        self:setMenu("upgrade")
         self.station:buyUpgrade("drones")
+        self:setMenu("upgrade", "drones")
         SoundManager:upgrade()
         SoundManager:dronePlace()
     end

@@ -75,6 +75,31 @@ function Class:update(dt)
     self.joy1Angle = math.atan2(self.axis2, self.axis1)
     self.joy2Angle = math.atan2(self.axis4, self.axis5)
 
+    local direction
+    if self.axis1Released then
+        if self.axis1 > .5 then
+            direction = "right"
+            self.axis1Released = false
+        elseif self.axis1 < -.5 then
+            direction = "left"
+            self.axis1Released = false
+        end
+    elseif self.axis1 > -0.5 and self.axis1 < 0.5 then
+        self.axis1Released = true
+    end
+
+    if self.axis2Released then
+        if self.axis2 > .5 then
+            direction = "down"
+            self.axis2Released = false
+        elseif self.axis2 < -.5 then
+            direction = "up"
+            self.axis2Released = false
+        end
+    elseif self.axis2 > -0.5 and self.axis2 < 0.5 then
+        self.axis2Released = true
+    end
+
     if self.mode == "game" then
         if (norm > 0.5) then
             self.station:setMissileLauncherAngle( -self.joy1Angle)
@@ -94,33 +119,6 @@ function Class:update(dt)
             self.station:stopLaser()
         end
     elseif self.mode == "menu" then
-        -- Navigate in menus
-        local direction
-
-        if self.axis1Released then
-            if self.axis1 > .5 then
-                direction = "right"
-                self.axis1Released = false
-            elseif self.axis1 < -.5 then
-                direction = "left"
-                self.axis1Released = false
-            end
-        elseif self.axis1 > -0.5 and self.axis1 < 0.5 then
-            self.axis1Released = true
-        end
-
-        if self.axis2Released then
-            if self.axis2 > .5 then
-                direction = "down"
-                self.axis2Released = false
-            elseif self.axis2 < -.5 then
-                direction = "up"
-                self.axis2Released = false
-            end
-        elseif self.axis2 > -0.5 and self.axis2 < 0.5 then
-            self.axis2Released = true
-        end
-
         -- Navigate in menus
         if direction then
             self.game.menus:navigate(direction)
