@@ -20,6 +20,7 @@ function Class.create(options)
     self = {}
     setmetatable(self, Class)
 
+    self.name = "keyboard"
     self.station = options.station
     self.game = options.game
 
@@ -56,8 +57,6 @@ function Class.create(options)
                         self.game:setMode("game")
                     elseif self.game.menu == "loading" then
                         self.game:setMenu("title")
-                    else
-                        love.event.quit()
                     end
                 elseif self.mode == "game" then
                     self.game:setMenu("pause")

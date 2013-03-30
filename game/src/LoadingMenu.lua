@@ -36,7 +36,7 @@ function Class.create(options)
     self.controllerGuy = love.graphics.newImage("assets/graphics/cosmonaute_controller.png")
 
     self.startPos = vec2(
-        (-500 * self.scale),
+        (-800 / self.scale),
         (gameConfig.screen.real.height - 268 * self.scale) / 2
     )
 
@@ -93,12 +93,17 @@ end
 function Class:draw()
     self.starField:draw()
 
+    local text = game.controller.name ~= "pad"
+        and "For Mother-Russia, play with a dual sticks controller\nIf you have one, plug it in and restart the game"
+        or "You have a controller plugged in\nMother-Russia is happy"
+
     colors.white()
     love.graphics.setFont(game.fonts["72"])
-    love.graphics.printf("For Mother-Russia, play with a dual sticks controller",
-        gameConfig.screen.real.width * .1,
-        150,
-        gameConfig.screen.real.width * .8,
+    love.graphics.printf(
+        text,
+        0,
+        100,
+        gameConfig.screen.real.width,
         "center")
 
     local rotation = self.elapsedTime * math.pi / 32

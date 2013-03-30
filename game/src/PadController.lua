@@ -23,6 +23,7 @@ function Class.create(options)
     self = {}
     setmetatable(self, Class)
 
+    self.name = "pad"
     self.debug = gameConfig.debug.all or gameConfig.debug.shapes
     self.station = options.station
     self.game = options.game

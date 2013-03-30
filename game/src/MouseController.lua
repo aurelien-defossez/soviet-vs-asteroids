@@ -22,6 +22,7 @@ function Class.create(options)
     self = {}
     setmetatable(self, Class)
 
+    self.name = "mouse"
     self.station = options.station
     self.game = options.game
 
