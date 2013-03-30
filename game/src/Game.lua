@@ -251,6 +251,14 @@ function Class:draw()
         self.station:draw()
 
         if self.mode == "upgrade" then
+            colors.white()
+            love.graphics.setFont(game.fonts["72"])
+            love.graphics.printf("Place your upgrade",
+                gameConfig.screen.virtual.width * -.4,
+                gameConfig.screen.virtual.width * -.25,
+                gameConfig.screen.virtual.width * .8,
+                "center")
+
             if self.upgrade == "satellite" then
                 self.station.newSatellite:draw()
             elseif self.upgrade == "drone" then
