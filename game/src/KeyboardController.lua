@@ -52,7 +52,13 @@ function Class.create(options)
                 if self.mode == "upgrade" then
                     self.game:setMenu("upgrade")
                 elseif self.mode == "menu" then
-                    self.game:setMode("game")
+                    if self.game.menu and (self.game.menu == "pause" or self.game.menu == "upgrade") then
+                        self.game:setMode("game")
+                    elseif self.game.menu == "loading" then
+                        self.game:setMenu("title")
+                    else
+                        love.event.quit()
+                    end
                 elseif self.mode == "game" then
                     self.game:setMenu("pause")
                 end
