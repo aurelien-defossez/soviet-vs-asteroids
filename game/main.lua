@@ -13,7 +13,7 @@ function love.load()
 
     game = Game.create()
     game:setDemoMode(false)
-    game:setMenu("title")
+    game:setMenu("loading")
 end
 
 function love.update(dt)

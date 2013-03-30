@@ -14,10 +14,10 @@ Class.__index = Class
 -----------------------------------------------------------------------------------------
 
 require("src.Config")
+require("src.LoadingMenu")
 require("src.TitleMenu")
 require("src.PauseMenu")
 require("src.UpgradeMenu")
-
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -31,6 +31,13 @@ function Class.create(options)
 
     self.game = options.game
     self.menu = nil
+    self.menus = {
+        loading = LoadingMenu,
+        title = TitleMenu,
+        pause = PauseMenu,
+        gameover = PauseMenu,
+        upgrade = UpgradeMenu
+    }
 
     return self
 end
@@ -63,16 +70,10 @@ function Class:setMenu(menu)
         self.menu:destroy()
     end
 
-    if menu == "title" then
-        Menu = TitleMenu
-    elseif menu == "pause" or menu == "gameover" then
-        Menu = PauseMenu
-    elseif menu == "upgrade" then
-        Menu = UpgradeMenu
-    end
+    print("setMenu", menu)
 
     SoundManager.laserStop()
-    self.menu = Menu.create{
+    self.menu = self.menus[menu].create{
         game = self.game,
         gameover = (menu == "gameover")
     }

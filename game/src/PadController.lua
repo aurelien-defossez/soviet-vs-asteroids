@@ -183,8 +183,14 @@ function love.joystickpressed( joystick, button )
 
         -- Go to pause menu and generic escape from menus and modes
         if button == 8 then
-            if self.mode == "menu" and self.game.menu == "pause" then
-                self.game:setMode("game")
+            if self.mode == "menu" then
+                if self.game.menu and (self.game.menu == "pause" or self.game.menu == "upgrade") then
+                    self.game:setMode("game")
+                elseif self.game.menu == "loading" then
+                    self.game:setMenu("title")
+                elseif self.game.menu == "title" then
+                    self.game.menus:enterSelected()
+                end
             elseif self.mode == "game" then
                 self.game:setMenu("pause")
             elseif self.mode == "upgrade" then
