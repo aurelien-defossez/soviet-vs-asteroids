@@ -103,10 +103,13 @@ function Class.create(options)
         )
     ) then
         ControllerClass = PadController
+        self.controller = "joystick"
     elseif gameConfig.controls.default == "keyboard" then
         ControllerClass = KeyboardController
+        self.controller = "keyboard"
     else
         ControllerClass = MouseController
+        self.controller = "mouse"
     end
 
     self.controller = ControllerClass.create{
@@ -243,7 +246,12 @@ function Class:draw()
     local screenExtent = vec2(self.virtualScreenHeight * self.screenRatio, self.virtualScreenHeight)
     local cameraBounds = aabb(self.camera - screenExtent, self.camera + screenExtent)
 
-    if self.mode == "end" or (self.mode == "menu" and (self.menu == "loading" or self.menu == "title")) then
+    if self.mode == "end" or (
+        self.mode == "menu" and (
+            self.menu == "loading" or
+            self.menu == "title"
+        )
+    ) then
         self.space:draw()
     else
         self.controller:draw()

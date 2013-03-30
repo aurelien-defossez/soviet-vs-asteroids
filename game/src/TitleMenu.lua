@@ -112,7 +112,7 @@ function Class:draw()
 end
 
 function playGame()
-    self.game:setMode("game")
+    self.game:setMenu("tutorial")
 end
 
 function quitGame()
