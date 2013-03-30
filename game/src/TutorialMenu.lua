@@ -106,7 +106,7 @@ function Class:draw()
     )
     love.graphics.setFont(self.game.fonts["36"])
 
-    if self.game.controller == "joystick" then
+    if self.game.controller.name == "pad" then
         colors.black()
         love.graphics.draw(
             self.tutorial,
@@ -150,7 +150,7 @@ function Class:draw()
 
         colors.white()
         love.graphics.printf(
-            "[A,Q], D",
+            "[A,Q], D / Arrows",
             textX, textY - 100 * self.scale,
             textW, "left"
         )

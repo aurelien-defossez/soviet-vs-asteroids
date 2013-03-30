@@ -103,13 +103,10 @@ function Class.create(options)
         )
     ) then
         ControllerClass = PadController
-        self.controller = "joystick"
     elseif gameConfig.controls.default == "keyboard" then
         ControllerClass = KeyboardController
-        self.controller = "keyboard"
     else
         ControllerClass = MouseController
-        self.controller = "mouse"
     end
 
     self.controller = ControllerClass.create{
