@@ -4,8 +4,8 @@ require("src.Game")
 function love.load()
 	-- Set width and height to zero to retrieve desktop resolution
 	love.graphics.setMode(0, 0, false)
-	gameConfig.screen.real.width = love.graphics.getWidth()
-	gameConfig.screen.real.height = love.graphics.getHeight()
+	gameConfig.screen.real.width = love.graphics.getWidth() * .9
+	gameConfig.screen.real.height = love.graphics.getHeight() * .9
 	gameConfig.screen.scale = gameConfig.screen.real.width / gameConfig.screen.virtual.width * .6
 
 	-- Set mode a second time to really apply the resolution (does not work otherwise)
