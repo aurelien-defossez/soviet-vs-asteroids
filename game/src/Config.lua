@@ -2,7 +2,7 @@ require("lib.math.vec2")
 
 gameConfig = {
     virtualScreenHeight = 1080,
-    fullScreen = true,
+    fullScreen = false,
 
     screen = {
         virtual = {
