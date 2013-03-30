@@ -60,6 +60,10 @@ function SoundManager.setup()
 	self.musicPause=love.audio.newSource("assets/audio/shop.ogg", "stream")
 	self.musicPause:setLooping(true)
 
+	-- Start and pause shop music
+	self.musicPause:play()
+	self.musicPause:pause()
+
 	self.noMusic=false
 	self.noSound=false
 end
@@ -79,13 +83,14 @@ end
 function SoundManager.startShopMusic()
 	if not self.noMusic then
 		self.musicAmbiance:pause()
-		self.musicPause:play()
+		self.musicPause:resume()
 	end
 end
 
 function SoundManager.stopShopMusic()
 	if not self.noMusic then
-		self.musicPause:stop()
+		self.musicPause:pause()
+		self.musicPause:rewind()
 		self.musicAmbiance:resume()
 	end
 end
