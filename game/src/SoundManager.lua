@@ -55,9 +55,9 @@ function SoundManager.setup()
 	self.voiceFusRoDov=love.audio.newSource("assets/audio/fusrodov.ogg", "static")
 	self.voiceAnneRoumanov=love.audio.newSource("assets/audio/anneroumanov.ogg", "static")
 
-	self.musicAmbiance=love.audio.newSource("assets/audio/music.ogg")
+	self.musicAmbiance=love.audio.newSource("assets/audio/music.ogg", "stream")
 	self.musicAmbiance:setLooping(true)
-	self.musicPause=love.audio.newSource("assets/audio/shop.ogg")
+	self.musicPause=love.audio.newSource("assets/audio/shop.ogg", "stream")
 	self.musicPause:setLooping(true)
 
 	self.noMusic=false

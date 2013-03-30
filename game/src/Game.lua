@@ -307,8 +307,9 @@ end
 --  mode: "game" or "upgrade" or "menu"
 function Class:setMode(mode)
     if mode == "menu" and self.mode ~= "end" then
-        SoundManager.startShopMusic()
         SoundManager.laserStop()
+        self.station.isLaserFiring = false
+        SoundManager.startShopMusic()
     elseif self.mode == "menu" and mode ~= "menu" and mode ~= "upgrade" then
         SoundManager.stopShopMusic()
     end
