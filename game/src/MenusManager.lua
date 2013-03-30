@@ -16,6 +16,7 @@ Class.__index = Class
 require("src.Config")
 require("src.LoadingMenu")
 require("src.TitleMenu")
+require("src.TutorialMenu")
 require("src.PauseMenu")
 require("src.UpgradeMenu")
 
@@ -34,6 +35,7 @@ function Class.create(options)
     self.menus = {
         loading = LoadingMenu,
         title = TitleMenu,
+        tutorial = TutorialMenu,
         pause = PauseMenu,
         gameover = PauseMenu,
         upgrade = UpgradeMenu

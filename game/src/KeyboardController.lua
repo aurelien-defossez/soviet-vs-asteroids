@@ -52,7 +52,11 @@ function Class.create(options)
                 if self.mode == "upgrade" then
                     self.game:setMenu("upgrade")
                 elseif self.mode == "menu" then
-                    if self.game.menu and (self.game.menu == "pause" or self.game.menu == "upgrade") then
+                    if self.game.menu and (
+                        self.game.menu == "pause" or
+                        self.game.menu == "upgrade" or
+                        self.game.menu == "tutorial"
+                    ) then
                         self.game:setMode("game")
                     elseif self.game.menu == "loading" then
                         self.game:setMenu("title")
@@ -98,7 +102,7 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
     deltaRad = gameConfig.controls.keyboard.delta
- 
+
     if self.mode == "game" then
         -- Control the laser command
         if love.keyboard.isDown("left", "a", "q") then
@@ -111,7 +115,7 @@ function Class:update(dt)
 
         -- I’M A’ FIRIN’ MAH LAZER!!
         self.station:fireLaser()
-       
+
         -- SHOOP DA WHOOP!!!!
         if love.keyboard.isDown(" ") then
             self.station:launchMissile()
