@@ -10,22 +10,19 @@ module("Drone", package.seeall)
 local Class = Drone
 Class.__index = Class
 
+-----------------------------------------------------------------------------------------
+-- Imports
+-----------------------------------------------------------------------------------------
+
 local Sprite = require("lib.Sprite")
-
-local hoboSat = love.graphics.newImage("assets/graphics/hobosat.png")
-local laserSpriteSheet = love.graphics.newImage("assets/graphics/laser_boule.png")
-local laserBeamSpriteSheet = love.graphics.newImage("assets/graphics/laser_jet.png")
-
-
-
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
 -----------------------------------------------------------------------------------------
 
------------------------------------------------------------------------------------------
--- Imports
------------------------------------------------------------------------------------------
+local hoboSat = love.graphics.newImage("assets/graphics/hobosat.png")
+local laserSpriteSheet = love.graphics.newImage("assets/graphics/laser_boule.png")
+local laserBeamSpriteSheet = love.graphics.newImage("assets/graphics/laser_jet.png")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -117,8 +114,8 @@ function Class:distanceTo(asteroid)
     return self.range.center:distance(asteroid.boundingCircle.center)
 end
 
-function Class:hit(asteroid)
-    asteroid:hit(1, gameConfig.drone.damageModifier)
+function Class:hit(asteroid, dt)
+    asteroid:hit(1, gameConfig.drone.damageModifier * dt)
     self.targetAsteroid = asteroid
 end
 

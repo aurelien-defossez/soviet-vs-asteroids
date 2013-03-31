@@ -120,7 +120,7 @@ function Class:launchMissile()
     self.space:addMissile({
         pos = missileLauncherPosition,
         angle = self.missileAngle,
-        speed = gameConfig.missile.speed
+        speed = gameConfig.missiles.speed
     })
     SoundManager.missile()
 end
@@ -187,7 +187,7 @@ function Class:update(dt)
             local deltaY = nearestAsteroid.pos.y - drone.pos.y
             asteroidAngle = - math.atan2(deltaY, deltaX)
             drone.displayAngle = asteroidAngle
-            drone:hit(nearestAsteroid)
+            drone:hit(nearestAsteroid, dt)
         end
     end
 
@@ -205,7 +205,7 @@ function Class:update(dt)
             self.isLaserFiring = true
         end
 
-        self.closestAsteroid:hit(numberLaserFiring)
+        self.closestAsteroid:hit(numberLaserFiring, dt)
     else
         if (self.isLaserFiring) then
             SoundManager.laserStop()

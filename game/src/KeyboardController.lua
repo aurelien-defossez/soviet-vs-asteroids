@@ -100,16 +100,16 @@ end
 -- Parameters:
 --  dt: The time in seconds since last frame
 function Class:update(dt)
-    deltaRad = gameConfig.controls.keyboard.delta
+    local deltaRad = gameConfig.controls.keyboard.delta * dt
 
     if self.mode == "game" then
         -- Control the laser command
         if love.keyboard.isDown("left", "a", "q") then
-            self.station:setLaserSatAngle((self.station.laserAngle + deltaRad + math.pi ) % ( 2 * math.pi ) - math.pi )
+            self.station:setLaserSatAngle((self.station.laserAngle + deltaRad + math.pi ) % ( 2 * math.pi ) - math.pi)
         end
 
         if love.keyboard.isDown("right", "d") then
-            self.station:setLaserSatAngle((self.station.laserAngle - deltaRad + math.pi ) % ( 2 * math.pi) - math.pi )
+            self.station:setLaserSatAngle((self.station.laserAngle - deltaRad + math.pi ) % ( 2 * math.pi) - math.pi)
         end
 
         -- I’M A’ FIRIN’ MAH LAZER!!

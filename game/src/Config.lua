@@ -46,6 +46,7 @@ gameConfig = {
         cooldown = 1.0, -- in seconds
         cooldownUpgradeRate = 0.8, -- -20% per upgrade
         deleteDistance = 1080, -- in pixels
+        speed = 400
     },
 
     asteroid = {
@@ -77,10 +78,6 @@ gameConfig = {
         damageModifier = 2,
     },
 
-    missile = {
-        speed = 8,
-    },
-
     controls = {
         default = "joystick", -- joystick, keyboard, mouse
         force = nil, -- joystick, keyboard, mouse
@@ -90,7 +87,7 @@ gameConfig = {
         },
 
         keyboard = {
-            delta = math.pi / 36, -- in radian
+            delta = math.pi, -- in radian
         },
     },
 
@@ -122,7 +119,7 @@ gameConfig = {
     laser = {
         laserWidth = 70,
         dpsExp = 0.75,
-        baseDmg = 0.0015,
+        baseDmg = 0.1,
         maxRange = 500,
         beamSpeed = 4,
     },

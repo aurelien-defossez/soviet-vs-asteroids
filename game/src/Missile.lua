@@ -114,7 +114,7 @@ end
 --  dt: The time in seconds since last frame
 function Class:update(dt)
     if not self.exploded then
-        self.pos = self.pos + vec2(self.speed * cos(self.angle), self.speed * -sin(self.angle))
+        self.pos = self.pos + vec2(self.speed * cos(self.angle), self.speed * -sin(self.angle)) * dt
         self.boundingCircle = circle(self.pos, self.radius)
 
         self.sprite:update(dt)
