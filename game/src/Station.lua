@@ -65,8 +65,9 @@ function Class.create(options)
     self.missileLauncherBackOffset = vec2(-90, 0)
 
     -- Missiles cooldown
-    self.lastSentMissileTime = - gameConfig.missiles.cooldown -- so we can shoot right away
+    self.lastSentMissileTime = -gameConfig.missiles.cooldown -- so we can shoot right away
     self.missileCoolDownTime = gameConfig.missiles.cooldown
+    self.missileSpeed = gameConfig.missiles.speed
 
     -- Upgrades
     self.newSatellite = nil
@@ -120,7 +121,7 @@ function Class:launchMissile()
     self.space:addMissile({
         pos = missileLauncherPosition,
         angle = self.missileAngle,
-        speed = gameConfig.missiles.speed
+        speed = self.missileSpeed
     })
     SoundManager.missile()
 end
@@ -331,6 +332,10 @@ end
 --  cooldown: int
 function Class:setMissileCooldown(cooldown)
     self.missileCoolDownTime = cooldown
+end
+
+function Class:setMissileSpeed(speed)
+    self.missileSpeed = speed
 end
 
 function Class:asteroidKilled(radius, distance, noPoints)

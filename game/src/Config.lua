@@ -47,6 +47,7 @@ gameConfig = {
     missiles = {
         cooldown = 1.0, -- in seconds
         cooldownUpgradeRate = 0.8, -- -20% per upgrade
+        speedUpgradeRate = 1.10, -- +10% per upgrade
         deleteDistance = 1080, -- in pixels
         speed = 600
     },

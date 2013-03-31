@@ -184,6 +184,7 @@ function upgradeMissiles()
 
     -- Upgrade the cooldown
     self.station:setMissileCooldown(self.station.missileCoolDownTime * gameConfig.missiles.cooldownUpgradeRate)
+    self.station:setMissileSpeed(self.station.missileSpeed * gameConfig.missiles.speedUpgradeRate)
     SoundManager:upgrade()
 end
 
