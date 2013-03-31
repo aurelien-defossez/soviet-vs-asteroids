@@ -46,7 +46,7 @@ gameConfig = {
         cooldown = 1.0, -- in seconds
         cooldownUpgradeRate = 0.8, -- -20% per upgrade
         deleteDistance = 1080, -- in pixels
-        speed = 400
+        speed = 500
     },
 
     asteroid = {

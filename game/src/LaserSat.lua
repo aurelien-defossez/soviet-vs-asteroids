@@ -114,7 +114,7 @@ function Class:update(dt)
 
     self.isDoingDamage = false
 
-    if self.beamScale < 1  and self.isFiring then
+    if self.beamScale < 1 and self.isFiring then
         self.beamScale = self.beamScale + gameConfig.laser.beamSpeed * dt
     elseif self.isFiring then
         self.beamScale = 1
@@ -124,7 +124,6 @@ end
 
 -- Draw the game
 function Class:draw()
-
     love.graphics.setColor(255,255,255)
 
     self.sprite.angle = self.displayAngle

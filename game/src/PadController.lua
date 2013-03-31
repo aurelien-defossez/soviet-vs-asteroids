@@ -103,11 +103,11 @@ function Class:update(dt)
 
     if self.mode == "game" then
         if (norm > 0.5) then
-            self.station:setMissileLauncherAngle( -self.joy1Angle)
+            self.station:setMissileLauncherAngle(-self.joy1Angle)
         end
 
         if (norm2 > 0.5) then
-            self.station:setLaserSatAngle( -self.joy2Angle)
+            self.station:setLaserSatAngle(-self.joy2Angle)
         end
 
         if ( love.joystick.isDown( 1, 5 ) ) then
@@ -127,15 +127,15 @@ function Class:update(dt)
     elseif self.mode == "upgrade" then
         if norm > 0.5 then
             if self.game.upgrade == "satellite" then
-                self.station.newSatellite:setAngle( -self.joy1Angle)
+                self.station.newSatellite:setAngle(-self.joy1Angle)
             elseif self.game.upgrade == "drone" then
-                self.station.newDrone:setAngle( -self.joy1Angle)
+                self.station.newDrone:setAngle(-self.joy1Angle)
             end
         elseif norm2 > 0.5 then
             if self.game.upgrade == "satellite" then
-                self.station.newSatellite:setAngle( -self.joy2Angle)
+                self.station.newSatellite:setAngle(-self.joy2Angle)
             elseif self.game.upgrade == "drone" then
-                self.station.newDrone:setAngle( -self.joy2Angle)
+                self.station.newDrone:setAngle(-self.joy2Angle)
             end
         end
     end

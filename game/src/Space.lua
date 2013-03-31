@@ -183,7 +183,7 @@ function Class:update(dt)
             self:removeAsteroid( i )
 
             self.station.life = self.station.life - asteroid.radius
-            if(self.station.life>0) then
+            if self.station.life > 0 then
                 SoundManager.voice()
             end
             SoundManager.explosion()
