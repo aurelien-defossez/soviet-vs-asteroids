@@ -126,18 +126,21 @@ end
 
 function SoundManager.upgrade()
 	if not self.noSound then
+		self.soundUpgrade:rewind()
 		self.soundUpgrade:play()
 	end
 end
 
 function SoundManager.laserPlace()
 	if not self.noSound then
+		self.soundUpgrade:rewind()
 		self.soundLaserPlace:play()
 	end
 end
 
 function SoundManager.dronePlace()
 	if not self.noSound then
+		self.soundUpgrade:rewind()
 		self.soundDronePlace:play()
 	end
 end
