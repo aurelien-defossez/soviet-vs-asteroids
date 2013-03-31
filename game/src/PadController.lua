@@ -173,7 +173,7 @@ function love.joystickpressed( joystick, button )
         if button == 4 then
             if self.mode == "game" and game.mode ~= "end" then
                 self.game:setMenu("upgrade")
-            elseif self.mode == "upgrade"  then
+            elseif self.mode == "upgrade" then
                 self.game:setMenu("upgrade")
             elseif self.mode == "menu" and self.game.menu == "upgrade" then
                 self.game:setMode("game")
@@ -207,6 +207,16 @@ function love.joystickpressed( joystick, button )
                 self.game.menus:enterSelected()
             elseif self.mode == "upgrade" then
                 self.game:putUpgrade()
+            end
+        end
+
+        -- Navigate in menus
+        if button == 2 or button == 3 then
+            if self.mode == "upgrade" then
+                local defaultButton = self.game.upgrade == "satellite" and "lasers" or "drones"
+                self.game:setMenu("upgrade", defaultButton)
+            elseif self.mode == "menu" and (self.game.menu == "upgrade" or self.game.menu == "pause") then
+                self.game:setMode("game")
             end
         end
     end
