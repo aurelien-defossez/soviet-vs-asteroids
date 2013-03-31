@@ -31,8 +31,10 @@ gameConfig = {
     difficulty = {
         baseDifficulty = 1,
         sinInfluence = .25,
-        sinPeriod = 60,
-        difficultyModifier = .5,
+        sinPeriod = 30,
+        difficultyModifier = .25,
+        difficultyExpFactor = .75,
+        pairedDifficultyExpFactor = .5,
 
         demo = {
             baseDifficulty = 1,
@@ -46,7 +48,7 @@ gameConfig = {
         cooldown = 1.0, -- in seconds
         cooldownUpgradeRate = 0.8, -- -20% per upgrade
         deleteDistance = 1080, -- in pixels
-        speed = 500
+        speed = 600
     },
 
     asteroid = {
@@ -68,13 +70,13 @@ gameConfig = {
     },
 
     laserSat = {
-        offOrbitRatio = 1.0,
+        offOrbitRatio = 1.05,
     },
 
     drone = {
         offOrbitRatio = 1.4,
         range = 80,
-        speed = 0.3,
+        speed = 0.25,
         damageModifier = 2,
     },
 

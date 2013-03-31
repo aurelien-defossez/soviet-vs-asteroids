@@ -194,7 +194,6 @@ function Class:update(dt)
     -- spawn asteroids every once in a while
     self.dLastSpawn = self.dLastSpawn + dt
     if self.dLastSpawn > gameConfig.asteroid.spawnPeriod / game.difficulty then
-        local baseSpeed = gameConfig.asteroid.speed * game.pairedDifficulty
         self:addAsteroid{
             speed1d = gameConfig.asteroid.speed * game.pairedDifficulty * (math.random() + .5)
         }
