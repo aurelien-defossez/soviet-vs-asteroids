@@ -30,11 +30,11 @@ gameConfig = {
 
     difficulty = {
         baseDifficulty = 1,
-        sinInfluence = .25,
+        sinInfluence = .3,
         sinPeriod = 30,
-        difficultyModifier = .25,
+        difficultyModifier = .6,
         difficultyExpFactor = .75,
-        pairedDifficultyExpFactor = .5,
+        pairedDifficultyExpFactor = .8,
 
         demo = {
             baseDifficulty = 1,
@@ -71,14 +71,14 @@ gameConfig = {
     },
 
     laserSat = {
-        offOrbitRatio = 1.05,
+        offOrbitRatio = 1,
     },
 
     drone = {
-        offOrbitRatio = 1.4,
+        offOrbitRatio = 1.5,
         range = 80,
         speed = 0.25,
-        damageModifier = 2,
+        damageModifier = 1.5,
     },
 
     controls = {
@@ -97,7 +97,7 @@ gameConfig = {
     upgrades = {
         missiles = {
             cost = 300,
-            upgradeRate = 1.5, -- +50%
+            upgradeRate = 1.6, -- +60%
         },
         lasers = {
             cost = 200,
