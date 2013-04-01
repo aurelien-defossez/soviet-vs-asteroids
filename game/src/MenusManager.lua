@@ -72,8 +72,6 @@ function Class:setMenu(menu, defautButton)
         self.menu:destroy()
     end
 
-    print("setMenu", menu)
-
     SoundManager.laserStop()
     self.menu = self.menus[menu].create{
         game = self.game,
