@@ -64,6 +64,9 @@ function Class.create(options)
 
     -- Set font
     self.fonts = {}
+    self.fonts["Arial36"] = love.graphics.newFont(36 * gameConfig.screen.scale)
+    self.fonts["Arial48"] = love.graphics.newFont(48 * gameConfig.screen.scale)
+    self.fonts["Arial72"] = love.graphics.newFont(72 * gameConfig.screen.scale)
     self.fonts["36"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 36 * gameConfig.screen.scale)
     self.fonts["48"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 48 * gameConfig.screen.scale)
     self.fonts["72"] = love.graphics.newFont("assets/fonts/Soviet2.ttf", 72 * gameConfig.screen.scale)
@@ -299,7 +302,7 @@ function Class:draw()
         love.graphics.setFont(self.fonts["48"])
         love.graphics.printf(self.station.coins, gameConfig.screen.real.width * .87, 10, 300, "left")
     end
-    
+
     if self.mode == "end" or self.menu == "gameover" then
         GameOverScreen.draw()
     end

@@ -33,12 +33,24 @@ function Class.create(options)
     self.scale = gameConfig.screen.scale * 1.5
     self.elapsedTime = 0
 
+    self.background = love.graphics.newImage("assets/graphics/gui/menu_bg.png")
     self.controllerGuy = love.graphics.newImage("assets/graphics/cosmonaute_controller.png")
 
-    self.startPos = vec2(
-        (-800 / self.scale),
-        (gameConfig.screen.real.height - 268 * self.scale) / 2
-    )
+    if game.controller.name == "pad" then
+        self.startPos = vec2(
+            (-800 / self.scale),
+            (gameConfig.screen.real.height - 150 * self.scale) / 2
+        )
+
+        self.text = "You have a controller plugged in\nMother-Russia is happy!"
+    else
+        self.startPos = vec2(
+            (-800 / self.scale),
+            (gameConfig.screen.real.height - 100 * self.scale) / 2
+        )
+
+        self.text = "For Mother-Russia, play with a dual sticks controller.\nIf you have one, plug it in and restart the game"
+    end
 
     self.endPos = vec2(
         (gameConfig.screen.real.width),
@@ -95,20 +107,40 @@ end
 function Class:draw()
     self.starField:draw()
 
-    local text = game.controller.name ~= "pad"
-        and "For Mother-Russia, play with a dual sticks controller\nIf you have one, plug it in and restart the game"
-        or "You have a controller plugged in\nMother-Russia is happy"
+    local bgPos = vec2(
+        (gameConfig.screen.real.width - 609 * gameConfig.screen.scale) / 2,
+        (gameConfig.screen.real.height - 720 * gameConfig.screen.scale) / 2
+    )
+
+    local bgWidth = 609 * gameConfig.screen.scale
+
+    colors.white()
+    love.graphics.draw(
+        self.background,
+        bgPos.x,
+        bgPos.y,
+        0,
+        gameConfig.screen.scale
+    )
 
     colors.white()
     love.graphics.setFont(game.fonts["72"])
     love.graphics.printf(
-        text,
-        0,
-        100,
-        gameConfig.screen.real.width,
+        "Welcome",
+        bgPos.x,
+        bgPos.y + bgWidth * .05,
+        bgWidth,
         "center")
 
-    local rotation = self.elapsedTime * math.pi / 32
+    love.graphics.setFont(game.fonts["Arial36"])
+    love.graphics.printf(
+        self.text,
+        bgPos.x + bgWidth * .075,
+        bgPos.y + 130,
+        bgWidth * .85,
+        "center")
+
+    local rotation = -math.pi / 8 + self.elapsedTime * math.pi / 32
     local pos = self.startPos + (self.endPos - self.startPos) * self.elapsedTime / 12
 
     love.graphics.setColor(255, 255, 255)
