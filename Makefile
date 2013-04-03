@@ -1,7 +1,7 @@
 BUILD_DIR=builds
 GAME_DIR=game
 GAME_FILE_NAME=Soviet_VS_Asteroids
-COMPILED_GAME_FILE=$(BUILD_DIR)/game.love
+COMPILED_GAME_FILE=$(BUILD_DIR)/$(GAME_FILE_NAME).love
 
 LINUX_DIR=$(BUILD_DIR)/Linux
 MAC_DIR=$(BUILD_DIR)/Mac
@@ -57,22 +57,29 @@ build:	compile-game build-linux build-mac build-win-x64 build-win-x86
 
 compile-game:
 	cd $(GAME_DIR); zip -r ../$(COMPILED_GAME_FILE) *
+	cp $(COMPILED_GAME_FILE) .
 
 build-linux:	compile-game
 	echo "Building for Linux..."
-	cat $(LINUX_DIR)/love $(COMPILED_GAME_FILE) > $(LINUX_EXE) && chmod +x $(LINUX_EXE)
+	rm -rf $(LINUX_EXE)
+	cat $(LINUX_DIR)/love $(COMPILED_GAME_FILE) >> $(LINUX_EXE)
+	chmod +x $(LINUX_EXE)
 
 build-mac:	compile-game
 	echo "Building for Mac OS..."
-	cp -r $(MAC_DIR)/love.app $(MAC_EXE) && cp $(COMPILED_GAME_FILE) $(MAC_EXE)/Contents/Resources/
+	rm -rf $(MAC_EXE)
+	cp -r $(MAC_DIR)/love.app $(MAC_EXE)
+	cp $(COMPILED_GAME_FILE) $(MAC_EXE)/Contents/Resources/
 
 build-win-x64:	compile-game
 	echo "Building for Windows x64..."
-	cat $(WINx64_DIR)/love.exe $(COMPILED_GAME_FILE) > $(WINx64_EXE)
+	rm -rf $(WINx64_EXE)
+	cat $(WINx64_DIR)/love.exe $(COMPILED_GAME_FILE) >> $(WINx64_EXE)
 
 build-win-x86:	compile-game
 	echo "Building for Windows x86..."
-	cat $(WINx86_DIR)/love.exe $(COMPILED_GAME_FILE) > $(WINx86_EXE)
+	rm -rf $(WINx86_EXE)
+	cat $(WINx86_DIR)/love.exe $(COMPILED_GAME_FILE) >> $(WINx86_EXE)
 
 clear:
-	rm -rf $(COMPILED_GAME_FILE) $(LINUX_EXE) $(MAC_EXE) $(WINx64_EXE) $(WINx86_EXE) $(TMP_DIR) *.zip
+	rm -rf $(COMPILED_GAME_FILE) $(LINUX_EXE) $(MAC_EXE) $(WINx64_EXE) $(WINx86_EXE) $(TMP_DIR) *.zip *.love

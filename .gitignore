@@ -1,5 +1,6 @@
 *.zip
-builds/game.love
+Soviet_VS_Asteroids.love
+builds/Soviet_VS_Asteroids.love
 builds/Linux/Soviet_VS_Asteroids
 builds/Mac/Soviet_VS_Asteroids.app/
 builds/Windows_x64/Soviet_VS_Asteroids_x64.exe
