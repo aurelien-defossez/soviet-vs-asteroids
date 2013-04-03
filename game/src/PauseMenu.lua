@@ -124,8 +124,8 @@ function Class:draw()
         gameConfig.screen.real.width,
         "center"
     )
+    
     love.graphics.setFont(self.game.fonts["48"])
-
     for key, val in pairs(self.buttons) do
         val:draw()
     end

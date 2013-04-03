@@ -188,6 +188,7 @@ function Class:draw()
         )
     end
 
+    love.graphics.setFont(self.game.fonts["48"])
     for key, val in pairs(self.buttons) do
         val:draw()
     end

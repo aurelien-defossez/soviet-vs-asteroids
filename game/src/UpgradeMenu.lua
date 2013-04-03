@@ -165,6 +165,7 @@ function Class:draw()
         self.scale
     )
 
+    love.graphics.setFont(game.fonts["48"])
     for key, val in pairs(self.buttons) do
         val:draw()
     end
@@ -219,6 +220,7 @@ function upgradeFusrodov()
 end
 
 function updateButtons()
+    love.graphics.setFont(game.fonts["48"])
     for key, val in pairs(self.buttons) do
         local cost = self.station.costs[key]
 
