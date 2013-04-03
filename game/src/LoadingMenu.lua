@@ -68,6 +68,8 @@ function Class.create(options)
         }
     }
 
+    self.game:setZoom(1)
+
     return self
 end
 

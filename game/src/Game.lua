@@ -189,13 +189,13 @@ function Class:update(dt)
                 dezoomProgress = 0.5 - math.sin(PI - dezoomPercentage * PI / 2) / 2
             end
 
-            self.zoom = gameConfig.zoom.target + dezoomProgress * self.zoomDiff
+            local zoom = gameConfig.zoom.target + dezoomProgress * self.zoomDiff
 
             if dezoomPercentage >= 1 then
-                self.zoom = gameConfig.zoom.target
+                zoom = gameConfig.zoom.target
             end
 
-            self:computeTranslateVector()
+            self:setZoom(zoom)
         end
 
         -- Update difficulty
@@ -224,6 +224,11 @@ function Class:update(dt)
     if self.mode == "end" or self.menu == "gameover" then
         GameOverScreen.update(dt)
     end
+end
+
+function Class:setZoom(zoom)
+    self.zoom = zoom
+    self:computeTranslateVector()
 end
 
 -- Draw the game

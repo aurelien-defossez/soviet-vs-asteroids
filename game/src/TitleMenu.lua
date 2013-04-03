@@ -112,6 +112,7 @@ function Class:draw()
 end
 
 function playGame()
+    self.game:setZoom(gameConfig.zoom.origin)
     self.game:setMenu("tutorial")
 end
 
