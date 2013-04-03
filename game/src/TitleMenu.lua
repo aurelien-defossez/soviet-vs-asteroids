@@ -113,6 +113,7 @@ end
 
 function playGame()
     self.game:setZoom(gameConfig.zoom.origin)
+    self.game.showHUD = true
     self.game:setMenu("tutorial")
 end
 

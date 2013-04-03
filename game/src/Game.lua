@@ -53,6 +53,7 @@ function Class.create(options)
     self.camera = vec2(0, 0)
     self.zoomDelay = gameConfig.zoom.delay
     self.dezoomElpased = 0
+    self.showHUD = false
     self.zoom = gameConfig.zoom.origin
     self.elapsedTime = 0
     self.demoMode = false
@@ -284,19 +285,21 @@ function Class:draw()
     love.graphics.pop()
     -- Draw HUD
 
-    colors.grey()
-    love.graphics.setFont(self.fonts["36"])
-    love.graphics.printf("Score", gameConfig.screen.real.width * .6, 17, 200, "left")
+    if self.showHUD then
+        colors.grey()
+        love.graphics.setFont(self.fonts["36"])
+        love.graphics.printf("Score", gameConfig.screen.real.width * .6, 17, 200, "left")
 
-    colors.white()
-    love.graphics.setFont(self.fonts["48"])
-    love.graphics.printf(self.station.score, gameConfig.screen.real.width * .67, 10, 200, "left")
+        colors.white()
+        love.graphics.setFont(self.fonts["48"])
+        love.graphics.printf(self.station.score, gameConfig.screen.real.width * .67, 10, 200, "left")
 
-    love.graphics.setFont(self.fonts["36"])
-    love.graphics.draw(self.coinImg, gameConfig.screen.real.width * .8, 6, 0, gameConfig.screen.scale)
-    love.graphics.setFont(self.fonts["48"])
-    love.graphics.printf(self.station.coins, gameConfig.screen.real.width * .87, 10, 300, "left")
-
+        love.graphics.setFont(self.fonts["36"])
+        love.graphics.draw(self.coinImg, gameConfig.screen.real.width * .8, 6, 0, gameConfig.screen.scale)
+        love.graphics.setFont(self.fonts["48"])
+        love.graphics.printf(self.station.coins, gameConfig.screen.real.width * .87, 10, 300, "left")
+    end
+    
     if self.mode == "end" or self.menu == "gameover" then
         GameOverScreen.draw()
     end

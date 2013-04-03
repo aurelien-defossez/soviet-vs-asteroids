@@ -27,4 +27,5 @@ end
 function restart()
     game:destroy()
     game = Game.create()
+    game.showHUD = true
 end
