@@ -115,7 +115,7 @@ function Class:update(dt)
     self.isDoingDamage = false
 
     if self.beamScale < 1 and self.isFiring then
-        self.beamScale = self.beamScale + gameConfig.laser.beamSpeed * dt
+        self.beamScale = math.min(self.beamScale + gameConfig.laser.beamSpeed * dt, 1)
     elseif self.isFiring then
         self.beamScale = 1
         self.isDoingDamage = true

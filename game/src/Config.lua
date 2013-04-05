@@ -29,10 +29,10 @@ gameConfig = {
     },
 
     difficulty = {
-        -- Formulae: (0.3 + 0.6 * 2 * x) ^ 0.6 + sin((2*x) * 2 * pi) * 0.05 * (2*x) ^ .25
+        -- Formulae: (0.3 + 0.6 * 2 * x) ^ 0.7 + sin((2*x) * 2 * pi) * 0.05 * (2*x) ^ .25
         baseDifficulty = .3,
         difficultyModifier = .6,
-        difficultyExpFactor = .6,
+        difficultyExpFactor = .7,
         sinInfluence = .05,
         sinPeriod = 30,
         sinExpFactor = .25,
@@ -79,8 +79,8 @@ gameConfig = {
     drone = {
         offOrbitRatio = 1.5,
         range = 80,
-        speed = 0.25,
-        damageModifier = 1.5,
+        speed = 0.2,
+        damageModifier = .8,
     },
 
     controls = {
@@ -98,8 +98,8 @@ gameConfig = {
 
     upgrades = {
         missiles = {
-            cost = 300,
-            upgradeRate = 1.6, -- +60%
+            cost = 350,
+            upgradeRate = 1.7, -- +70%
         },
         lasers = {
             cost = 200,
@@ -126,6 +126,6 @@ gameConfig = {
         dpsExp = 0.75,
         baseDmg = 0.1,
         maxRange = 500,
-        beamSpeed = 4,
+        beamSpeed = 1000,
     },
 }
