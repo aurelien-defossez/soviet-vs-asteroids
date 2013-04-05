@@ -29,11 +29,13 @@ gameConfig = {
     },
 
     difficulty = {
-        baseDifficulty = 1,
-        sinInfluence = .3,
-        sinPeriod = 30,
+        -- Formulae: (0.3 + 0.6 * 2 * x) ^ 0.6 + sin((2*x) * 2 * pi) * 0.05 * (2*x) ^ .25
+        baseDifficulty = .3,
         difficultyModifier = .6,
-        difficultyExpFactor = .75,
+        difficultyExpFactor = .6,
+        sinInfluence = .05,
+        sinPeriod = 30,
+        sinExpFactor = .25,
         pairedDifficultyExpFactor = .8,
 
         demo = {

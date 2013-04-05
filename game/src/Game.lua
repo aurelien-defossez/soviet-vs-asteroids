@@ -203,14 +203,17 @@ function Class:update(dt)
         end
 
         -- Update difficulty
+        -- Formulae: (0.3 + 0.6 * 2 * x) ^ 0.6 + sin((2*x) * 2 * pi) * 0.05 * (2*x) ^ .25
         self.elapsedTime = self.elapsedTime + dt
         local x = self.elapsedTime / self.difficultyParameters.sinPeriod
 
         self.scoreMultiplier = (self.difficultyParameters.baseDifficulty + x * self.difficultyParameters.difficultyModifier)
             ^ self.difficultyParameters.difficultyExpFactor
 
-        self.difficulty = (self.scoreMultiplier * (1 + math.sin(x * 2 * PI) * self.difficultyParameters.sinInfluence))
-        self.pairedDifficulty = (2 * self.scoreMultiplier - self.difficulty) ^ self.difficultyParameters.pairedDifficultyExpFactor
+        self.difficulty = self.scoreMultiplier + math.sin(x * 2 * PI) * self.difficultyParameters.sinInfluence
+            * x ^ self.difficultyParameters.sinExpFactor
+        self.pairedDifficulty = (2 * self.scoreMultiplier - self.difficulty)
+            ^ self.difficultyParameters.pairedDifficultyExpFactor
 
         -- Update game
         self.station:update(dt)
