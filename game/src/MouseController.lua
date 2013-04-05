@@ -30,7 +30,7 @@ function Class.create(options)
         station = self.station
     }
 
-    function love.mousereleased(x, y, button)
+    function love.mousepressed(x, y, button)
         if button == "l" or button == "r" then
             if self.mode == "menu" then
                 self.game.menus:enterSelected()
