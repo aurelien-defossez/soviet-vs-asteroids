@@ -1,7 +1,7 @@
 Soviet VS Asteroids
 ===================
 
-Mother-Russia greats you, comrade cosmonaut. You have done great things, and we thank you for that. Sadly, you are now lost in space. Expect no help, because none will come. Scream not, because no one can hear you. Survive. That is all you can do.
+Mother-Russia greets you, comrade cosmonaut. You have done great things, and we thank you for that. Sadly, you are now lost in space. Expect no help, because none will come. Scream not, because no one can hear you. Survive. That is all you can do.
 
 But that won't be easy: there are plenty of asteroids around you. Some small, some big. Not all of them will come to you. But those that come, will come hard.
 
