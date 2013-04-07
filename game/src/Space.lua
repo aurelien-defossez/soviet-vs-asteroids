@@ -61,7 +61,7 @@ function Class:destroy()
 end
 
 -----------------------------------------------------------------------------------------
--- Methods
+-- MethodsR
 -----------------------------------------------------------------------------------------
 
 function Class:canFusRoDov()
@@ -257,16 +257,14 @@ function Class:splitAsteroid( asteroid )
         pos = vec2( asteroid.pos.x, asteroid.pos.y ),
         dir = asteroid.dir + math.pi / 4,
         speed1d = asteroid.speed1d,
-        radius = asteroid.radius / 2,
-        color = { unpack(asteroid.color) }
+        radius = asteroid.radius / 2
     })
 
     self:addAsteroid({
         pos = vec2( asteroid.pos.x, asteroid.pos.y ),
         dir = asteroid.dir - math.pi / 4,
         speed1d = asteroid.speed1d,
-        radius = asteroid.radius / 2,
-        color = { unpack(asteroid.color) }
+        radius = asteroid.radius / 2
     })
 end
 
